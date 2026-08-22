@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { COL, FRAME_COUNT, LOGO_H, LOGO_W, SETTLE_FRAME, makeFrame } from "@/lib/pq/shield-anim";
+import { COL, EMBLEM_GLOSS, EMBLEMS, FRAME_COUNT, LOGO_H, LOGO_W, SETTLE_FRAME, makeFrame } from "@/lib/pq/shield-anim";
+import { usePq } from "@/lib/pq/store";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { SplashEmblem } from "@/lib/pq/types";
 
 const COLOR: Record<number, string> = {
   [COL.dim]: "text-[#4a524c]",
@@ -12,6 +14,8 @@ const COLOR: Record<number, string> = {
 };
 
 export function ShieldBoot({ auto = true }: { auto?: boolean }) {
+  const emblem = usePq((s) => s.world.policy.splashEmblem ?? "cross");
+  const patch = usePq((s) => s.patchPolicy);
   const [step, setStep] = useState(0);
   const [gen, setGen] = useState(0);
 
@@ -32,22 +36,37 @@ export function ShieldBoot({ auto = true }: { auto?: boolean }) {
       });
     }, 70);
     return () => window.clearInterval(id);
-  }, [auto, gen]);
+  }, [auto, gen, emblem]);
 
-  const frame = makeFrame(step);
+  const frame = makeFrame(step, emblem);
 
   return (
     <figure className="overflow-hidden rounded-xl border border-border bg-[#0c0d0c]">
-      <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
-          loader.efi · logo-pqfreebsd.4th · ASCII + ANSI
+          loader.efi · {emblem} · ASCII + ANSI
         </p>
         <Button variant="quiet" onClick={() => setGen((g) => g + 1)}>
           Replay
         </Button>
       </div>
+      <div className="flex flex-wrap gap-1 border-b border-border px-3 py-2">
+        {EMBLEMS.map((e) => (
+          <Button
+            key={e}
+            variant={emblem === e ? "primary" : "quiet"}
+            className="min-h-9 px-3 text-xs"
+            onClick={() => {
+              patch({ splashEmblem: e });
+              setGen((g) => g + 1);
+            }}
+          >
+            {e}
+          </Button>
+        ))}
+      </div>
       <pre
-        aria-label="pqfreebsd boot logo animation, shield over a sword"
+        aria-label={`pqfreebsd boot logo, ${EMBLEM_GLOSS[emblem as SplashEmblem]}`}
         className="overflow-x-auto p-5 font-mono text-[13px] leading-[1.15] tracking-[0.04em] md:text-[15px]"
       >
         {frame.map((row, y) => (
@@ -61,8 +80,8 @@ export function ShieldBoot({ auto = true }: { auto?: boolean }) {
         ))}
       </pre>
       <figcaption className="px-4 py-3 text-xs text-muted">
-        {LOGO_W}×{LOGO_H} Forth logo. Sword, then shield, then a gleam. Color is SGR. Serial consoles
-        still get the ASCII. TPM not this pass.
+        {LOGO_W}×{LOGO_H} Forth logo. Shield, then {EMBLEM_GLOSS[emblem as SplashEmblem]}. Cross is the
+        default. Color is SGR. Serial still gets the ASCII. TPM not this pass.
       </figcaption>
     </figure>
   );

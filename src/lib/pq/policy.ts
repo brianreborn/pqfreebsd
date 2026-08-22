@@ -1,4 +1,4 @@
-import type { DacRule, Policy, Subject } from "./types";
+import type { DacRule, Policy, SplashEmblem, Subject } from "./types";
 
 export const DEFAULT_POLICY: Policy = {
   trustedGroup: "lomac-trusted",
@@ -16,6 +16,7 @@ export const DEFAULT_POLICY: Policy = {
   withSeeotheruids: true,
   homesMatchClass: false,
   bootSatisfied: false,
+  splashEmblem: "cross",
   replicaEnabled: false,
   replicaPeer: "",
 };
@@ -76,6 +77,12 @@ export const INTERVIEW = [
     title: "Bootloader gate",
     ask: "Are you sufficiently satisfied that this system is post-quantum hardened to the degree that gives you a sense of security? Only then may the umbrella secure the bootloader (TPM is not this pass), replace the splash name with pqfreebsd, and replace the beastie with the shield — the armor of God. Default no. Do not rebrand a box you do not yet trust.",
     kind: "bool" as const,
+  },
+  {
+    key: "splashEmblem" as const,
+    title: "Splash device",
+    ask: "The shield is the armor. What sits on it? The cross is the default. Dove, sword, crown, menorah, or rock if you prefer. Branding is not a second signature family.",
+    kind: "emblem" as const,
   },
   {
     key: "replicaEnabled" as const,

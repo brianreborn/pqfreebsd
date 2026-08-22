@@ -18,8 +18,9 @@ function Boot() {
             The splash is not a sticker you put on an untrusted box.
           </h1>
           <p className="mt-3 text-muted">
-            The loader is Forth. When you attest, oneboot installs logo-pqfreebsd.4th: ASCII shield
-            over a sword, ANSI gleam, then the menu. Until then the daemon stays. Default is no.
+            The loader is Forth. When you attest, oneboot installs logo-pqfreebsd.4th: ASCII shield,
+            a device (cross by default; dove, sword, crown, menorah, or rock), ANSI gleam, then the
+            menu. Until then the daemon stays. Default is no.
           </p>
         </header>
         <ShieldBoot />

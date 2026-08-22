@@ -1,8 +1,22 @@
-/** ASCII shield + sword frames. Same geometry as logo-pqfreebsd.4th. */
+/** ASCII shield + device. Same geometry as logo-pqfreebsd.4th.
+ * Default device is the cross. Options: dove, sword, crown, menorah, rock.
+ */
 
 export const LOGO_W = 23;
 export const LOGO_H = 16;
 export const CX = 11;
+
+export const EMBLEMS = ["cross", "dove", "sword", "crown", "menorah", "rock"] as const;
+export type SplashEmblem = (typeof EMBLEMS)[number];
+
+export const EMBLEM_GLOSS: Record<SplashEmblem, string> = {
+  cross: "the cross (default)",
+  dove: "a dove",
+  sword: "a sword, no cross-bar",
+  crown: "a crown",
+  menorah: "a menorah",
+  rock: "a rock",
+};
 
 export const COL = {
   dim: 0,
@@ -14,15 +28,6 @@ export const COL = {
 
 export type Cell = { ch: string; c: number };
 export type Frame = Cell[][];
-
-const ANSI: Record<number, string> = {
-  0: "\x1b[2;90m",
-  1: "\x1b[0;37m",
-  2: "\x1b[0;32m",
-  3: "\x1b[1;97m",
-  4: "\x1b[0;36m",
-};
-const RESET = "\x1b[0m";
 
 function grid(): Frame {
   return Array.from({ length: LOGO_H }, () =>
@@ -44,7 +49,16 @@ function tint(c: number, x: number, gx: number) {
   return gleamAt(x, gx) && c !== COL.dim ? COL.gleam : c;
 }
 
-function drawSword(g: Frame, length: number, gx: number) {
+function stamp(g: Frame, x0: number, y0: number, lines: string[], gx: number, col: number = COL.steel) {
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    for (let j = 0; j < line.length; j++) {
+      if (line[j] !== " ") put(g, x0 + j, y0 + i, line[j], tint(col, x0 + j, gx));
+    }
+  }
+}
+
+function drawSword(g: Frame, length: number, gx: number, withHilt: boolean) {
   const top = Math.max(0, 12 - length);
   for (let y = top; y <= 12; y++) {
     const c = tint(COL.steel, CX, gx);
@@ -60,7 +74,7 @@ function drawSword(g: Frame, length: number, gx: number) {
       put(g, CX + 1, y, "|", tint(COL.steel, CX + 1, gx));
     }
   }
-  if (length >= 10) {
+  if (withHilt && length >= 10) {
     put(g, CX - 2, 13, "/", tint(COL.hilt, CX - 2, gx));
     put(g, CX - 1, 13, "|", tint(COL.hilt, CX - 1, gx));
     put(g, CX, 13, "|", tint(COL.hilt, CX, gx));
@@ -70,7 +84,7 @@ function drawSword(g: Frame, length: number, gx: number) {
   }
 }
 
-function drawShield(g: Frame, gx: number) {
+function drawShield(g: Frame, gx: number, withBar: boolean) {
   const rows: { y: number; l: number; r: number; lc: string; rc: string }[] = [
     { y: 4, l: 6, r: 16, lc: ".", rc: "." },
     { y: 5, l: 5, r: 17, lc: "/", rc: "\\" },
@@ -81,20 +95,81 @@ function drawShield(g: Frame, gx: number) {
     { y: 10, l: 6, r: 16, lc: "'", rc: "'" },
   ];
   for (const row of rows) {
-    for (let x = row.l + 1; x < row.r; x++) {
-      if (g[row.y][x].ch === " ") put(g, x, row.y, row.y === 4 || row.y === 10 ? "-" : " ", tint(COL.sage, x, gx));
-    }
     put(g, row.l, row.y, row.lc, tint(COL.sage, row.l, gx));
     put(g, row.r, row.y, row.rc, tint(COL.sage, row.r, gx));
     if (row.y === 4 || row.y === 10) {
-      for (let x = row.l + 1; x < row.r; x++) {
-        if (Math.abs(x - CX) > 1) put(g, x, row.y, "-", tint(COL.sage, x, gx));
-      }
+      for (let x = row.l + 1; x < row.r; x++) put(g, x, row.y, "-", tint(COL.sage, x, gx));
     }
   }
-  for (let x = 7; x <= 15; x++) {
-    if (Math.abs(x - CX) > 1) put(g, x, 7, "-", tint(COL.sage, x, gx));
+  if (withBar) {
+    for (let x = 7; x <= 15; x++) {
+      if (Math.abs(x - CX) > 1) put(g, x, 7, "-", tint(COL.sage, x, gx));
+    }
   }
+}
+
+function drawDove(g: Frame, gx: number) {
+  stamp(
+    g,
+    5,
+    5,
+    [
+      "      .-.     ",
+      "    <(o )___  ",
+      "     (  .  >  ",
+      "      `--'    ",
+    ],
+    gx,
+    COL.steel,
+  );
+}
+
+function drawCrown(g: Frame, gx: number) {
+  stamp(
+    g,
+    6,
+    5,
+    [
+      "\\ | | | /",
+      " \\|||||/ ",
+      " |_____| ",
+    ],
+    gx,
+    COL.hilt,
+  );
+}
+
+function drawMenorah(g: Frame, gx: number) {
+  stamp(
+    g,
+    4,
+    5,
+    [
+      "| | | | | | |",
+      "| | | | | | |",
+      "+-+-+-+-+-+-+",
+      "      |      ",
+      "     / \\     ",
+    ],
+    gx,
+    COL.hilt,
+  );
+}
+
+function drawRock(g: Frame, gx: number) {
+  stamp(
+    g,
+    7,
+    5,
+    [
+      "   /\\   ",
+      "  /  \\  ",
+      " /    \\ ",
+      "/______\\",
+    ],
+    gx,
+    COL.steel,
+  );
 }
 
 function drawTitle(g: Frame, gx: number) {
@@ -103,39 +178,38 @@ function drawTitle(g: Frame, gx: number) {
   for (let i = 0; i < t.length; i++) put(g, x0 + i, 15, t[i], tint(COL.sage, x0 + i, gx));
 }
 
-export function makeFrame(step: number): Frame {
+export function makeFrame(step: number, emblem: SplashEmblem = "cross"): Frame {
   const g = grid();
-  const swordLen = Math.min(12, 1 + step);
-  const shieldOn = step >= 6;
+  const deviceOn = step >= 6;
   const titleOn = step >= 14;
   const gx = step >= 10 && step <= 18 ? 3 + (step - 10) * 2 : -1;
-  drawSword(g, swordLen, gx);
-  if (shieldOn) drawShield(g, gx);
+  const blade = emblem === "cross" || emblem === "sword";
+  if (blade) {
+    const swordLen = Math.min(12, 1 + step);
+    drawSword(g, swordLen, gx, emblem === "sword" || step >= 8);
+  }
+  if (deviceOn) {
+    drawShield(g, gx, emblem === "cross");
+    if (emblem === "cross") {
+      for (let y = 5; y <= 9; y++) {
+        put(g, CX - 1, y, "|", tint(COL.steel, CX - 1, gx));
+        put(g, CX, y, "|", tint(COL.steel, CX, gx));
+        put(g, CX + 1, y, "|", tint(COL.steel, CX + 1, gx));
+      }
+    } else if (emblem === "sword") {
+      for (let y = 5; y <= 9; y++) {
+        put(g, CX - 1, y, "|", tint(COL.steel, CX - 1, gx));
+        put(g, CX, y, "|", tint(COL.steel, CX, gx));
+        put(g, CX + 1, y, "|", tint(COL.steel, CX + 1, gx));
+      }
+    } else if (emblem === "dove") drawDove(g, gx);
+    else if (emblem === "crown") drawCrown(g, gx);
+    else if (emblem === "menorah") drawMenorah(g, gx);
+    else if (emblem === "rock") drawRock(g, gx);
+  }
   if (titleOn) drawTitle(g, gx);
   return g;
 }
 
 export const FRAME_COUNT = 22;
 export const SETTLE_FRAME = 20;
-
-export function frameAnsi(g: Frame): string {
-  const lines: string[] = [];
-  for (const row of g) {
-    let line = "";
-    let last = -1;
-    for (const cell of row) {
-      if (cell.c !== last) {
-        line += ANSI[cell.c] ?? "";
-        last = cell.c;
-      }
-      line += cell.ch;
-    }
-    line += RESET;
-    lines.push(line);
-  }
-  return lines.join("\n");
-}
-
-export function framePlain(g: Frame): string {
-  return g.map((row) => row.map((c) => c.ch).join("")).join("\n");
-}

@@ -263,7 +263,11 @@ pqfreebsd_teststage() { _test=1; echo "=== test stage ==="; pqfreebsd_stage; }
 pqfreebsd_boot() {
 	pol="${pqfreebsd_dir}/POLICY"
 	sat="NO"
+	emb="cross"
 	[ -f "$pol" ] && sat=$(awk -F= '/^BOOT_SATISFIED=/ {print $2}' "$pol")
+	[ -f "$pol" ] && emb=$(awk -F= '/^SPLASH_EMBLEM=/ {print $2}' "$pol")
+	: "${emb:=cross}"
+	pqfreebsd_emblem="$emb"
 	if [ "$sat" != "YES" ]; then
 		_err "BOOT_SATISFIED is not YES — will not rebrand an untrusted box (T12)"
 		_err "attest in the interview first. TPM is not this pass either way."
@@ -273,6 +277,7 @@ pqfreebsd_boot() {
 		echo "WOULD: install /boot/logo-pqfreebsd.4th (ASCII shield+sword, SGR gleam)"
 		echo "WOULD: install /boot/brand-pqfreebsd.4th (wordmark)"
 		echo "WOULD: splash name pqfreebsd (not FreeBSD / not beastie)"
+		echo "WOULD: pqfreebsd_emblem=${emb} (cross default; dove|sword|crown|menorah|rock)"
 		echo "WOULD: append loader.conf.local (loader_logo=pqfreebsd)"
 		echo "WOULD: refuse signed-loader step if pqcode keys absent"
 		echo "WOULD NOT: TPM, measured boot, PCR quotes"
@@ -293,6 +298,7 @@ pqfreebsd_boot() {
 			'loader_color="YES"' \
 			'loader_logo="pqfreebsd"' \
 			'loader_brand="pqfreebsd"' \
+			"pqfreebsd_emblem=\"${pqfreebsd_emblem:-cross}\"" \
 			'# TPM / measured boot: not this pass' \
 			>> /boot/loader.conf.local
 	fi

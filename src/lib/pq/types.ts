@@ -1,5 +1,6 @@
 export type Role = "exempt" | "trusted" | "sandbox";
 export type DacMode = "observe" | "repair" | "prevent";
+export type SplashEmblem = "cross" | "dove" | "sword" | "crown" | "menorah" | "rock";
 export type Op =
   | "read"
   | "write"
@@ -91,6 +92,7 @@ export type Policy = {
   withSeeotheruids: boolean;
   homesMatchClass: boolean;
   bootSatisfied: boolean;
+  splashEmblem: SplashEmblem;
   replicaEnabled: boolean;
   replicaPeer: string;
 };

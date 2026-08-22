@@ -1,7 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { INTERVIEW } from "@/lib/pq/policy";
+import { EMBLEM_GLOSS, EMBLEMS } from "@/lib/pq/shield-anim";
 import { usePq } from "@/lib/pq/store";
-import type { DacMode, Policy } from "@/lib/pq/types";
+import type { DacMode, Policy, SplashEmblem } from "@/lib/pq/types";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -50,6 +51,7 @@ function Interview() {
             <Row k="A_D" v={world.policy.dacMode} />
             <Row k="hash" v={world.policy.hashName} />
             <Row k="boot" v={world.policy.bootSatisfied ? "attested · oneboot offered" : "not yet · beastie stays"} />
+            <Row k="device" v={EMBLEM_GLOSS[world.policy.splashEmblem ?? "cross"]} />
             <Row
               k="replica"
               v={
@@ -170,6 +172,16 @@ function Field({
             }
             onClick={() => patch({ dacMode: m })}
           />
+        ))}
+      </div>
+    );
+  }
+  if (q.kind === "emblem") {
+    const cur = (policy.splashEmblem ?? "cross") as SplashEmblem;
+    return (
+      <div className="grid gap-2 sm:grid-cols-2">
+        {EMBLEMS.map((e) => (
+          <Choice key={e} on={cur === e} label={EMBLEM_GLOSS[e]} onClick={() => patch({ splashEmblem: e })} />
         ))}
       </div>
     );

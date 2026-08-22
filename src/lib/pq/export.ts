@@ -21,6 +21,7 @@ WITH_LOMAC=${policy.withLomac ? "YES" : "NO"}
 WITH_SEEOTHERUIDS=${policy.withSeeotheruids ? "YES" : "NO"}
 HOMES_MATCH_CLASS=${policy.homesMatchClass ? "YES" : "NO"}
 BOOT_SATISFIED=${policy.bootSatisfied ? "YES" : "NO"}
+SPLASH_EMBLEM=${policy.splashEmblem ?? "cross"}
 REPLICA_ENABLED=${policy.replicaEnabled ? "YES" : "NO"}
 REPLICA_PEER=${policy.replicaPeer}
 SKIP_SNAPSHOT=0
@@ -124,6 +125,8 @@ loader_color="YES"
 beastie_disable="NO"
 loader_logo="pqfreebsd"
 loader_brand="pqfreebsd"
+pqfreebsd_emblem="${p.splashEmblem ?? "cross"}"
+# /boot/logo-pqfreebsd.4th — ASCII shield + device (cross default) + SGR gleam
 # /boot/logo-pqfreebsd.4th — ASCII shield + sword + SGR gleam
 # /boot/brand-pqfreebsd.4th — wordmark
 # TPM / measured boot: not this pass

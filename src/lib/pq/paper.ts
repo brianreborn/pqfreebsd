@@ -76,7 +76,7 @@ export const THESES: Thesis[] = [
     id: "T12",
     kind: "held",
     title: "The splash is earned, and the beastie yields to the shield",
-    body: "Once the operator attests they are sufficiently satisfied that the system is post-quantum hardened to the degree that gives them a sense of security, the umbrella offers oneboot: the loader splash name becomes pqfreebsd; the beastie is replaced by the shield — the armor of God; the loader is taken off the unsigned GENERIC path only as far as this pass can close. TPM and measured boot are not this pass. Default is no. Do not rebrand a box you do not yet trust. Branding is not a second signature family.",
+    body: "Once the operator attests they are sufficiently satisfied that the system is post-quantum hardened to the degree that gives them a sense of security, the umbrella offers oneboot: the loader splash name becomes pqfreebsd; the beastie is replaced by the shield — the armor of God; the device on the shield is the cross by default, or a dove, sword, crown, menorah, or rock. TPM and measured boot are not this pass. Default is no. Do not rebrand a box you do not yet trust. Branding is not a second signature family.",
   },
   {
     id: "T13",

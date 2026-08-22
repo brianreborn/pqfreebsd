@@ -98,8 +98,10 @@ Ask, in order. Record in `POLICY`.
    the system is post-quantum hardened to the degree that gives them a sense of
    security? Only if yes: offer `oneboot` — splash name becomes pqfreebsd, beastie
    replaced by the shield (armor of God), loader taken off unsigned GENERIC only
-   as far as keys exist. **TPM / measured boot is not this pass.** If no, leave
-   the stock splash. Do not rebrand a box they do not yet trust.
+   as far as keys exist. Device on the shield: **cross** (default), or dove,
+   sword, crown, menorah, rock (`SPLASH_EMBLEM` / `pqfreebsd_emblem`). **TPM /
+   measured boot is not this pass.** If no, leave the stock splash. Do not
+   rebrand a box they do not yet trust.
 10. After install: `oneaudit` shows consistency among POLICY, SUITE, DAC, ugidfw,
     login labels, overlay, splash. `onepropagate` applies a change through all of
     them and appends a chained catalog hash (`policy.revs` + ledger). `test*` first.
