@@ -119,6 +119,14 @@ sh scripts/checkpoint.sh "milestone: <name> — <what landed>"
 Do not skip this. Add new MAC skills as **top-level git submodules**, like
 `vendor/freebsd-mac-grok`, only after the operator names the skill.
 
+## Port (after the skills exist)
+
+In-tree FreeBSD port: `ports/sysutils/pqfreebsd`. Intended install path once
+the skills are developed. Requires a sufficiently advanced LLM that can
+operate those skills. `pqfreebsd-llm-check` then `sysrc pqfreebsd_llm_attested=YES`.
+via-port `oneenforce` is refused without that conjunct. The port does not
+kldload. Copy the directory to `/usr/ports/sysutils/pqfreebsd`.
+
 Do not invent compartments, extra grades, or a quantum ISA.
 
 ## Apply

@@ -1,0 +1,24 @@
+# pqfreebsd POLICY.sample — copy to /usr/local/etc/pqfreebsd/POLICY and reconfirm.
+# An LLM that operates the skills fills this from the interview. Do not invent.
+TRUSTED_CLASS=trusted
+SANDBOX_CLASS=sandbox
+TRUSTED_GROUP=lomac-trusted
+SANDBOX_GROUP=lomac-sandbox
+TRUSTED_MEMBERS=
+SANDBOX_MEMBERS=
+DEFAULT_ROLE=sandbox
+ROOT_LABEL=lomac/equal(equal-equal)
+TRUSTED_LABEL=lomac/high(low-high)
+SANDBOX_LABEL=lomac/10[2]
+LEDGER_DATASET=zroot/pq/ledger
+LEDGER_LABEL=lomac/high
+DAC_MODE=repair
+HASH=SHA-512
+WITH_LOMAC=YES
+WITH_SEEOTHERUIDS=YES
+HOMES_MATCH_CLASS=NO
+BOOT_SATISFIED=NO
+REPLICA_ENABLED=NO
+REPLICA_PEER=
+SKIP_SNAPSHOT=0
+# via-port: oneenforce also needs pqfreebsd_llm_attested=YES

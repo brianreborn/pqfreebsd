@@ -46,6 +46,14 @@ sh scripts/checkpoint.sh "milestone: pqaudit — consistency, propagate, success
 Needs `origin` and GitHub credentials (`GH_TOKEN` / `gh auth`). Until those
 exist, checkpoints stay local.
 
+## Port
+
+`ports/sysutils/pqfreebsd` is a small in-tree FreeBSD port. It stages the suite
+and requires a **skill-capable LLM** to operate it. The port cannot prove a
+model is advanced; `pqfreebsd-llm-check` finds a candidate, then you attest
+(`pqfreebsd_llm_attested=YES`). On a via-port install, `oneenforce` is refused
+until that conjunct. Copy the directory to `/usr/ports/sysutils/pqfreebsd`.
+
 Paper: `mandoc -T pdf skills/pqfreebsd/man/man7/pqac.7`
 and `skills/pqfreebsd/man/man7/pqfreebsd.7`.
 

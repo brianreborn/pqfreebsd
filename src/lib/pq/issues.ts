@@ -200,4 +200,12 @@ export const ISSUES: Issue[] = [
     happens: "Beta ships a slogan. No classical/quantum numbers, no ‘up to’.",
     does: "Emit the bounds sheet. n/a for mediation in every quantum model. 0 where Shor or a missing hop applies. Remainder is empty bounds, not a product failure.",
   },
+  {
+    id: "port-no-llm",
+    layer: "suite",
+    source: "sysutils/pqfreebsd",
+    issue: "pkg install treated as the operator",
+    happens: "oneenforce after pkg without a skill-capable LLM.",
+    does: "via-port: pqfreebsd-llm-check; sysrc pqfreebsd_llm_attested=YES. Refuse oneenforce until attested. The port cannot prove “advanced.” Hand skill-path is a different conjunct.",
+  },
 ];

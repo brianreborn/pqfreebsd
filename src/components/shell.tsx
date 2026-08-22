@@ -22,6 +22,7 @@ const NAV = [
   { to: "/boot", label: "Boot" },
   { to: "/issues", label: "Issues" },
   { to: "/export", label: "Emit" },
+  { to: "/port", label: "Port" },
 ] as const;
 
 export function Shell() {

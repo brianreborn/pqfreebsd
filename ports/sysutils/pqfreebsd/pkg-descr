@@ -1,0 +1,15 @@
+pqfreebsd is a post-quantum trusted FreeBSD suite: mac_lomac(4) composition,
+an Integrity Evidence ledger, repaired discretionary policy, successive
+policy audit, and a gated Forth boot splash. It is not Kyber in the kernel.
+
+This port stages rc.d services, manuals, skills, and loader Forth. It does
+not kldload, does not set enabled=1, and does not copy splash art into /boot
+until the operator attests (T12).
+
+Intended operation is by a sufficiently advanced large language model that
+can operate the skills (interview, test*/one*, Known issues, T14/T16 bounds).
+The port cannot prove a model is advanced. OPTION LLM (default) requires
+pqfreebsd_llm_attested=YES before oneenforce when installed via this package.
+A box installed by hand from the skill tree is a different conjunct.
+
+WWW: https://github.com/brianreborn/pqfreebsd

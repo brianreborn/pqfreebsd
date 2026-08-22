@@ -24,6 +24,7 @@ import { Route as IssuesRouteImport } from './routes/issues'
 import { Route as LatticeRouteImport } from './routes/lattice'
 import { Route as LedgerRouteImport } from './routes/ledger'
 import { Route as PaperRouteImport } from './routes/paper'
+import { Route as PortRouteImport } from './routes/port'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -100,6 +101,11 @@ const PaperRoute = PaperRouteImport.update({
   path: '/paper',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortRoute = PortRouteImport.update({
+  id: '/port',
+  path: '/port',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/lattice': typeof LatticeRoute
   '/ledger': typeof LedgerRoute
   '/paper': typeof PaperRoute
+  '/port': typeof PortRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByTo {
   '/lattice': typeof LatticeRoute
   '/ledger': typeof LedgerRoute
   '/paper': typeof PaperRoute
+  '/port': typeof PortRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -152,6 +160,7 @@ export interface FileRoutesById {
   '/lattice': typeof LatticeRoute
   '/ledger': typeof LedgerRoute
   '/paper': typeof PaperRoute
+  '/port': typeof PortRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -171,6 +180,7 @@ export interface FileRouteTypes {
     | '/lattice'
     | '/ledger'
     | '/paper'
+    | '/port'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -188,6 +198,7 @@ export interface FileRouteTypes {
     | '/lattice'
     | '/ledger'
     | '/paper'
+    | '/port'
   id:
     | '__root__'
     | '/'
@@ -205,6 +216,7 @@ export interface FileRouteTypes {
     | '/lattice'
     | '/ledger'
     | '/paper'
+    | '/port'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -223,6 +235,7 @@ export interface RootRouteChildren {
   LatticeRoute: typeof LatticeRoute
   LedgerRoute: typeof LedgerRoute
   PaperRoute: typeof PaperRoute
+  PortRoute: typeof PortRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -332,6 +345,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaperRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/port': {
+      id: '/port'
+      path: '/port'
+      fullPath: '/port'
+      preLoaderRoute: typeof PortRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -351,6 +371,7 @@ const rootRouteChildren: RootRouteChildren = {
   LatticeRoute: LatticeRoute,
   LedgerRoute: LedgerRoute,
   PaperRoute: PaperRoute,
+  PortRoute: PortRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

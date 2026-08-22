@@ -31,6 +31,7 @@ load_rc_config $name
 : "${pqfreebsd_db:=/var/db/pqfreebsd}"
 : "${pqfreebsd_checkpoint:=NO}"
 : "${pqfreebsd_src:=}"
+: "${pqfreebsd_llm_attested:=NO}"
 
 start_cmd="${name}_start"
 stop_cmd="${name}_stop"
@@ -211,6 +212,16 @@ pqfreebsd_status() {
 }
 
 pqfreebsd_enforce() {
+	if [ -f /usr/local/share/pqfreebsd/VIA-PORT ] || [ -f "${pqfreebsd_dir}/VIA-PORT" ]; then
+		att="${pqfreebsd_llm_attested}"
+		[ -f "${pqfreebsd_db}/llm.attested" ] && att=YES
+		if [ "$att" != "YES" ]; then
+			_err "via-port: a skill-capable LLM must be attested before oneenforce"
+			_err "pqfreebsd-llm-check && sysrc pqfreebsd_llm_attested=YES"
+			_err "this is the install conjunct (T14), not A_M"
+			return 1
+		fi
+	fi
 	_info "walk README Known issues and pqac(7) PRAXIS first"
 	_child mac_lomac_grok enforce
 }
