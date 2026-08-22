@@ -106,7 +106,7 @@ export const THESES: Thesis[] = [
     id: "T17",
     kind: "pqfreebsd",
     title: "The port is not the operator",
-    body: "sysutils/pqfreebsd stages the suite. Intended operation is by a sufficiently advanced LLM that can follow the skills. The port cannot prove a model is advanced. pqfreebsd-llm-check finds a candidate; pqfreebsd_llm_attested=YES is the operator's conjunct. via-port oneenforce is refused without it. That conjunct is the install path, not A_M (T14). Hand install from the skill tree does not set VIA-PORT.",
+    body: "sysutils/pqfreebsd stages the suite. Intended operation is by a sufficiently advanced LLM that can follow the skills. The port cannot prove a model is advanced. Local GPU/CPU OPTIONS: ollama, llama.cpp (llama-server), LocalAI, llamafile, vLLM, koboldcpp. Native path is CPU and Vulkan; CUDA on FreeBSD is typically Linuxulator. pqfreebsd-llm-check finds a candidate; pqfreebsd_llm_attested=YES is the operator's conjunct. via-port oneenforce is refused without it. That conjunct is the install path, not A_M (T14). Hand install from the skill tree does not set VIA-PORT.",
   },
 ];
 

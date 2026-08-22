@@ -30,11 +30,64 @@ function Port() {
         </ul>
         <p className="mt-4 text-sm text-muted">
           <span className="font-mono text-fg">pqfreebsd-llm-check</span> looks for a candidate
-          (PQFREEBSD_LLM, grok, llm, ollama, …) and SKILL.md. Exit 0 is not a proof. Then:
+          and SKILL.md. Exit 0 is not a proof. Then:
         </p>
-        <pre className="mt-3 overflow-x-auto font-mono text-xs text-muted">{`pqfreebsd-llm-check
+        <pre className="mt-3 overflow-x-auto font-mono text-xs text-muted">{`make showconfig          # LOCALLLM group
+# default: LLM OLLAMA LLAMACPP
+pqfreebsd-llm-check
 sysrc pqfreebsd_llm_attested=YES
 service pqfreebsd teststage`}</pre>
+      </section>
+
+      <section className="rounded-xl border border-border bg-surface p-5">
+        <h2 className="font-medium">Local GPU / CPU runtimes</h2>
+        <p className="mt-2 text-sm text-muted">
+          Native FreeBSD path is CPU and Vulkan. CUDA is typically Linuxulator, not a native
+          NVIDIA stack. A binary on PATH is not “advanced.”
+        </p>
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full min-w-[36rem] text-left text-sm">
+            <thead className="text-xs uppercase tracking-[0.12em] text-muted">
+              <tr>
+                <th className="py-2 pr-3 font-medium">OPTION</th>
+                <th className="py-2 pr-3 font-medium">Binary</th>
+                <th className="py-2 font-medium">Where it runs</th>
+              </tr>
+            </thead>
+            <tbody className="text-muted">
+              <tr className="border-t border-border">
+                <td className="py-2 pr-3 font-mono text-fg">OLLAMA</td>
+                <td className="py-2 pr-3 font-mono">ollama</td>
+                <td className="py-2">CPU, Vulkan; CUDA often Linuxulator</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="py-2 pr-3 font-mono text-fg">LLAMACPP</td>
+                <td className="py-2 pr-3 font-mono">llama-server</td>
+                <td className="py-2">GGUF; CPU and GPU backends</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="py-2 pr-3 font-mono text-fg">LOCALAI</td>
+                <td className="py-2 pr-3 font-mono">local-ai</td>
+                <td className="py-2">OpenAI-compatible; wraps llama.cpp</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="py-2 pr-3 font-mono text-fg">LLAMAFILE</td>
+                <td className="py-2 pr-3 font-mono">llamafile</td>
+                <td className="py-2">Single-file GGUF; Cosmopolitan; FreeBSD</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="py-2 pr-3 font-mono text-fg">VLLM</td>
+                <td className="py-2 pr-3 font-mono">vllm</td>
+                <td className="py-2">GPU serving; CUDA typically Linuxulator</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="py-2 pr-3 font-mono text-fg">KOBOLDCPP</td>
+                <td className="py-2 pr-3 font-mono">koboldcpp</td>
+                <td className="py-2">llama.cpp server/GUI; CPU/GPU</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className="rounded-xl border border-border bg-surface p-5">

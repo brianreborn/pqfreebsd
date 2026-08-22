@@ -2,6 +2,8 @@ etc/rc.d/pqfreebsd
 etc/rc.d/pqledger
 etc/rc.d/pqdac
 etc/pqfreebsd/POLICY.sample
+etc/pqfreebsd/llm.runtimes
+etc/pqfreebsd/llm.enabled
 %%LLM%%etc/pqfreebsd/SUITE.sample
 sbin/pqfreebsd-llm-check
 %%DATADIR%%/VIA-PORT

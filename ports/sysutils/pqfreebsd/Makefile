@@ -18,9 +18,20 @@ NO_CHECKSUM=	yes
 # A sufficiently advanced LLM that can *operate the skills* is a requirement
 # of this package's intended use. Ports cannot RUN_DEPENDS on "advanced".
 # OPTION LLM (default) installs the check and refuses oneenforce until attested.
-OPTIONS_DEFINE=		LLM
-OPTIONS_DEFAULT=	LLM
-LLM_DESC=		Require attestation that a skill-capable LLM is present
+# LOCALLLM group: popular local GPU/CPU runtimes. At least one is recommended.
+# RUN_DEPENDS only if that port exists in PORTSDIR; otherwise install the
+# binary by hand — llm-check still looks on PATH.
+OPTIONS_DEFINE=			LLM
+OPTIONS_DEFAULT=		LLM OLLAMA LLAMACPP
+OPTIONS_GROUP=			LOCALLLM
+OPTIONS_GROUP_LOCALLLM=		OLLAMA LLAMACPP LOCALAI LLAMAFILE VLLM KOBOLDCPP
+LLM_DESC=			Require attestation that a skill-capable LLM is present
+OLLAMA_DESC=			ollama (local CPU / Vulkan; CUDA often Linuxulator)
+LLAMACPP_DESC=			llama.cpp llama-server (CPU and GPU backends, GGUF)
+LOCALAI_DESC=			LocalAI (OpenAI-compatible; wraps llama.cpp)
+LLAMAFILE_DESC=			Mozilla llamafile (single-file GGUF; CPU/GPU)
+VLLM_DESC=			vLLM (GPU serving; CUDA typically Linuxulator)
+KOBOLDCPP_DESC=			koboldcpp (llama.cpp server/GUI; CPU/GPU)
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 SKILLDIR=	${.CURDIR}/../../../skills/pqfreebsd
@@ -30,6 +41,18 @@ SUB_FILES=	pkg-message
 SUB_LIST=	PREFIX=${PREFIX} DATADIR=${DATADIR}
 
 .include <bsd.port.options.mk>
+
+.if exists(${PORTSDIR}/misc/ollama)
+OLLAMA_RUN_DEPENDS=	ollama:misc/ollama
+.endif
+.if exists(${PORTSDIR}/misc/llama-cpp)
+LLAMACPP_RUN_DEPENDS=	llama-server:misc/llama-cpp
+.endif
+.if exists(${PORTSDIR}/www/local-ai)
+LOCALAI_RUN_DEPENDS=	local-ai:www/local-ai
+.endif
+# llamafile, vLLM, koboldcpp: often installed by hand. OPTION still records
+# llm.enabled; pqfreebsd-llm-check looks on PATH.
 
 do-fetch:
 	@${DO_NADA}
@@ -73,6 +96,26 @@ do-install:
 	${INSTALL_DATA} ${.CURDIR}/files/POLICY.sample ${STAGEDIR}${PREFIX}/etc/pqfreebsd/POLICY.sample
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/pqfreebsd
 	${ECHO_CMD} "via-port" > ${STAGEDIR}${DATADIR}/VIA-PORT
+	${INSTALL_DATA} ${.CURDIR}/files/llm-runtimes ${STAGEDIR}${PREFIX}/etc/pqfreebsd/llm.runtimes
+	${ECHO_CMD} "# LOCALLLM OPTIONS enabled at build" > ${STAGEDIR}${PREFIX}/etc/pqfreebsd/llm.enabled
+.if ${PORT_OPTIONS:MOLLAMA}
+	${ECHO_CMD} OLLAMA >> ${STAGEDIR}${PREFIX}/etc/pqfreebsd/llm.enabled
+.endif
+.if ${PORT_OPTIONS:MLLAMACPP}
+	${ECHO_CMD} LLAMACPP >> ${STAGEDIR}${PREFIX}/etc/pqfreebsd/llm.enabled
+.endif
+.if ${PORT_OPTIONS:MLOCALAI}
+	${ECHO_CMD} LOCALAI >> ${STAGEDIR}${PREFIX}/etc/pqfreebsd/llm.enabled
+.endif
+.if ${PORT_OPTIONS:MLLAMAFILE}
+	${ECHO_CMD} LLAMAFILE >> ${STAGEDIR}${PREFIX}/etc/pqfreebsd/llm.enabled
+.endif
+.if ${PORT_OPTIONS:MVLLM}
+	${ECHO_CMD} VLLM >> ${STAGEDIR}${PREFIX}/etc/pqfreebsd/llm.enabled
+.endif
+.if ${PORT_OPTIONS:MKOBOLDCPP}
+	${ECHO_CMD} KOBOLDCPP >> ${STAGEDIR}${PREFIX}/etc/pqfreebsd/llm.enabled
+.endif
 .if ${PORT_OPTIONS:MLLM}
 	${ECHO_CMD} "LLM_REQUIRED=YES" >> ${STAGEDIR}${PREFIX}/etc/pqfreebsd/SUITE.sample
 .endif

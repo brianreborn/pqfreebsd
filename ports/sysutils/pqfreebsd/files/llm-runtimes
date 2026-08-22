@@ -1,0 +1,14 @@
+# Local LLM runtimes this port knows. Binary names, typical backend, notes.
+# pqfreebsd-llm-check looks for these. Attestation is still required.
+# origin: FreeBSD port if it exists; OPTION still works if you install by hand.
+
+# name		binaries				backend		origin (if any)
+ollama		ollama					cpu,vulkan,cuda*	misc/ollama
+llamacpp	llama-server llama-cli llama-cpp	cpu,vulkan,metal,cuda*	misc/llama-cpp
+localai		local-ai localai				cpu,gpu		www/local-ai
+llamafile	llamafile				cpu,gpu		# Cosmopolitan; often a single binary
+vllm		vllm					gpu-cuda*	# Python; CUDA on FreeBSD usually Linuxulator
+koboldcpp	koboldcpp koboldcpp-linux		cpu,gpu		# llama.cpp front
+
+# * CUDA on FreeBSD is typically via Linuxulator, not a native NVIDIA stack.
+# Vulkan and CPU are the native local path. A runtime present is not "advanced."

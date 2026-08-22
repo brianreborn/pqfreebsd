@@ -2,21 +2,30 @@
 { type: install }
 pqfreebsd is staged, not enforcing.
 
-This package is meant to be operated by a sufficiently advanced LLM that
-can follow the skills in %%DATADIR%%/skills/SKILL.md: interview, test*
-before one*, Known issues, pqac(7) PRAXIS, T14 (claims degrade by conjunct),
-T16 (parameterized bounds). The port cannot measure "sufficiently advanced."
+Intended operation is by a sufficiently advanced LLM that can follow
+the skills in %%DATADIR%%/skills/SKILL.md. The port cannot measure
+"advanced." Local GPU/CPU runtimes (make showconfig LOCALLLM):
+
+    ollama       CPU / Vulkan; CUDA often via Linuxulator
+    llama.cpp    llama-server (GGUF; CPU and GPU backends)
+    LocalAI      OpenAI-compatible; wraps llama.cpp
+    llamafile    single-file GGUF (runs on FreeBSD)
+    vLLM         GPU serving; CUDA typically Linuxulator
+    koboldcpp    llama.cpp server/GUI
+
+Default OPTIONS: LLM OLLAMA LLAMACPP. Native local path is CPU and Vulkan.
+CUDA on native FreeBSD is not assumed.
 
     pqfreebsd-llm-check
-    sysrc pqfreebsd_llm_attested=YES   # only if the check matches the model you have
-    service pqfreebsd teststage        # then onesnapshot / onestage / ...
+    sysrc pqfreebsd_llm_attested=YES
+    service pqfreebsd teststage
 
-oneenforce is refused while pqfreebsd_llm_attested is not YES on a
-via-port install. That is the install conjunct, not A_M. A missing LLM
-does not un-prove high-integrity overwrite protection on a box that was already labeled.
+via-port oneenforce is refused until attested. That is the install
+conjunct, not A_M. A missing LLM does not un-prove high-integrity
+overwrite protection on a box that was already labeled.
 
-oneboot (splash, Forth logo) still requires BOOT_SATISFIED=YES.
-TPM is not this pass. Do not kldload mac_lomac until a test window.
+oneboot still requires BOOT_SATISFIED=YES. TPM is not this pass.
+Do not kldload mac_lomac until a test window.
 
 Sibling: freebsd-mac-grok (not vendored). Pin a commit.
 { type: remove }
