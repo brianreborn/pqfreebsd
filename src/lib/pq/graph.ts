@@ -141,7 +141,7 @@ export const SKILL_NODES: SkillNode[] = [
   {
     id: "pqcode",
     label: "pqcode",
-    subtitle: "sign the bits run",
+    subtitle: "held · not 1.0",
     kind: "pending",
     href: "/code",
     x: 382,
