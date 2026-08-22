@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { COL, EMBLEM_GLOSS, EMBLEMS, FRAME_COUNT, LOGO_H, LOGO_W, SETTLE_FRAME, makeFrame } from "@/lib/pq/shield-anim";
+import { COL, EMBLEM_GLOSS, EMBLEMS, FRAME_COUNT, SETTLE_FRAME, makeFrame } from "@/lib/pq/shield-anim";
 import { usePq } from "@/lib/pq/store";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -80,8 +80,7 @@ export function ShieldBoot({ auto = true }: { auto?: boolean }) {
         ))}
       </pre>
       <figcaption className="px-4 py-3 text-xs text-muted">
-        {LOGO_W}×{LOGO_H} Forth logo. Shield, then {EMBLEM_GLOSS[emblem as SplashEmblem]}. Cross is the
-        default. Color is SGR. Serial still gets the ASCII. TPM not this pass.
+        Cosmetic. Cross default. Not T12. TPM not this pass.
       </figcaption>
     </figure>
   );

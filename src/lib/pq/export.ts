@@ -26,7 +26,7 @@ REPLICA_ENABLED=${policy.replicaEnabled ? "YES" : "NO"}
 REPLICA_PEER=${policy.replicaPeer}
 SKIP_SNAPSHOT=0
 # Do not kldload mac_lomac(4) or set enabled=1 until a test window.
-# oneboot (splash, shield, loader) only if BOOT_SATISFIED=YES. TPM not this pass.
+# oneboot only if BOOT_SATISFIED=YES. TPM not this pass. Splash art is not the claim.
 `;
 }
 
@@ -139,16 +139,11 @@ pqfreebsd_emblem="${p.splashEmblem ?? "cross"}"
       path: "boot/README",
       body: `# pqboot (gated)
 
-You attested that the system is PQ-hardened to the degree that gives you
-a sense of security. This directory is that morphism:
-
-- Splash name: pqfreebsd (not FreeBSD)
-- Mark: the shield, the armor of God (not the beastie)
-- Loader: signed blob only if pqcode keys exist
-- TPM: not this pass
-
-oneboot copies shield art and brand-pqfreebsd.4th, writes loader.conf.local.
-oneuninstall restores the stock beastie and name.
+oneboot is offered because BOOT_SATISFIED=YES.
+What that gate protects: take the loader off unsigned GENERIC only as far
+as this pass can close. TPM / measured boot: not this pass.
+Splash name/mark is a consequence of attestation, not a signature family.
+oneuninstall restores the stock loader branding.
 `,
     });
   }

@@ -6,7 +6,7 @@
 
 Grok **plugin** plus a workbench for a **post-quantum trusted FreeBSD**:
 quantum-adversary-stable mediation (**pqac(7)**), Integrity Evidence, repaired
-A_D, successive policy audit, a gated boot splash. Not Kyber in the kernel.
+A_D, successive policy audit, a loader gated on attestation. Not Kyber in the kernel.
 
 | Layer | What |
 | --- | --- |

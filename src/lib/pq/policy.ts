@@ -75,13 +75,13 @@ export const INTERVIEW = [
   {
     key: "bootSatisfied" as const,
     title: "Bootloader gate",
-    ask: "Are you sufficiently satisfied that this system is post-quantum hardened to the degree that gives you a sense of security? Only then may the umbrella secure the bootloader (TPM is not this pass), replace the splash name with pqfreebsd, and replace the beastie with the shield — the armor of God. Default no. Do not rebrand a box you do not yet trust.",
+    ask: "Are you sufficiently satisfied that this system is post-quantum hardened to the degree that gives you a sense of security? Only then is oneboot offered: take the loader off the unsigned GENERIC path as far as this pass can close. TPM is not this pass. Default no. Do not treat a splash change as that work.",
     kind: "bool" as const,
   },
   {
     key: "splashEmblem" as const,
-    title: "Splash device",
-    ask: "The shield is the armor. What sits on it? The cross is the default. Dove, sword, crown, menorah, or rock if you prefer. Branding is not a second signature family.",
+    title: "Splash mark (cosmetic)",
+    ask: "If oneboot runs, the mark on the splash is cosmetic: cross (default), dove, sword, crown, menorah, or rock. Not a signature family. Not the gate.",
     kind: "emblem" as const,
   },
   {

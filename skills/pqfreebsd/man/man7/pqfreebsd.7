@@ -33,7 +33,7 @@ It is not Kyber in the kernel.
 It packages Anderson's third property, the residual access matrix,
 successive policy as an auditable object, claims that degrade by conjunct,
 a catalog of the cryptographic chain of trust, parameterized bounds, a
-gated Forth splash, and a port that will not pretend a pkg is the operator.
+a loader gated on attestation, and a port that will not pretend a pkg is the operator.
 .Pp
 The system is not therefore post-quantum secure.
 Mediation does not collapse under Shor; the bits the monitor interprets
@@ -125,7 +125,7 @@ establish / repair / prevent
 chained catalog hashes
 .It
 .Nm pqboot
-— Forth logo and brand, gated by attestation; TPM not this pass
+— loader gated on attestation; TPM not this pass; splash art is not the claim
 .It
 .Nm sysutils/pqfreebsd
 — in-tree port; skill-capable LLM attested before via-port
@@ -305,31 +305,21 @@ Held:
 .Nm pqzfs .
 .It T12
 .Pq gated; TPM not this pass
-Once the operator attests they are sufficiently satisfied that the system is
-post-quantum hardened to the degree that gives them a sense of security, the
-umbrella offers
-.Cm oneboot :
-the splash name becomes
-.Nm pqfreebsd ;
-the beastie is replaced by the shield
-.Pq the armor of God ;
-.Pa /boot/logo-pqfreebsd.4th
-plays an ASCII shield and a device
-.Pq the cross by default; dove, sword, crown, menorah, or rock
-and an ANSI gleam;
-.Va pqfreebsd_emblem
-selects the device.
-.Pa /boot/brand-pqfreebsd.4th
-is the wordmark.
-The loader is taken off the unsigned GENERIC path only as far as this pass
-can close.
-TPM and measured boot are not this pass.
+.Cm oneboot
+is refused until the operator attests they are sufficiently satisfied that
+the system is post-quantum hardened to the degree that gives them a sense of
+security.
 Default is no.
-Do not rebrand a box you do not yet trust.
+What the gate protects is taking the loader off the unsigned GENERIC path,
+only as far as this pass can close.
+TPM and measured boot are not this pass.
+Changing the splash name and mark is a consequence of that attestation, not
+a security claim.
 Branding is not a second signature family.
+Do not rebrand a box you do not yet trust.
 .It T13
 After install, the operator must see that POLICY, SUITE, DAC, ugidfw, login
-labels, MAC overlays, and the splash agree; must propagate a change through
+labels, MAC overlays, and the loader config agree; must propagate a change through
 all of them at once; and must read the diff of successive iterations.
 Consistency is a predicate over that conjunction, not a product of proofs.
 Each propagation is a named revision whose catalog hash is chained and
@@ -344,7 +334,7 @@ If the box cannot securely transport the Integrity Evidence to another host
 and have that host validate the store, the off-host IE claim is degraded.
 High-integrity overwrite protection, local chain, repaired
 .Em A_D ,
-successive policy, and the splash are not thereby false.
+successive policy, and the loader gate are not thereby false.
 Silent
 .Pq module not included
 is not degraded
@@ -463,15 +453,18 @@ Mediation is n/a in every model: a qudit or analog machine still writes
 through the hook.
 Fill the sheet as modules land.
 .Sh BOOT
-.Pa logo-pqfreebsd.4th
-is Forth: ASCII sword, heater, SGR gleam, wordmark.
-.Pa brand-pqfreebsd.4th
-is the menu name.
-Serial still gets the characters.
+The claim is the gate
+.Pq T12 .
 .Cm oneboot
-copies them only after
-.Va BOOT_SATISFIED=YES .
+is refused while
+.Va BOOT_SATISFIED
+is no.
+After attestation it takes the loader off unsigned GENERIC only as far as
+this pass can close.
 TPM is not this pass.
+A Forth mark
+.Pq cross by default
+may replace the stock splash; that is cosmetic.
 .Sh PORT
 Copy
 .Pa ports/sysutils/pqfreebsd
@@ -554,7 +547,7 @@ as the missing morphisms: evidence and repaired
 .Em A_D .
 Extended the same day as a living paper: T10–T17 recorded as the suite
 grew
-.Pq payload, code-auth, gated Forth splash, successive policy, piecemeal claims, chain of trust, parameterized bounds, via-port LLM .
+.Pq payload, code-auth, gated loader, successive policy, piecemeal claims, chain of trust, parameterized bounds, via-port LLM .
 This page is updated as morphisms land.
 .Xr pqac 7
 remains the basis and is not rewritten for each morphism.
@@ -572,7 +565,7 @@ still denotes Kyber unless
 .Xr pqac 7
 is said aloud.
 This paper is unsigned.
-The Forth logo is not a second signature family.
+The splash mark is not a second signature family.
 The port cannot prove a model is advanced.
 .Sh LICENSE
 Light-ware License.

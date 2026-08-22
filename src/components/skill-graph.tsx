@@ -229,7 +229,7 @@ export function SkillGraph() {
               ))
             )}
             {bootOn ? (
-              <li className="text-ok">created pqboot — splash attested, TPM not this pass</li>
+              <li className="text-ok">created pqboot — loader gated, TPM not this pass</li>
             ) : null}
             {filled >= CREATION_ORDER.length ? (
               <li className="text-warn">

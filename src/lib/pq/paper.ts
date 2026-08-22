@@ -75,20 +75,20 @@ export const THESES: Thesis[] = [
   {
     id: "T12",
     kind: "held",
-    title: "The splash is earned, and the beastie yields to the shield",
-    body: "Once the operator attests they are sufficiently satisfied that the system is post-quantum hardened to the degree that gives them a sense of security, the umbrella offers oneboot: the loader splash name becomes pqfreebsd; the beastie is replaced by the shield — the armor of God; the device on the shield is the cross by default, or a dove, sword, crown, menorah, or rock. TPM and measured boot are not this pass. Default is no. Do not rebrand a box you do not yet trust. Branding is not a second signature family.",
+    title: "The loader is gated on attestation; TPM is not this pass",
+    body: "oneboot is refused until the operator attests they are sufficiently satisfied that the system is post-quantum hardened to the degree that gives them a sense of security. Default is no. What the gate protects is taking the loader off the unsigned GENERIC path — only as far as this pass can close. TPM and measured boot are not this pass. Changing the splash name and mark is a consequence of that attestation, not a security claim. Branding is not a second signature family. Do not rebrand a box you do not yet trust.",
   },
   {
     id: "T13",
     kind: "pqfreebsd",
     title: "Successive policy is itself an auditable object",
-    body: "After install, the operator must be able to see that POLICY, SUITE, DAC, ugidfw, login labels, MAC overlays, and the splash agree, to propagate a change through all of them at once, and to read the diff of successive iterations. Consistency is a predicate over that conjunction, not a product of proofs. Each propagation is a named revision whose catalog hash is chained (prevCatalog) and recorded in the ledger. An audit that cannot show what changed is not an audit. oneaudit / onepropagate. test* first.",
+    body: "After install, the operator must be able to see that POLICY, SUITE, DAC, ugidfw, login labels, MAC overlays, and the loader config agree, to propagate a change through all of them at once, and to read the diff of successive iterations. Consistency is a predicate over that conjunction, not a product of proofs. Each propagation is a named revision whose catalog hash is chained (prevCatalog) and recorded in the ledger. An audit that cannot show what changed is not an audit. oneaudit / onepropagate. test* first.",
   },
   {
     id: "T14",
     kind: "pqfreebsd",
     title: "Claims degrade by conjunct, not as a product",
-    body: "A missing or stranded protocol weakens only the claims that named it. If the box cannot securely transport the Integrity Evidence to another host and have that host validate the store, the off-host IE claim is degraded. High-integrity overwrite protection, local chain, repaired A_D, successive policy, and the splash are not thereby false. A deployment that includes and enables that module, and adheres to its protocol, keeps those claims in full. Silent (module not included) is not degraded (module included, protocol unmet). Do not report the suite as a single bit. Inverse of “conjunction is not a product of proofs.”",
+    body: "A missing or stranded protocol weakens only the claims that named it. If the box cannot securely transport the Integrity Evidence to another host and have that host validate the store, the off-host IE claim is degraded. High-integrity overwrite protection, local chain, repaired A_D, successive policy, and the loader gate are not thereby false. A deployment that includes and enables that module, and adheres to its protocol, keeps those claims in full. Silent (module not included) is not degraded (module included, protocol unmet). Do not report the suite as a single bit. Inverse of “conjunction is not a product of proofs.”",
   },
   {
     id: "T15",
@@ -195,7 +195,7 @@ export const PRAXIS = [
 
 export const ABSTRACT = `pqac(7) is the basis: A_D, A_M, and MMU translation are quantum-adversary-stable mediation on a von Neumann FreeBSD defender — not post-quantum cryptography, not a quantum ISA. T1 and T2 are freebsd-mac-grok. T3–T5 remain the plant and the observation function.
 
-pqfreebsd(7) is the living paper. It builds onward: Integrity Evidence, restricted A_D, successive policy, claims that degrade by conjunct, a catalog of the cryptographic chain of trust, parameterized bounds, a gated Forth splash, and a port that will not pretend a pkg is the operator. Mediation does not collapse under Shor; the bits the monitor interprets still may. This page records what holds, what is held, and where each proof stops.`;
+pqfreebsd(7) is the living paper. It builds onward: Integrity Evidence, restricted A_D, successive policy, claims that degrade by conjunct, a catalog of the cryptographic chain of trust, parameterized bounds, a loader gated on attestation, and a port that will not pretend a pkg is the operator. Mediation does not collapse under Shor; the bits the monitor interprets still may. This page records what holds, what is held, and where each proof stops.`;
 
 export const EXOTERIC = `Authentication binds an identity to a process. Authorization relates that process to objects and to regions of the store. The first, on contemporary FreeBSD, is cryptographic or a local console. The second is an access matrix (DAC: owner-directed chmod and chown, uid/gid) composed with a lattice policy (MAC) composed with translation rights (MMU).
 
@@ -209,7 +209,7 @@ Imperviousness is a non-interference statement: traces that agree on low inputs 
 
 export const DERIVATION = `freebsd-mac-grok ships three skills. freebsd-mac-lomac writes roles as pw(8) groups, the official PLM, Xorg and /dev overlays, PREINSTALL uninstall. freebsd-mac-generic writes orthogonal modules (seeotheruids by default). freebsd-mac is the umbrella: zfs snapshot -r (filesystems and zvols) and optional zpool-checkpoint(8) before and after staging. No bectl(8). Sibling max-headroom-grok installs the agent wrapper; sandbox subjects are where agents live.
 
-pqfreebsd does not replace those packages. It interviews, then emits a result directory that composes them and adds morphisms as they land. pqledger: append-only, hash-chained, labeled high. pqdac: restricted spec, first-match, establish/repair/prevent. pqaudit: oneaudit / onepropagate, chained catalog hashes. pqboot: Forth ASCII+ANSI splash, gated. sysutils/pqfreebsd: in-tree port; skill-capable LLM attested before via-port oneenforce. test* before one*. Recovery remains PREINSTALL plus the recursive snap.
+pqfreebsd does not replace those packages. It interviews, then emits a result directory that composes them and adds morphisms as they land. pqledger: append-only, hash-chained, labeled high-integrity. pqdac: restricted spec, first-match, establish/repair/prevent. pqaudit: oneaudit / onepropagate, chained catalog hashes. pqboot: loader gated on attestation (TPM not this pass; splash art is not the claim). sysutils/pqfreebsd: in-tree port; skill-capable LLM attested before via-port oneenforce. test* before one*. Recovery remains PREINSTALL plus the recursive snap.
 
 pqfreebsd(7) is updated as those morphisms land. pqac(7) remains the basis and is not rewritten for each one.
 

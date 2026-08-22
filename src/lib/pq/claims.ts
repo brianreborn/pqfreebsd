@@ -121,13 +121,13 @@ export function evaluateClaims(world: World): Claim[] {
       id: "boot",
       module: "pqboot",
       thesis: "T12",
-      title: "Splash and loader path of this pass",
+      title: "Loader gated on attestation (TPM not this pass)",
       status: p.bootSatisfied ? "holds" : "silent",
       detail: p.bootSatisfied
-        ? "Attested. Name pqfreebsd, shield not beastie. TPM not this pass — that claim is held, not this one."
-        : "Not attested. Stock splash. No claim that the loader is ours.",
-      holdsWhen: "BOOT_SATISFIED=YES and oneboot",
-      degradesWhen: "TPM absence is a held conjunct, not a failed splash",
+        ? "Attested. oneboot offered. TPM / measured boot still held. The splash mark is not this claim."
+        : "Not attested. oneboot refused. Stock loader. No claim that the loader is ours.",
+      holdsWhen: "BOOT_SATISFIED=YES — gate open for this pass only",
+      degradesWhen: "TPM absence is a held conjunct, not a failed mark",
     },
     {
       id: "code",
@@ -177,7 +177,7 @@ export function evaluateClaims(world: World): Claim[] {
       status: "held",
       detail: "Not this pass. Splash attestation is a different claim.",
       holdsWhen: "PCRs, quoted, PQ-signed",
-      degradesWhen: "held conjunct; does not degrade oneboot's splash claim",
+      degradesWhen: "held conjunct; does not degrade the loader gate",
     },
     {
       id: "cot",

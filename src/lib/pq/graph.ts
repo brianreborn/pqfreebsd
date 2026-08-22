@@ -161,7 +161,7 @@ export const SKILL_NODES: SkillNode[] = [
   {
     id: "pqboot",
     label: "pqboot",
-    subtitle: "splash · no TPM",
+    subtitle: "gated loader",
     kind: "pending",
     href: "/boot",
     x: 382,

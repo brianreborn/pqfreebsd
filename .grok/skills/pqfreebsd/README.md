@@ -1,8 +1,8 @@
 # pqfreebsd
 
 Post-quantum **trusted FreeBSD**: compose **freebsd-mac-grok** and layer
-Integrity Evidence, repaired **DAC**, successive policy audit, and a gated
-boot splash. Mediation (**pqac(7)**) is the core, not the whole system.
+Integrity Evidence, repaired **DAC**, successive policy audit, and a
+loader gated on attestation. Mediation (**pqac(7)**) is the core, not the whole system.
 Read **pqac(7)** then **pqfreebsd(7)**.
 
 This is the **skill**. When it runs it writes a **result directory** that

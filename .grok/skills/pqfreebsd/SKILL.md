@@ -4,7 +4,7 @@ description: >
   Post-quantum trusted FreeBSD: compose freebsd-mac-grok (mac_lomac
   integrity, orthogonal modules, ZFS snapshot -r) and layer a filesystem
   Integrity Evidence ledger, dynamically established and repaired DAC,
-  successive policy audit, and a gated boot splash. Use when the user
+  successive policy audit, and a loader gated on attestation. Use when the user
   wants /pqfreebsd, pqac, audit ledger, DAC repair, oneaudit/onepropagate,
   or a trusted base that is not PQC in the kernel. Payload confirmation
   (pqconfirm / T10) and code authentication (pqcode / T11) are required
@@ -94,14 +94,12 @@ Ask, in order. Record in `POLICY`.
     has a parameterized bound: what it proves, where it stops, classical bits
     (or n/a), qubit BQP, qudit / non-binary quantum, and CVQC. Fill the sheet
     as modules land. Do not emit “provably secure” as a slogan.
-9. **Bootloader gate (default no).** Ask: are they sufficiently satisfied that
+9. **Loader gate (default no).** Ask: are they sufficiently satisfied that
    the system is post-quantum hardened to the degree that gives them a sense of
-   security? Only if yes: offer `oneboot` — splash name becomes pqfreebsd, beastie
-   replaced by the shield (armor of God), loader taken off unsigned GENERIC only
-   as far as keys exist. Device on the shield: **cross** (default), or dove,
-   sword, crown, menorah, rock (`SPLASH_EMBLEM` / `pqfreebsd_emblem`). **TPM /
-   measured boot is not this pass.** If no, leave the stock splash. Do not
-   rebrand a box they do not yet trust.
+   security? Only if yes: offer `oneboot` — take the loader off unsigned
+   GENERIC only as far as keys exist. **TPM / measured boot is not this pass.**
+   Splash art is cosmetic (cross default). If no, leave the stock loader.
+   Do not rebrand a box they do not yet trust.
 10. After install: `oneaudit` shows consistency among POLICY, SUITE, DAC, ugidfw,
     login labels, overlay, splash. `onepropagate` applies a change through all of
     them and appends a chained catalog hash (`policy.revs` + ledger). `test*` first.

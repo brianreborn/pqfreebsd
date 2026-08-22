@@ -172,9 +172,9 @@ export const ISSUES: Issue[] = [
     id: "splash-gate",
     layer: "held",
     source: "pqfreebsd(7) T12",
-    issue: "Splash is earned",
+    issue: "Loader gate skipped because the mark looks finished",
     happens: "Rebranding an untrusted box is a sticker, not a proof.",
-    does: "oneboot only after BOOT_SATISFIED=YES. Name pqfreebsd, shield not beastie. TPM not this pass. Branding is not a second signature family.",
+    does: "Refuse oneboot until BOOT_SATISFIED=YES. The gate is T12. Art is not. TPM not this pass.",
   },
   {
     id: "claims-product",
