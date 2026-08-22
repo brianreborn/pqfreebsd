@@ -184,4 +184,12 @@ export const ISSUES: Issue[] = [
     happens: "Network stranded; operator concludes “the system is insecure” or “all claims fail.”",
     does: "Degrade only the conjunct that named the protocol. Off-host IE degraded; write-up, local chain, A_D still hold. Silent ≠ degraded. A box that includes and enables the replica and can transport keeps that claim.",
   },
+  {
+    id: "cot-classical",
+    layer: "held",
+    source: "pqfreebsd(7) T15",
+    issue: "Chain of trust claimed unbroken while a hop is RSA or unsigned",
+    happens: "Operator treats LOMAC + SHA-256 ledger as a PQ trusted base.",
+    does: "Walk hops 1–13. Break at first origin hop that is not ML-DSA+SLH-DSA / ML-KEM. Catalog; do not claim. T14: broken CoT does not un-prove write-up.",
+  },
 ];

@@ -51,8 +51,8 @@ function Paper() {
         <p className="mt-12 text-sm text-subtle">
           Light-ware License. Copyright © 2026 Brian Fundakowski Feldman. This product includes
           software developed by Brian Fundakowski Feldman. T1 and T2 are the parent packages. T6–T9
-          remain the operator's until the host carries them. T10–T12 are required and held. T14 is
-          how a missing conjunct is reported: degraded or silent, never a product bit.
+          remain the operator's until the host carries them. T10–T12 and T15 are required and held.
+          T14 is how a missing conjunct is reported: degraded or silent, never a product bit.
         </p>
       </div>
     </article>

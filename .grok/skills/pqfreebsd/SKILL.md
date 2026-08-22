@@ -82,7 +82,10 @@ Ask, in order. Record in `POLICY`.
 7. Confirm they know T10 / payload confirmation is **required of the system
    and not implemented here**.
 8. Confirm they know T11 / code authentication (pkg RSA, unsigned kld, unsigned
-   zfs send) is **required and not implemented here**.
+   zfs send) is **required and not implemented here**. Confirm they know T15:
+   an unbroken cryptographic chain of trust is necessary, and every
+   cryptographic particular must eventually be PQ (ML-DSA+SLH-DSA, ML-KEM).
+   This pass catalogs hops. It does not claim the chain is unbroken.
 9. **Bootloader gate (default no).** Ask: are they sufficiently satisfied that
    the system is post-quantum hardened to the degree that gives them a sense of
    security? Only if yes: offer `oneboot` — splash name becomes pqfreebsd, beastie

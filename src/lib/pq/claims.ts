@@ -1,4 +1,5 @@
 import { audit } from "./audit";
+import { chainBreak } from "./code-auth";
 import { verifyChain } from "./host";
 import type { World } from "./types";
 
@@ -177,6 +178,16 @@ export function evaluateClaims(world: World): Claim[] {
       detail: "Not this pass. Splash attestation is a different claim.",
       holdsWhen: "PCRs, quoted, PQ-signed",
       degradesWhen: "held conjunct; does not degrade oneboot's splash claim",
+    },
+    {
+      id: "cot",
+      module: "pqcode",
+      thesis: "T15",
+      title: "Unbroken cryptographic chain of trust; every particular PQ",
+      status: "held",
+      detail: chainBreak().reason + " Required eventually. Not claimed this pass. A broken CoT does not un-prove write-up.",
+      holdsWhen: "every crypto hop is ML-DSA+SLH-DSA, ML-KEM, or Grover-accounted hash under a PQ-signed root",
+      degradesWhen: "a classical or unsigned hop breaks the chain from that point down — T14 still applies to mediation",
     },
   ];
 }

@@ -90,6 +90,12 @@ export const THESES: Thesis[] = [
     title: "Claims degrade by conjunct, not as a product",
     body: "A missing or stranded protocol weakens only the claims that named it. If the box cannot securely transport the Integrity Evidence to another host and have that host validate the store, the off-host IE claim is degraded. Write-up, local chain, repaired A_D, successive policy, and the splash are not thereby false. A deployment that includes and enables that module, and adheres to its protocol, keeps those claims in full. Silent (module not included) is not degraded (module included, protocol unmet). Do not report the suite as a single bit. Inverse of “conjunction is not a product of proofs.”",
   },
+  {
+    id: "T15",
+    kind: "held",
+    title: "The cryptographic chain of trust must be unbroken, and every particular post-quantum",
+    body: "A necessary requirement of the trusted base, distinct from T2. Walk firmware db → loader → kernel → kld → pkg → freebsd-update → policy → rc.d → ledger checkpoint → zfs send → replica transport. Each hop that is cryptography must eventually be a post-quantum algorithm: ML-DSA and SLH-DSA for signatures, ML-KEM for transport, SHA-512 or SHA-3 Grover-accounted for hashes. AES-at-rest is secrecy, not origin. Hybrid (classical+PQ) is a transition particular; Shor still forges the classical half. A classical or missing hop breaks the chain from that point down. It does not un-prove write-up (T14). This pass catalogs the hops. It does not claim the chain is unbroken. Held: pqcode, pqzfs, replica transport.",
+  },
 ];
 
 export const PRAXIS = [
