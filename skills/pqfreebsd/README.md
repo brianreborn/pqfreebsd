@@ -5,6 +5,13 @@ Integrity Evidence, repaired **DAC**, successive policy audit, and a
 loader gated on attestation. Mediation (**pqac(7)**) is the core, not the whole system.
 Read **pqac(7)** then **pqfreebsd(7)**.
 
+The MAC this skill composes is the **[TrustedBSD](http://www.trustedbsd.org/) MAC Framework**.
+Papers **not in the base install**: [docs.html](http://www.trustedbsd.org/docs.html)
+([USENIX 2003](http://www.trustedbsd.org/trustedbsd-usenix2003freenix.pdf),
+[DISCEX III](http://www.trustedbsd.org/trustedbsd-discex3.pdf),
+[SEBSD](http://www.trustedbsd.org/sebsd-july2003.pdf),
+[TR-818](https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-818.pdf)).
+
 This is the **skill**. When it runs it writes a **result directory** that
 installs as ports-style **rc.subr(8)** services: `pqfreebsd`, `pqledger`,
 `pqdac`. Parent packages (`mac_grok`, `mac_lomac_grok`, `mac_generic_grok`)

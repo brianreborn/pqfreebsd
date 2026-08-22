@@ -10,15 +10,16 @@ function Home() {
     <div className="grid gap-12">
       <section className="grid gap-4">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted">
-          derived from freebsd-mac-grok · pqac(7)
+          derived from freebsd-mac-grok · TrustedBSD MAC Framework · pqac(7)
         </p>
         <h1 className="max-w-3xl text-4xl font-medium tracking-[-0.03em] text-fg md:text-5xl">
           A post-quantum trusted base. Not Kyber in the kernel.
         </h1>
         <p className="max-w-prose text-muted">
           Mediation does not collapse under Shor. That is not the whole system. pqfreebsd is the
-          trusted base around it: Integrity Evidence, repaired A_D, successive policy audit, a
-          a loader gated on attestation. Claims degrade by conjunct: a stranded replica weakens off-host IE,
+          trusted base around it: Integrity Evidence, repaired A_D, successive policy audit,
+          a loader gated on attestation. The MAC is the TrustedBSD Framework
+          (papers: trustedbsd.org/docs.html, not in base). Claims degrade by conjunct: a stranded replica weakens off-host IE,
           not high-integrity overwrite protection. Code signatures, ZFS send authentication, payload confirmation, and SEBSD
           remain held. The beta ends when each remaining claim has a parameterized bound
           (classical, qubit, qudit, CVQC) — not when a slogan says “provably secure.”

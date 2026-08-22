@@ -11,7 +11,7 @@ export const ISSUES: Issue[] = [
   {
     id: "empty-lattice",
     layer: "lomac",
-    source: "pqac(7) PRAXIS; Handbook §19.8",
+    source: "pqac(7) PRAXIS; Handbook MAC; TrustedBSD MAC Framework papers",
     issue: "Enforce before labels",
     happens: "Unlabeled objects versus labeled processes; EPERM noise.",
     does: "enabled=0 until setfmac probe then setfsmac; workbench refuses enforce until label.",
@@ -147,7 +147,7 @@ export const ISSUES: Issue[] = [
   {
     id: "kld-unsigned",
     layer: "held",
-    source: "pqfreebsd(7) T11; kldload(8)",
+    source: "pqfreebsd(7) T11; sebsd-july2003.pdf; trustedbsd.org/sebsd.html",
     issue: "GENERIC does not authenticate klds",
     happens: "Root equal plus unsigned kld is load-anything.",
     does: "pqcode would verify before kldload. SEBSD as a .ko is unsigned code-equivalent until then.",

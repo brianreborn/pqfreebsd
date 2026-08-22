@@ -18,6 +18,18 @@ This skill **derives from** freebsd-mac-grok. Also load **freebsd-mac**,
 **freebsd-mac-lomac**, and **freebsd-mac-generic** when those pieces run.
 Do not vendor their rc.d; compose them.
 
+The kernel access-control this suite composes is the **TrustedBSD MAC
+Framework** (Watson et al.), not a private monitor. Papers **not in the
+base install**: http://www.trustedbsd.org/docs.html — especially
+[USENIX ATC 2003](http://www.trustedbsd.org/trustedbsd-usenix2003freenix.pdf),
+[DISCEX III 2003](http://www.trustedbsd.org/trustedbsd-discex3.pdf),
+[SEBSD](http://www.trustedbsd.org/sebsd-july2003.pdf),
+[UCAM-CL-TR-818](https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-818.pdf),
+[CACM 2013](https://queue.acm.org/detail.cfm?id=2436814).
+Project: http://www.trustedbsd.org/  MAC: http://www.trustedbsd.org/mac.html
+SEBSD (idle; do not cut a skill until named): http://www.trustedbsd.org/sebsd.html
+OpenBSM: http://www.trustedbsd.org/audit.html
+
 `${SKILL_DIR}` = this skill directory.
 
 T1 and T2 are the parent packages (quantum-adversary-stable mediation, not

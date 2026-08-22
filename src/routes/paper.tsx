@@ -1,5 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ABSTRACT, DERIVATION, ESOTERIC, EXOTERIC, PRAXIS, THESES } from "@/lib/pq/paper";
+import {
+  TRUSTEDBSD_AUDIT,
+  TRUSTEDBSD_BLURB,
+  TRUSTEDBSD_DOCS,
+  TRUSTEDBSD_HANDBOOK,
+  TRUSTEDBSD_HOME,
+  TRUSTEDBSD_MAC,
+  TRUSTEDBSD_PAPERS,
+  TRUSTEDBSD_SEBSD,
+} from "@/lib/pq/trustedbsd";
 
 export const Route = createFileRoute("/paper")({ component: Paper });
 
@@ -22,6 +32,51 @@ function Paper() {
         <Section title="Exoteric: naming and mediation">{EXOTERIC}</Section>
         <Section title="Esoteric: the observation function">{ESOTERIC}</Section>
         <Section title="Derivation">{DERIVATION}</Section>
+        <h2 className="mt-10 text-xl font-medium">TrustedBSD</h2>
+        <p className="mt-3 text-[0.95rem] leading-relaxed">{TRUSTEDBSD_BLURB}</p>
+        <p className="mt-3 text-sm">
+          <a className="underline" href={TRUSTEDBSD_HOME}>
+            trustedbsd.org
+          </a>
+          {" · "}
+          <a className="underline" href={TRUSTEDBSD_DOCS}>
+            papers (not in base)
+          </a>
+          {" · "}
+          <a className="underline" href={TRUSTEDBSD_MAC}>
+            MAC Framework
+          </a>
+          {" · "}
+          <a className="underline" href={TRUSTEDBSD_SEBSD}>
+            SEBSD
+          </a>
+          {" · "}
+          <a className="underline" href={TRUSTEDBSD_AUDIT}>
+            audit / OpenBSM
+          </a>
+        </p>
+        <ul className="mt-4 grid gap-3 text-[0.95rem] leading-relaxed">
+          {TRUSTEDBSD_PAPERS.map((p) => (
+            <li key={p.id}>
+              <a className="font-medium underline" href={p.url}>
+                {p.title}
+              </a>
+              <span className="mt-1 block text-sm text-subtle">
+                {p.authors}. {p.venue}, {p.year}. {p.why}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-4 text-sm text-subtle">Handbook (also not a man page):</p>
+        <ul className="mt-2 grid gap-1 text-sm">
+          {TRUSTEDBSD_HANDBOOK.map((h) => (
+            <li key={h.url}>
+              <a className="underline" href={h.url}>
+                {h.title}
+              </a>
+            </li>
+          ))}
+        </ul>
         <h2 className="mt-10 text-xl font-medium">Theses</h2>
         <ol className="mt-4 grid gap-5">
           {THESES.map((t) => (
@@ -50,8 +105,8 @@ function Paper() {
         <p className="mt-12 text-sm text-subtle">
           Light-ware License. Copyright © 2026 Brian Fundakowski Feldman. This product includes
           software developed by Brian Fundakowski Feldman. pqac(7) is the basis. pqfreebsd(7) is
-          updated as morphisms land. T1 and T2 are the parent packages. T10–T12 and T15 are required
-          and held. T17 is the via-port LLM conjunct, not A_M.
+          updated as morphisms land. T1 and T2 are the parent packages, packaging the TrustedBSD
+          MAC Framework. Papers: http://www.trustedbsd.org/docs.html
         </p>
       </div>
     </article>

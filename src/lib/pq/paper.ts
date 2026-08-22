@@ -193,7 +193,7 @@ export const PRAXIS = [
   },
 ];
 
-export const ABSTRACT = `pqac(7) is the basis: A_D, A_M, and MMU translation are quantum-adversary-stable mediation on a von Neumann FreeBSD defender — not post-quantum cryptography, not a quantum ISA. T1 and T2 are freebsd-mac-grok. T3–T5 remain the plant and the observation function.
+export const ABSTRACT = `pqac(7) is the basis: A_D, A_M, and MMU translation are quantum-adversary-stable mediation on a von Neumann FreeBSD defender — not post-quantum cryptography, not a quantum ISA. T1 and T2 are freebsd-mac-grok, which packages the TrustedBSD MAC Framework (mac_lomac(4) integrity, orthogonal modules, ZFS snapshot -r). T3–T5 remain the plant and the observation function.
 
 pqfreebsd(7) is the living paper. It builds onward: Integrity Evidence, restricted A_D, successive policy, claims that degrade by conjunct, a catalog of the cryptographic chain of trust, parameterized bounds, a loader gated on attestation, and a port that will not pretend a pkg is the operator. Mediation does not collapse under Shor; the bits the monitor interprets still may. This page records what holds, what is held, and where each proof stops.`;
 
@@ -207,7 +207,9 @@ export const ESOTERIC = `Those predicates are themselves electrical events. A pa
 
 Imperviousness is a non-interference statement: traces that agree on low inputs yield indistinguishable observations. Resistance is a quantitative bound on leakage. These are not interchangeable. LOMAC supplies integrity (a low-integrity process cannot overwrite high-integrity files after reading low-integrity data), not emanation secrecy. POSIX MAC does not supply observational equivalence with respect to O.`;
 
-export const DERIVATION = `freebsd-mac-grok ships three skills. freebsd-mac-lomac writes roles as pw(8) groups, the official PLM, Xorg and /dev overlays, PREINSTALL uninstall. freebsd-mac-generic writes orthogonal modules (seeotheruids by default). freebsd-mac is the umbrella: zfs snapshot -r (filesystems and zvols) and optional zpool-checkpoint(8) before and after staging. No bectl(8). Sibling max-headroom-grok installs the agent wrapper; sandbox subjects are where agents live.
+export const DERIVATION = `The access-control kernel this suite composes is the TrustedBSD MAC Framework (Watson et al., USENIX ATC 2003; DISCEX III 2003), upstreamed into FreeBSD 5.0 as mac(4)/mac(9). The papers are at http://www.trustedbsd.org/docs.html — they are not in the base install. SEBSD is FLASK/TE as a MAC module (Vance & Watson, NAI Labs 2003); that project is idle; we do not cut a skill until named.
+
+freebsd-mac-grok ships three skills. freebsd-mac-lomac writes roles as pw(8) groups, the official PLM, Xorg and /dev overlays, PREINSTALL uninstall. freebsd-mac-generic writes orthogonal modules (seeotheruids by default). freebsd-mac is the umbrella: zfs snapshot -r (filesystems and zvols) and optional zpool-checkpoint(8) before and after staging. No bectl(8). Sibling max-headroom-grok installs the agent wrapper; sandbox subjects are where agents live.
 
 pqfreebsd does not replace those packages. It interviews, then emits a result directory that composes them and adds morphisms as they land. pqledger: append-only, hash-chained, labeled high-integrity. pqdac: restricted spec, first-match, establish/repair/prevent. pqaudit: oneaudit / onepropagate, chained catalog hashes. pqboot: loader gated on attestation (TPM not this pass; splash art is not the claim). sysutils/pqfreebsd: in-tree port; skill-capable LLM attested before via-port oneenforce. test* before one*. Recovery remains PREINSTALL plus the recursive snap.
 

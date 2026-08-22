@@ -11,7 +11,12 @@ function Issues() {
         <h1 className="mt-2 text-3xl font-medium tracking-tight">Walk these before oneenforce.</h1>
         <p className="mt-3 text-muted">
           Inherited from freebsd-mac-grok READMEs (Handbook ch.19, mailing lists, PRs) plus the
-          ledger and A_D residue. The skill must leave this catalog in the result README.
+          ledger and A_D residue. The skill must leave this catalog in the result README. MAC
+          papers:{" "}
+          <a className="underline" href="http://www.trustedbsd.org/docs.html">
+            TrustedBSD docs
+          </a>
+          .
         </p>
       </header>
       <div className="overflow-x-auto rounded-xl border border-border">

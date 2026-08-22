@@ -57,6 +57,91 @@ does not factor through a kernel-visible subject, T1 and T2 are silent.
 .Pp
 This page does not re-prove T1–T5.
 It inherits them and names the morphisms the slogans omitted.
+.Sh TRUSTEDBSD
+.Nm
+composes the
+.Em TrustedBSD MAC Framework ,
+not a private access-control kernel.
+That framework
+.Pq loadable
+.Xr mac 4
+policy modules, labels, hooks
+shipped in
+.Fx
+5.0.
+.Xr mac 4
+and
+.Xr mac 9
+in the base system name it; they do not reprint the papers.
+.Pp
+Project:
+.Lk http://www.trustedbsd.org/ "TrustedBSD Project"
+.Pp
+Papers not in the base install
+.Pq index :
+.Lk http://www.trustedbsd.org/docs.html "trustedbsd.org/docs.html"
+.Bl -bullet
+.It
+Watson,
+.Dq Introducing Supporting Infrastructure for Trusted Operating System Support in FreeBSD ,
+BSDCon 2000.
+.Lk http://www.trustedbsd.org/trustedbsd-bsdcon-2000.pdf
+.It
+Watson,
+.Dq TrustedBSD: Adding Trusted Operating System Features to FreeBSD ,
+USENIX ATC FREENIX 2001.
+.Lk http://www.trustedbsd.org/trustedbsd-freenix-2001.pdf
+.It
+Watson, Feldman, Migus, Vance,
+.Dq Design and Implementation of the TrustedBSD MAC Framework ,
+DARPA DISCEX III 2003.
+.Lk http://www.trustedbsd.org/trustedbsd-discex3.pdf
+.It
+Watson, Morrison, Vance, Feldman,
+.Dq The TrustedBSD MAC Framework: Extensible Kernel Access Control for FreeBSD 5.0 ,
+USENIX ATC FREENIX 2003.
+.Lk http://www.trustedbsd.org/trustedbsd-usenix2003freenix.pdf
+.It
+Vance and Watson,
+.Dq Security-Enhanced BSD ,
+NAI Labs, July 2003
+.Pq FLASK/TE on the Framework; Nm mac-sebsd
+is not a 1.0 skill .
+.Lk http://www.trustedbsd.org/sebsd-july2003.pdf
+.Lk http://www.trustedbsd.org/sebsd.html
+.It
+Watson and Salamon,
+.Dq The FreeBSD Audit System ,
+UKUUG LISA 2006.
+Index:
+.Lk http://www.trustedbsd.org/docs.html
+.Lk http://www.trustedbsd.org/audit.html
+.It
+Watson,
+.Dq New Approaches to Operating System Security Extensibility ,
+UCAM-CL-TR-818, 2012.
+.Lk https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-818.pdf
+.It
+Watson,
+.Dq A Decade of OS Access-Control Extensibility ,
+CACM 56(2) / ACM Queue, 2013.
+.Lk https://queue.acm.org/detail.cfm?id=2436814
+.El
+.Pp
+Handbook
+.Pq also not a man page :
+.Lk https://docs.freebsd.org/en/books/handbook/mac/ "Handbook: MAC"
+.Lk https://docs.freebsd.org/en/books/handbook/audit/ "Handbook: audit"
+.Lk https://docs.freebsd.org/en/books/arch-handbook/mac/ "Architecture Handbook: MAC Framework"
+.Pp
+.Xr mac_lomac 4
+is a TrustedBSD policy module
+.Pq floating-label Biba-like integrity .
+Fraser's LOMAC paper is Linux; the
+.Fx
+module is the Framework port.
+OpenBSM is the TrustedBSD audit implementation
+.Pq Xr audit 4 .
 .Sh LABELS
 .Xr mac_lomac 4
 is the integrity lattice.
@@ -552,6 +637,9 @@ Harrison, M. A., Ruzzo, W. L., Ullman, J. D., CACM 19(8), 1976.
 NIST FIPS 203, 204, 205.
 .Xr pqac 7
 for Bell, Biba, Fraser, Goguen–Meseguer, Shor, Grover, and the plant.
+The TrustedBSD papers are in
+.Sx TRUSTEDBSD
+above; they are not in the base install.
 .Sh HISTORY
 Spoken the same day as
 .Xr pqac 7
@@ -568,9 +656,10 @@ remains the basis and is not rewritten for each morphism.
 and the operator of
 .Nm freebsd-mac-grok ,
 2026-08-22.
-T1 and T2 are the parent packages.
-T6–T9, T13, T14, T16, T17 are this suite.
-T10–T12 and T15 remain the operator's, held or gated.
+.An Brian Fundakowski Feldman
+is a co-author of the TrustedBSD MAC Framework papers
+.Pq DISCEX III 2003, USENIX ATC 2003 .
+The Framework is Watson et al.; this suite consumes it.
 .Sh BUGS
 .Dq Post-quantum
 still denotes Kyber unless

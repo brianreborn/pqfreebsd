@@ -19,9 +19,13 @@ function Ledger() {
         <p className="text-xs uppercase tracking-[0.18em] text-muted">T7 · Integrity Evidence</p>
         <h1 className="mt-2 text-3xl font-medium tracking-tight">The chain is the monitor's evidence.</h1>
         <p className="mt-3 text-muted">
-          audit(4) names the in-band source. This log is the Merkle evidence: prevHash ‖ canonical
-          event → SHA-256. Production uses SHA-512 against Grover. The dataset is high. Rewrite is
-          a bug; rotation would append a checkpoint record.
+          audit(4) / OpenBSM is the TrustedBSD in-band source (
+          <a className="underline" href="http://www.trustedbsd.org/audit.html">
+            trustedbsd.org/audit
+          </a>
+          ). This log is the Merkle evidence: prevHash ‖ canonical event → SHA-256. Production uses
+          SHA-512 against Grover. The dataset is high-integrity. Rewrite is a bug; rotation would
+          append a checkpoint record.
         </p>
       </header>
 

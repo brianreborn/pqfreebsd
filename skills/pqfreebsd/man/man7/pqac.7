@@ -34,6 +34,14 @@ running a
 kernel with
 .Xr mac 4
 hooks.
+The access-control kernel is the
+.Em TrustedBSD MAC Framework
+.Pq Watson et al., USENIX ATC 2003; DISCEX III 2003; shipped in Fx 5.0 .
+The papers are not in the base install;
+see
+.Lk http://www.trustedbsd.org/docs.html
+and
+.Xr pqfreebsd 7 .
 The adversary is quantum: polynomial-time quantum algorithms on the
 usual public-key names, Grover search over unstructured domains, and,
 as a working hypothesis, coupling to the electrical and electromagnetic
@@ -827,6 +835,18 @@ The
 .Fx
 Handbook ch.19
 .Pq MAC practice and troubleshooting .
+.Pp
+TrustedBSD papers, not in the base install:
+.Lk http://www.trustedbsd.org/
+.Lk http://www.trustedbsd.org/docs.html
+Watson, Feldman, Migus, Vance, DISCEX III 2003;
+Watson, Morrison, Vance, Feldman, USENIX ATC 2003;
+Vance and Watson, SEBSD, NAI Labs 2003;
+Watson, UCAM-CL-TR-818, 2012;
+Watson, CACM 56(2), 2013.
+.Xr pqfreebsd 7
+reprints the list with
+.Lk .
 .Sh HISTORY
 Spoken as a refinement of
 .Dq post-quantum access control

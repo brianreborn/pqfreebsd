@@ -7,6 +7,8 @@
 Grok **plugin** plus a workbench for a **post-quantum trusted FreeBSD**:
 quantum-adversary-stable mediation (**pqac(7)**), Integrity Evidence, repaired
 A_D, successive policy audit, a loader gated on attestation. Not Kyber in the kernel.
+The access-control kernel is the **[TrustedBSD MAC Framework](http://www.trustedbsd.org/mac.html)**;
+papers not in base: [docs](http://www.trustedbsd.org/docs.html).
 
 | Layer | What |
 | --- | --- |

@@ -165,7 +165,7 @@ export function evaluateClaims(world: World): Claim[] {
       thesis: "held",
       title: "Type Enforcement as complete mediation language",
       status: "held",
-      detail: "Not a skill until you say so. LOMAC is not TE.",
+      detail: "Not a skill until you say so. LOMAC is not TE. Vance & Watson, Security-Enhanced BSD, NAI Labs 2003: http://www.trustedbsd.org/sebsd-july2003.pdf — idle; http://www.trustedbsd.org/sebsd.html",
       holdsWhen: "FLASK/TE loaded and a policy compiled",
       degradesWhen: "absence is silent",
     },

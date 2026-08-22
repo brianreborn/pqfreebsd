@@ -31,7 +31,7 @@ export const SKILL_NODES: SkillNode[] = [
   {
     id: "mac",
     label: "freebsd-mac",
-    subtitle: "zfs snapshot -r",
+    subtitle: "TrustedBSD MAC",
     kind: "parent",
     href: "/issues",
     x: 382,

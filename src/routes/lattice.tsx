@@ -13,7 +13,9 @@ function Lattice() {
   return (
     <div className="grid gap-8">
       <header className="max-w-2xl">
-        <p className="text-xs uppercase tracking-[0.18em] text-muted">mac_lomac(4) · integrity lattice</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-muted">
+          mac_lomac(4) · TrustedBSD MAC Framework · integrity lattice
+        </p>
         <h1 className="mt-2 text-3xl font-medium tracking-tight">High-integrity and low-integrity. A short proof.</h1>
         <p className="mt-3 text-muted">
           Reading a low-integrity file drops you to low-integrity. You then cannot overwrite
