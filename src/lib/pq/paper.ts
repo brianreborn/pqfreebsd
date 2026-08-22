@@ -102,6 +102,12 @@ export const THESES: Thesis[] = [
     title: "Beta ends at parameterized bounds, not at a slogan",
     body: "At the end of beta the system is provably secure up to the conjunction of named bounds, and no further. Each claimed measure states what is proven, where the proof stops, and expected resistance against classical PPT, qubit BQP (Grover, Shor, BHT), qudit / non-binary quantum, and continuous-variable machines. Mediation is n/a bits in every model: BQP, qudits, and analog machines still write through the hook. Cryptographic particulars have numbers, already birthday- and Grover-accounted, or an honest 0. A zero on pkg-RSA does not zero write-up. Empty bounds are the remainder of the work. Do not ship “provably secure” without this sheet.",
   },
+  {
+    id: "T17",
+    kind: "pqfreebsd",
+    title: "The port is not the operator",
+    body: "sysutils/pqfreebsd stages the suite. Intended operation is by a sufficiently advanced LLM that can follow the skills. The port cannot prove a model is advanced. pqfreebsd-llm-check finds a candidate; pqfreebsd_llm_attested=YES is the operator's conjunct. via-port oneenforce is refused without it. That conjunct is the install path, not A_M (T14). Hand install from the skill tree does not set VIA-PORT.",
+  },
 ];
 
 export const PRAXIS = [
@@ -175,13 +181,16 @@ export const PRAXIS = [
     title: "Sign the bits that run, not only the name that logs in",
     body: "pkg RSA, unsigned kldload, unsigned zfs send, unsigned policy files: each is an A_auth of code that T2 set aside. Hybrid ML-DSA + SLH-DSA is the redundancy. One family is not enough; RAID-Z is not a family. Do not wrap ZFS keys in RSA. Do not call the system post-quantum secure while these rows are classical or empty.",
   },
+  {
+    id: "living-paper",
+    title: "pqfreebsd(7) is updated as morphisms land",
+    body: "pqac(7) is the basis and is not rewritten for each morphism. This paper records T6–T17 as they exist. Held rows stay held until you name the skill.",
+  },
 ];
 
-export const ABSTRACT = `Post-quantum cryptography is a claim about the residual hardness of named problems (lattices, hashes, codes) when the adversary's uniform class is BQP rather than BPP. Post-quantum access control, as used here, is a different claim: that the defender's authorization relation is not an instance of such a problem, and therefore does not collapse under Shor or Grover.
+export const ABSTRACT = `pqac(7) is the basis: A_D, A_M, and MMU translation are quantum-adversary-stable mediation on a von Neumann FreeBSD defender — not post-quantum cryptography, not a quantum ISA. T1 and T2 are freebsd-mac-grok. T3–T5 remain the plant and the observation function.
 
-pqfreebsd derives from freebsd-mac-grok. That suite packaged A_M — mac_lomac(4) integrity, orthogonal modules, ZFS recursive snapshots, PREINSTALL recovery — and wrote pqac(7) as the paper. T1 and T2 are those packages. What the slogans omitted, and what this skill layers on, is Anderson's third property and the residual access matrix: a filesystem-level Integrity Evidence ledger, and a restricted A_D that is established at create and repaired on drift.
-
-The system is not therefore post-quantum secure. Mediation is quantum-adversary-stable; the code the monitor interprets is not. Two further requirements are not implemented in this pass: payload integrity confirmable to a certain extent (T10 / pqconfirm), and authentication of code with two independent signature families (T11 / pqcode, pqzfs).`;
+pqfreebsd(7) is the living paper. It builds onward: Integrity Evidence, restricted A_D, successive policy, claims that degrade by conjunct, a catalog of the cryptographic chain of trust, parameterized bounds, a gated Forth splash, and a port that will not pretend a pkg is the operator. Mediation does not collapse under Shor; the bits the monitor interprets still may. This page records what holds, what is held, and where each proof stops.`;
 
 export const EXOTERIC = `Authentication binds an identity to a process. Authorization relates that process to objects and to regions of the store. The first, on contemporary FreeBSD, is cryptographic or a local console. The second is an access matrix (DAC: owner-directed chmod and chown, uid/gid) composed with a lattice policy (MAC) composed with translation rights (MMU).
 
@@ -195,6 +204,8 @@ Imperviousness is a non-interference statement: traces that agree on low inputs 
 
 export const DERIVATION = `freebsd-mac-grok ships three skills. freebsd-mac-lomac writes roles as pw(8) groups, the official PLM, Xorg and /dev overlays, PREINSTALL uninstall. freebsd-mac-generic writes orthogonal modules (seeotheruids by default). freebsd-mac is the umbrella: zfs snapshot -r (filesystems and zvols) and optional zpool-checkpoint(8) before and after staging. No bectl(8). Sibling max-headroom-grok installs the agent wrapper; sandbox subjects are where agents live.
 
-pqfreebsd does not replace those packages. It interviews, then emits a result directory that composes them and adds two morphisms. pqledger: an append-only, hash-chained dataset labeled high, fed by audit(4) and by policy events. pqdac: a restricted specfile, first-match like setfsmac, with oneestablish, testdrift, onerepair, and optional ugidfw generation. test* before one*. Never kldload until a test window. Recovery remains PREINSTALL plus the recursive snap.
+pqfreebsd does not replace those packages. It interviews, then emits a result directory that composes them and adds morphisms as they land. pqledger: append-only, hash-chained, labeled high. pqdac: restricted spec, first-match, establish/repair/prevent. pqaudit: oneaudit / onepropagate, chained catalog hashes. pqboot: Forth ASCII+ANSI splash, gated. sysutils/pqfreebsd: in-tree port; skill-capable LLM attested before via-port oneenforce. test* before one*. Recovery remains PREINSTALL plus the recursive snap.
 
-Held, required, not this pass: pqconfirm — subject-visible confirmation that the bits read are the bits written, to the extent of a hash. pqcode — authentication of kernel, kld, policy, and emitted scripts with ML-DSA and SLH-DSA. pqzfs — the store: sha512 not fletcher, send-stream signatures, wrapping keys that are not RSA. mac-sebsd — FLASK/TE, which is unsigned code-equivalent until pqcode exists.`;
+pqfreebsd(7) is updated as those morphisms land. pqac(7) remains the basis and is not rewritten for each one.
+
+Held, required, not this pass: pqconfirm, pqcode, pqzfs, mac-sebsd, measured boot.`;

@@ -3,12 +3,14 @@
 .Os
 .Sh NAME
 .Nm pqfreebsd
-.Nd post-quantum access control: ledger evidence and repaired A_D
+.Nd post-quantum trusted FreeBSD: a paper built on pqac(7)
 .Sh SYNOPSIS
 .Nm
-extends
-.Xr pqac 7 .
+is the living paper of the suite.
+.Xr pqac 7
+is the basis; this page builds onward as morphisms land.
 .Bd -literal -offset indent
+mandoc -T pdf pqac.7 > pqac.pdf
 mandoc -T pdf pqfreebsd.7 > pqfreebsd.pdf
 mandoc -T lint pqfreebsd.7
 .Ed
@@ -22,30 +24,113 @@ and MMU translation are quantum-adversary-stable mediation on a von Neumann
 defender: not post-quantum cryptography, not a quantum ISA.
 T1 and T2 are implemented by
 .Nm freebsd-mac-grok .
+T3–T5 remain the plant and the observation function
+.Em O .
 .Pp
-What the slogans omitted is Anderson's third property and the residual
-access matrix.
 .Nm
-packages those as morphisms.
-.Em pqledger
-is a filesystem-level Integrity Evidence chain.
-.Em pqdac
-is a restricted
-.Em A_D
-established at create and repaired on drift.
-Neither is Kyber.
-Neither is Faraday.
+is the trusted base around that mediation.
+It is not Kyber in the kernel.
+It packages Anderson's third property, the residual access matrix,
+successive policy as an auditable object, claims that degrade by conjunct,
+a catalog of the cryptographic chain of trust, parameterized bounds, a
+gated Forth splash, and a port that will not pretend a pkg is the operator.
 .Pp
-A further requirement of the system is
-.Em not
-implemented in this pass: the data itself must have integrity that can
-be confirmed, to a certain extent
-.Pq T10, Nm pqconfirm .
+The system is not therefore post-quantum secure.
+Mediation does not collapse under Shor; the bits the monitor interprets
+still may.
+This paper records what holds, what is held, and where each proof stops.
+.Sh BASIS
+Read
+.Xr pqac 7
+first.
+The defender is GENERIC with
+.Ql options MAC .
+The adversary is
+.Em BQP
+plus Grover, plus a hypothesized instrument on the plant
+.Pq T3 .
+Exoterically, DAC, LOMAC, and the MMU are interpreted predicates; they do
+not reduce to period-finding.
+Esoterically those predicates are electrical events; if
+.Em O
+does not factor through a kernel-visible subject, T1 and T2 are silent.
+.Pp
+This page does not re-prove T1–T5.
+It inherits them and names the morphisms the slogans omitted.
+.Sh THIS SUITE
+.Nm freebsd-mac-grok
+ships
+.Nm freebsd-mac-lomac
+.Pq roles as groups, official PLM, PREINSTALL ,
+.Nm freebsd-mac-generic
+.Pq orthogonal modules ,
+and the umbrella
+.Pq Xr zfs 8 Cm snapshot Fl r ,
+no
+.Xr bectl 8 .
+.Nm
+composes those packages and adds:
+.Bl -bullet
+.It
+.Nm pqledger
+— Integrity Evidence, high in
+.Em L
+.It
+.Nm pqdac
+— restricted
+.Em A_D ,
+establish / repair / prevent
+.It
+.Nm pqaudit
+—
+.Cm oneaudit ,
+.Cm onepropagate ,
+chained catalog hashes
+.It
+.Nm pqboot
+— Forth logo and brand, gated by attestation; TPM not this pass
+.It
+.Nm sysutils/pqfreebsd
+— in-tree port; skill-capable LLM attested before via-port
+.Cm oneenforce
+.El
+.Pp
+Held until named as skills:
+.Nm pqconfirm ,
+.Nm pqcode ,
+.Nm pqzfs ,
+.Nm mac-sebsd ,
+measured boot.
 .Sh THESES
 Deniable separately.
 T1–T5 remain
 .Xr pqac 7 .
 .Bl -tag -width T10xx
+.It T1
+Membership in
+.Em BQP
+does not by itself produce a classical write accepted by the reference
+monitor.
+.It T2
+.Em A_D ,
+.Em A_M ,
+and MMU translation are quantum-adversary-stable mediation.
+They are post-quantum access control in that sense, and not post-quantum
+cryptography.
+.It T3
+.Pq working hypothesis
+Some instrument on the plant, possibly entanglement-enhanced, can
+distinguish defender computation.
+.It T4
+If
+.Em O
+factors through a kernel-visible subject, T1 and T2 constrain
+.Em O .
+If not, T1 and T2 are silent and the property is physical non-interference.
+.It T5
+Quantum advantage for
+.Em O
+is not free, and is not Shor's corollary.
 .It T6
 Unrestricted
 .Em A_D
@@ -107,15 +192,12 @@ subject-visible confirmation API.
 A content digest, or a Merkle over the labeled store, bound to a ledger
 checkpoint, is confirmable to the extent of the hash.
 Grover halves the bits.
-This is not Faraday and not information-theoretic.
 Next skill:
 .Nm pqconfirm .
 .It T11
 .Pq required; not this pass
 A PQ-stable monitor interpreting RSA-signed code is a forged policy,
 correctly enforced.
-T2 is mediation, not a cryptographic game.
-The system is not therefore post-quantum secure.
 Kernel, klds, pkg, policy, and
 .Xr zfs 8
 send streams are code, or code-shaped.
@@ -123,9 +205,9 @@ If they are unsigned, or signed with RSA/ECC, Shor forges the input to
 .Em A_M .
 Authentication here is of code, not of credentials.
 Redundancy is two independent reductions: ML-DSA
-.Pq FIPS 204, lattices
+.Pq FIPS 204
 and SLH-DSA
-.Pq FIPS 205, hashes
+.Pq FIPS 205
 — not two disks.
 Fletcher, RAID-Z, and AES-at-rest are not a second signature.
 Held:
@@ -141,7 +223,11 @@ the splash name becomes
 .Nm pqfreebsd ;
 the beastie is replaced by the shield
 .Pq the armor of God ;
-the loader is taken off the unsigned GENERIC path only as far as this pass
+.Pa /boot/logo-pqfreebsd.4th
+plays an ASCII sword, a heater, and an ANSI gleam;
+.Pa /boot/brand-pqfreebsd.4th
+is the wordmark.
+The loader is taken off the unsigned GENERIC path only as far as this pass
 can close.
 TPM and measured boot are not this pass.
 Default is no.
@@ -162,11 +248,13 @@ Claims degrade by conjunct, not as a product.
 A missing or stranded protocol weakens only the claims that named it.
 If the box cannot securely transport the Integrity Evidence to another host
 and have that host validate the store, the off-host IE claim is degraded.
-Write-up, local chain, repaired A_D, successive policy, and the splash are
-not thereby false.
-A deployment that includes and enables that module, and adheres to its
-protocol, keeps those claims in full.
-Silent (module not included) is not degraded (module included, protocol unmet).
+Write-up, local chain, repaired
+.Em A_D ,
+successive policy, and the splash are not thereby false.
+Silent
+.Pq module not included
+is not degraded
+.Pq module included, protocol unmet .
 Do not report the suite as a single bit.
 .It T15
 .Pq held
@@ -175,8 +263,9 @@ trusted base, distinct from T2.
 Walk firmware db, loader, kernel, kld, pkg, freebsd-update, policy, rc.d,
 ledger checkpoint, zfs send, replica transport.
 Each hop that is cryptography must eventually be post-quantum:
-ML-DSA and SLH-DSA for signatures, ML-KEM for transport, SHA-512 or SHA-3
-Grover-accounted for hashes.
+ML-DSA and SLH-DSA for signatures, ML-KEM
+.Pq FIPS 203
+for transport, SHA-512 or SHA-3 Grover-accounted for hashes.
 AES-at-rest is secrecy, not origin.
 Hybrid is a transition particular; Shor still forges the classical half.
 A classical or missing hop breaks the chain from that point down.
@@ -196,22 +285,32 @@ Cryptographic particulars have numbers, already birthday- and
 Grover-accounted, or an honest 0.
 A zero on pkg-RSA does not zero write-up.
 Empty bounds are the remainder of the work.
-Do not ship “provably secure” without this sheet.
-.It Port
+Do not ship
+.Dq provably secure
+without this sheet.
+.It T17
 .Nm sysutils/pqfreebsd
-stages the suite.
-Intended operation is by a sufficiently advanced LLM that can operate the
-skills.
+is the intended install path once the skills exist.
+It stages; it does not
+.Xr kldload 8 .
+Intended operation is by a sufficiently advanced large language model that
+can operate the skills
+.Pq interview, Cm test* before Cm one* , Known issues, this paper .
 The port cannot prove a model is advanced.
 .Nm pqfreebsd-llm-check
-then
-.Va pqfreebsd_llm_attested=YES .
+finds a candidate;
+.Va pqfreebsd_llm_attested=YES
+is the operator's conjunct.
 via-port
 .Cm oneenforce
-is refused without that conjunct.
+is refused without it.
+That conjunct is the install path, not
+.Em A_M
+.Pq T14 .
+Hand install from the skill tree does not set
+.Pa VIA-PORT .
 .El
-.Sh PRAXIS
-.Ss Genesis is a named record
+.Sh LEDGER
 An empty chain is not evidence.
 The first record names the policy hash, the dataset, and the hash.
 .Xr audit 4
@@ -220,45 +319,124 @@ is the in-band source;
 is not the chain.
 Rotation appends a checkpoint record.
 Rewrite is a bug.
-.Ss Label the ledger before enforce
-A high dataset unlabeled at
+Label the dataset
+.Ql high
+before
 .Cm enforce
-is an unlabeled hole
-.Pq empty interpretation .
-Overlays precede the official PLM because the combinator is first-match.
-.Ss Repair bounds duration, not the syscall
-.Xr chmod 2
-still succeeds in repair mode.
-A concurrent reader may see the drifted mode.
-Say so.
+or it is an unlabeled hole.
+If a replica module is included, a second host stores and validates HEAD.
+Network-stranded transport degrades only that claim
+.Pq T14 .
+.Sh A_D
+The spec is a restricted language: path-regex, owner, group, mode.
+No arbitrary grant verbs
+.Pq the HRU cut .
+First-match, same combinator as
+.Xr setfsmac 8 .
+.Cm observe
+logs;
+.Cm repair
+restores after the syscall
+.Pq a concurrent reader may see drift ;
 .Cm prevent
-is
-.Xr mac_bsdextended 4
-generated from the same spec.
-Do not rest a proof on aux covering xattrs
-.Pq PR 178667 .
-.Ss Restricted language
-No arbitrary grant verbs in the spec.
-That is the HRU cut.
-.Ss Event integrity is not payload integrity
-The ledger confirms an op happened.
-It does not confirm the bytes of a file.
+generates
+.Xr ugidfw 8
+from the same spec.
+Empty ugidfw is allow-all.
+.Sh SUCCESSIVE POLICY
+.Cm onepropagate
+regenerates DAC, ugidfw, login fragment, overlay, and splash artifacts from
+POLICY, applies, and appends a catalog hash chained to the previous
+revision.
+.Cm oneaudit
+walks consistency and the kv-diff of live versus applied.
+An audit that cannot show what changed is not an audit.
+.Sh CHAIN OF TRUST
+Origin hops, firmware to replica, are catalogued; see the workbench
+.Pa Code
+page and T15.
+Today the chain of origin breaks at hop 1
+.Pq UEFI RSA
+or earlier if unsigned.
+Hash-only hops are integrity, not origin, until a PQ signature covers the
+root.
+.Sh BOUNDS
+The beta-end sheet
+.Pq T16
+names, for each remaining claim, classical bits or n/a, qubit BQP, qudit,
+and CVQC, what is proven, and where the proof stops.
+Mediation is n/a in every model: a qudit or analog machine still writes
+through the hook.
+Fill the sheet as modules land.
+.Sh BOOT
+.Pa logo-pqfreebsd.4th
+is Forth: ASCII sword, heater, SGR gleam, wordmark.
+.Pa brand-pqfreebsd.4th
+is the menu name.
+Serial still gets the characters.
+.Cm oneboot
+copies them only after
+.Va BOOT_SATISFIED=YES .
+TPM is not this pass.
+.Sh PORT
+Copy
+.Pa ports/sysutils/pqfreebsd
+to
+.Pa /usr/ports/sysutils/pqfreebsd .
+OPTION LLM
+.Pq default
+installs
+.Nm pqfreebsd-llm-check
+and the via-port refuse.
+A sufficiently advanced model, here, is one that can operate the skills
+named in this paper.
+.Sh PRAXIS
+All of
+.Xr pqac 7
+PRAXIS still applies: empty interpretation, combinators, moving
+.Em Obj
+alphabet, login cut, RDTUN ifnets, ZFS extattr, integrity as a bug,
+conjunction is not a product, recovery inside isolation, authentication
+still in front.
+Additionally:
+.Bl -bullet
+.It
+Genesis is a named record.
+.It
+Event integrity is not payload integrity.
 Do not pretend a scrub discharges T10.
-.Ss Sign the bits that run
-.Xr pkg 8
-RSA, unsigned
-.Xr kldload 8 ,
-unsigned
-.Nm zfs send ,
-unsigned policy files: each is an
-.Em A_auth
-of code that T2 set aside.
-Hybrid ML-DSA + SLH-DSA is the redundancy.
+.It
+Sign the bits that run
+.Pq T11, T15 .
 Do not wrap ZFS keys in RSA.
-Do not call the system post-quantum secure while those rows are classical
-or empty.
+.It
+Do not rebrand an untrusted box
+.Pq T12 .
+.It
+Do not report the suite as a single bit
+.Pq T14 .
+.It
+Do not ship
+.Dq provably secure
+without the bounds sheet
+.Pq T16 .
+.It
+Do not
+.Xr kldload 8
+in the interview.
+.Cm test*
+before each
+.Cm one* .
+.It
+via-port:
+.Nm pqfreebsd-llm-check
+before
+.Cm oneenforce .
+.El
 .Sh SEE ALSO
 .Xr pqac 7 ,
+.Xr pqfreebsd 4 ,
+.Xr pqfreebsd.conf 5 ,
 .Xr pqfreebsd 8 ,
 .Xr pqledger 8 ,
 .Xr pqdac 8 ,
@@ -267,34 +445,45 @@ or empty.
 .Xr audit 4 ,
 .Xr ugidfw 8 ,
 .Xr setfsmac 8 ,
-.Xr zfs 8
+.Xr zfs 8 ,
+.Xr loader.conf 5
 .Pp
 Anderson, J. P., ESD-TR-73-51, 1972.
 Harrison, M. A., Ruzzo, W. L., Ullman, J. D., CACM 19(8), 1976.
+NIST FIPS 203, 204, 205.
 .Xr pqac 7
-for Bell, Biba, Fraser, Goguen–Meseguer, Shor, Grover, NIST PQC
-.Pq A_auth only .
+for Bell, Biba, Fraser, Goguen–Meseguer, Shor, Grover, and the plant.
 .Sh HISTORY
 Spoken the same day as
 .Xr pqac 7
 as the missing morphisms: evidence and repaired
 .Em A_D .
-T10 recorded as a requirement and held.
+Extended the same day as a living paper: T10–T17 recorded as the suite
+grew
+.Pq payload, code-auth, gated Forth splash, successive policy, piecemeal claims, chain of trust, parameterized bounds, via-port LLM .
+This page is updated as morphisms land.
+.Xr pqac 7
+remains the basis and is not rewritten for each morphism.
 .Sh AUTHORS
 .An Grok
 and the operator of
 .Nm freebsd-mac-grok ,
 2026-08-22.
 T1 and T2 are the parent packages.
-T6–T9 remain the operator's until the host carries them.
-T10 remains the operator's, unimplemented.
+T6–T9, T13, T14, T16, T17 are this suite.
+T10–T12 and T15 remain the operator's, held or gated.
 .Sh BUGS
 .Dq Post-quantum
 still denotes Kyber unless
 .Xr pqac 7
 is said aloud.
 This paper is unsigned.
+The Forth logo is not a second signature family.
+The port cannot prove a model is advanced.
 .Sh LICENSE
 Light-ware License.
 Copyright (c) 2026 Brian Fundakowski Feldman.
 This product includes software developed by Brian Fundakowski Feldman.
+See
+.Pa LICENSE
+in the source distribution.

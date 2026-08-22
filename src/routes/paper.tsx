@@ -13,11 +13,10 @@ function Paper() {
   return (
     <article className="mx-auto max-w-3xl">
       <div className="rounded-xl bg-paper px-6 py-10 text-ink md:px-12 md:py-14">
-        <p className="text-xs uppercase tracking-[0.2em] text-subtle">pqac(7) · pqfreebsd(7) · 22 August 2026</p>
-        <h1 className="mt-4 text-4xl font-medium tracking-[-0.03em]">pqac</h1>
+        <p className="text-xs uppercase tracking-[0.2em] text-subtle">pqac(7) basis · pqfreebsd(7) living paper · 22 August 2026</p>
+        <h1 className="mt-4 text-4xl font-medium tracking-[-0.03em]">pqfreebsd</h1>
         <p className="mt-2 text-lg italic text-subtle">
-          post-quantum access control: exoteric mediation, esoteric observation — and the two
-          morphisms the slogans omitted
+          post-quantum trusted FreeBSD — built on pqac(7), updated as morphisms land
         </p>
         <Section title="Abstract">{ABSTRACT}</Section>
         <Section title="Exoteric: naming and mediation">{EXOTERIC}</Section>
@@ -50,10 +49,9 @@ function Paper() {
         </ol>
         <p className="mt-12 text-sm text-subtle">
           Light-ware License. Copyright © 2026 Brian Fundakowski Feldman. This product includes
-          software developed by Brian Fundakowski Feldman. T1 and T2 are the parent packages. T6–T9
-          remain the operator's until the host carries them. T10–T12 and T15 are required and held.
-          T14 is how a missing conjunct is reported. T16 is the beta-end sheet: parameterized bounds
-          per measure, classical and quantum, and no slogan past them.
+          software developed by Brian Fundakowski Feldman. pqac(7) is the basis. pqfreebsd(7) is
+          updated as morphisms land. T1 and T2 are the parent packages. T10–T12 and T15 are required
+          and held. T17 is the via-port LLM conjunct, not A_M.
         </p>
       </div>
     </article>
