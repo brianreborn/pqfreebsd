@@ -51,7 +51,7 @@ export const SKILL_NODES: SkillNode[] = [
   {
     id: "generic",
     label: "mac-generic",
-    subtitle: "seeotheruids",
+    subtitle: "orthogonal catalog",
     kind: "parent",
     href: "/issues",
     x: 382,

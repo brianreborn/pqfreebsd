@@ -186,6 +186,11 @@ export const PRAXIS = [
     title: "pqfreebsd(7) is updated as morphisms land",
     body: "pqac(7) is the basis and is not rewritten for each morphism. This paper records T6–T17 as they exist. Held rows stay held until you name the skill.",
   },
+  {
+    id: "skill-cut",
+    title: "One skill per proof, not per .ko",
+    body: "Do not put LOMAC and SEBSD under an “RBAC” skill. LOMAC is high-integrity / low-integrity. SEBSD is Type Enforcement. Groups-as-roles is the binding, already in freebsd-mac-lomac, not a third axiom. Orthogonal modules (seeotheruids, ifoff, partition, …) stay in freebsd-mac-generic’s catalog until enabled. mac-sebsd, pqzfs, pqcode wait until named. Same rc.d texture is not the same proof.",
+  },
 ];
 
 export const ABSTRACT = `pqac(7) is the basis: A_D, A_M, and MMU translation are quantum-adversary-stable mediation on a von Neumann FreeBSD defender — not post-quantum cryptography, not a quantum ISA. T1 and T2 are freebsd-mac-grok. T3–T5 remain the plant and the observation function.

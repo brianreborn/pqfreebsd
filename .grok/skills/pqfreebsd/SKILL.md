@@ -122,6 +122,9 @@ sh scripts/checkpoint.sh "milestone: <name> — <what landed>"
 
 Do not skip this. Add new MAC skills as **top-level git submodules**, like
 `vendor/freebsd-mac-grok`, only after the operator names the skill.
+Do **not** invent `mac-rbac` that wraps LOMAC and SEBSD. One skill per
+proof: lattice stays parent lomac; orthogonal `.ko` stay in generic's
+catalog; SEBSD is its own skill when named (Type Enforcement, not grades).
 
 ## Port (after the skills exist)
 

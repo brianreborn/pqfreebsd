@@ -138,6 +138,59 @@ Held until named as skills:
 .Nm pqzfs ,
 .Nm mac-sebsd ,
 measured boot.
+.Sh SKILLS
+One skill per
+.Em proof ,
+not per
+.Pa .ko
+and not per similar rc.d texture.
+.Pp
+.Nm freebsd-mac
+is the administrative texture: snapshot, PREINSTALL,
+.Cm test* / one* ,
+compose.
+.Nm freebsd-mac-lomac
+is the integrity lattice
+.Pq high-integrity / low-integrity; groups as the role binding .
+.Nm freebsd-mac-generic
+is the catalog of orthogonal modules that share that texture
+.Pq Xr mac_seeotheruids 4
+by default; ifoff, partition, portacl, biba, mls, none stay in the catalog
+until enabled, not as new top-level skills .
+Do not fork a skill because the daemon is copy-paste.
+.Pp
+Do
+.Em not
+put LOMAC and SEBSD under an
+.Dq RBAC
+skill.
+RBAC is roles, permissions, sessions.
+LOMAC is a Biba-like integrity lattice.
+SEBSD is Type Enforcement
+.Pq FLASK, types, a compiled policy language .
+Groups-as-roles is how this suite
+.Em binds
+humans and agents to those axioms; it is not the axiom.
+A skill named RBAC that loaded both would teach the operator that types
+are grades.
+They are not.
+Conjunction is not a product of proofs
+.Pq Xr pqac 7 .
+.Pp
+.Nm mac-sebsd
+remains a separate skill, created only when the operator names it: different
+language, different compiler, unsigned policy is code-equivalent
+.Pq T11 .
+.Nm pqzfs
+and
+.Nm pqcode
+are different games
+.Pq store, signatures
+even if the rc.d looks familiar.
+.Nm pqdac
+is restricted
+.Em A_D ,
+not a second lattice.
 .Sh THESES
 Deniable separately.
 T1–T5 remain

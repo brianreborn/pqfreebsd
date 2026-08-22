@@ -208,4 +208,12 @@ export const ISSUES: Issue[] = [
     happens: "oneenforce after pkg without a skill-capable LLM.",
     does: "via-port: pqfreebsd-llm-check; sysrc pqfreebsd_llm_attested=YES. Refuse oneenforce until attested. The port cannot prove “advanced.” Hand skill-path is a different conjunct.",
   },
+  {
+    id: "skill-rbac-bin",
+    layer: "suite",
+    source: "pqfreebsd(7) SKILLS",
+    issue: "One skill that loads both LOMAC and SEBSD and calls it RBAC",
+    happens: "Operator thinks types are grades. Conjunction treated as a product.",
+    does: "Keep lomac and generic as parent. Catalog extra .ko in generic. SEBSD is its own skill when named. Groups-as-roles is the binding, not the axiom.",
+  },
 ];
