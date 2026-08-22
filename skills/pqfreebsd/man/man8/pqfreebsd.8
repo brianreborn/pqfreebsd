@@ -1,0 +1,55 @@
+.Dd August 22, 2026
+.Dt PQFREEBSD 8
+.Os
+.Sh NAME
+.Nm pqfreebsd
+.Nd umbrella rc.d for ledger and repaired DAC on FreeBSD MAC
+.Sh SYNOPSIS
+.Nm
+.Cm oneinstall | onesnapshot | onestage | onesnapshot_after | onestart |
+.Cm oneenforce | oneuninstall | test Ns Ar cmd
+.Sh DESCRIPTION
+.Nm
+is the suite installer.
+ZFS recursive snapshots
+.Pq filesystems and zvols
+happen only here, before and after staging.
+There is no
+.Xr bectl 8
+integration.
+Children
+.Nm pqledger
+and
+.Nm pqdac ,
+and the parent
+.Nm mac_grok
+packages if installed, skip their own snapshots.
+.Pp
+.Va pqfreebsd_enable
+defaults to
+.Dq NO .
+Use
+.Xr service 8
+.Cm one*
+prefixes.
+Do not
+.Cm enforce
+until a root console and a clean parent
+.Cm checklabels .
+.Sh FILES
+.Bl -tag -width indent
+.It Pa /usr/local/etc/rc.d/pqfreebsd
+.It Pa /usr/local/etc/pqfreebsd/
+.It Pa /var/db/pqfreebsd/PREINSTALL/
+.It Pa /var/db/pqfreebsd/zfs.snaps
+.El
+.Sh SEE ALSO
+.Xr pqac 7 ,
+.Xr pqfreebsd 7 ,
+.Xr pqledger 8 ,
+.Xr pqdac 8 ,
+.Xr mac_grok 8 ,
+.Xr zfs 8
+.Sh LICENSE
+Light-ware License.
+Copyright (c) 2026 Brian Fundakowski Feldman.

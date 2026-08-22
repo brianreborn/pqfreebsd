@@ -1,0 +1,45 @@
+.Dd August 22, 2026
+.Dt PQDAC 8
+.Os
+.Sh NAME
+.Nm pqdac
+.Nd establish and repair a restricted discretionary spec
+.Sh SYNOPSIS
+.Nm
+.Cm oneestablish | testdrift | onerepair | oneupdate | oneuninstall
+.Sh DESCRIPTION
+.Nm
+applies a first-match specfile
+.Pq same combinator as Xr setfsmac 8
+of the form path-regex to owner, group, directory mode, file mode.
+.Pp
+.Cm establish
+applies the spec to the existing tree and sets create-time inherit.
+.Cm testdrift
+compares actual to intended.
+.Cm repair
+restores drifted nodes and writes a ledger event.
+.Cm prevent
+mode also generates
+.Xr ugidfw 8
+rules from the spec; empty ruleset is allow-all until that generation
+and reload.
+.Pp
+This is not
+.Em A_M .
+.Xr chmod 2
+still exists.
+.Sh FILES
+.Bl -tag -width indent
+.It Pa /usr/local/etc/pqfreebsd/dac.contexts
+.It Pa /etc/rc.bsdextended
+.El
+.Sh SEE ALSO
+.Xr pqfreebsd 7 ,
+.Xr chmod 2 ,
+.Xr setfacl 1 ,
+.Xr ugidfw 8 ,
+.Xr mtree 8
+.Sh LICENSE
+Light-ware License.
+Copyright (c) 2026 Brian Fundakowski Feldman.

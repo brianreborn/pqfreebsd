@@ -1,0 +1,35 @@
+.Dd August 22, 2026
+.Dt PQFREEBSD.CONF 5
+.Os
+.Sh NAME
+.Nm pqfreebsd.conf
+.Nd POLICY, SUITE, dac.contexts, ledger.conf
+.Sh DESCRIPTION
+Emitted by the
+.Nm pqfreebsd
+skill after interview.
+.Pp
+.Pa POLICY
+is
+.Ql KEY=value
+for groups, labels, ledger dataset, DAC mode, hash name.
+.Pa dac.contexts
+is first-match regex lines.
+.Pa ledger.conf
+names the dataset and forbids rewrite.
+.Pp
+Roles are
+.Xr pw 8
+groups bound to
+.Xr login.conf 5
+classes.
+There is no group-to-label map in
+.Xr login.conf 5
+itself.
+.Sh SEE ALSO
+.Xr login.conf 5 ,
+.Xr pqfreebsd 8 ,
+.Xr cap_mkdb 1
+.Sh LICENSE
+Light-ware License.
+Copyright (c) 2026 Brian Fundakowski Feldman.

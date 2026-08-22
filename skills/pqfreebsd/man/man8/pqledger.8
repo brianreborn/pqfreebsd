@@ -1,0 +1,42 @@
+.Dd August 22, 2026
+.Dt PQLEDGER 8
+.Os
+.Sh NAME
+.Nm pqledger
+.Nd filesystem Integrity Evidence ledger
+.Sh SYNOPSIS
+.Nm
+.Cm onestage | onestart | onerotate | oneverify | oneuninstall | testdrift
+.Sh DESCRIPTION
+.Nm
+maintains an append-only hash-chained log on a ZFS dataset labeled
+.Ql lomac/high .
+The in-band source is
+.Xr audit 4
+plus policy morphisms
+.Pq establish, repair, label, enforce .
+.Pa /var/audit
+is not tamper-evident.
+.Pp
+.Cm rotate
+appends a checkpoint record.
+Rewrite is a bug.
+.Cm verify
+walks
+.Em prevHash
+and the content hash.
+Production hash is SHA-512.
+.Sh FILES
+.Bl -tag -width indent
+.It Pa /usr/local/etc/pqfreebsd/ledger.conf
+.It Pa /var/db/pqledger/chain
+.El
+.Sh SEE ALSO
+.Xr pqfreebsd 7 ,
+.Xr audit 4 ,
+.Xr auditd 8 ,
+.Xr praudit 1 ,
+.Xr zfs 8
+.Sh LICENSE
+Light-ware License.
+Copyright (c) 2026 Brian Fundakowski Feldman.

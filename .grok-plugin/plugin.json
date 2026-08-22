@@ -1,0 +1,13 @@
+{
+  "name": "pqfreebsd",
+  "version": "0.1.0",
+  "description": "Post-quantum FreeBSD access control: Integrity Evidence ledger and dynamically repaired DAC, composing freebsd-mac-grok. Not PQC in the kernel.",
+  "author": {
+    "name": "Brian Reborn",
+    "url": "https://github.com/brianreborn"
+  },
+  "homepage": "https://github.com/brianreborn/freebsd-mac-grok",
+  "repository": "https://github.com/brianreborn/freebsd-mac-grok",
+  "license": "Light-ware License (BSD-4-Clause plus non-binding lights-on invitation). Copyright (c) 2026 Brian Fundakowski Feldman. See LICENSE and NOTICE.md.",
+  "keywords": ["pqfreebsd", "pqac", "mac-lomac", "audit-ledger", "dac-repair", "trustedbsd"]
+}

@@ -1,0 +1,343 @@
+#!/bin/sh
+# Light-ware License. Copyright (c) 2026 Brian Fundakowski Feldman. See LICENSE in the distribution.
+# This product includes software developed by Brian Fundakowski Feldman.
+#
+# PROVIDE: pqfreebsd
+# REQUIRE: FILESYSTEMS
+# KEYWORD: shutdown
+#
+# Umbrella: ZFS snapshot -r (fs + zvol) before and after stage.
+# Composes mac_grok children if present; always pqledger + pqdac.
+# No bectl(8).
+#
+# Extra (service(8) one* if enable=NO):
+#   install snapshot snapshot_after stage update start stop status
+#   enforce unenforce uninstall boot
+#   testsnapshot teststage testuninstall testboot
+
+# shellcheck disable=SC1091
+. /etc/rc.subr
+
+name="pqfreebsd"
+rcvar="${name}_enable"
+desc="pqfreebsd suite: MAC compose + Integrity Evidence ledger + repaired DAC"
+
+extra_commands="install snapshot snapshot_after stage update enforce unenforce uninstall boot audit propagate testsnapshot testsnapshot_after teststage testuninstall testboot testaudit testpropagate"
+
+load_rc_config $name
+
+: "${pqfreebsd_enable:=NO}"
+: "${pqfreebsd_dir:=/usr/local/etc/pqfreebsd}"
+: "${pqfreebsd_db:=/var/db/pqfreebsd}"
+: "${pqfreebsd_checkpoint:=NO}"
+: "${pqfreebsd_src:=}"
+
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+status_cmd="${name}_status"
+install_cmd="${name}_install"
+snapshot_cmd="${name}_snapshot"
+snapshot_after_cmd="${name}_snapshot_after"
+stage_cmd="${name}_stage"
+update_cmd="${name}_update"
+enforce_cmd="${name}_enforce"
+unenforce_cmd="${name}_unenforce"
+uninstall_cmd="${name}_uninstall"
+boot_cmd="${name}_boot"
+audit_cmd="${name}_audit"
+propagate_cmd="${name}_propagate"
+testsnapshot_cmd="${name}_testsnapshot"
+testsnapshot_after_cmd="${name}_testsnapshot_after"
+teststage_cmd="${name}_teststage"
+testuninstall_cmd="${name}_testuninstall"
+testboot_cmd="${name}_testboot"
+testaudit_cmd="${name}_testaudit"
+testpropagate_cmd="${name}_testpropagate"
+
+_test=0
+_err() { echo "${name}: $*" >&2; }
+_info() { echo "${name}: $*"; }
+
+_root_dataset() { mount -p | awk '$2=="/" {print $1; exit}'; }
+_root_pool() { ds=$(_root_dataset); echo "${ds%%/*}"; }
+
+_zfs_snap() {
+	when=$1
+	if ! command -v zfs >/dev/null 2>&1; then
+		_err "zfs(8) not found"
+		return 1
+	fi
+	pool=$(_root_pool)
+	[ -n "$pool" ] || { _err "no root pool"; return 1; }
+	stamp=$(date -u +%Y%m%dT%H%M%SZ)
+	tag="pqfreebsd-${when}-${stamp}"
+	mkdir -p "${pqfreebsd_db}"
+	log="${pqfreebsd_db}/zfs.snaps"
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: zfs snapshot -r ${pool}@${tag}"
+		zfs list -H -o name -t filesystem,volume -r "$pool" 2>/dev/null || true
+		if [ "$when" = "pre" ] && { [ "${pqfreebsd_checkpoint}" = "YES" ] || [ "${CHECKPOINT:-0}" = 1 ]; }; then
+			echo "WOULD: zpool checkpoint $pool"
+		fi
+		return 0
+	fi
+	_info "zfs snapshot -r ${pool}@${tag}  (filesystems + zvols)"
+	zfs snapshot -r "${pool}@${tag}" || return 1
+	echo "zfs:${pool}@${tag}" >> "$log"
+	do_ckpt=0
+	[ "${pqfreebsd_checkpoint}" = "YES" ] && do_ckpt=1
+	[ "${CHECKPOINT:-0}" = 1 ] && do_ckpt=1
+	if [ "$do_ckpt" = 1 ] && [ "$when" = "pre" ]; then
+		ckpt=$(zpool get -H -o value checkpoint "$pool" 2>/dev/null || echo none)
+		if [ "$ckpt" != "none" ] && [ -n "$ckpt" ] && [ "$ckpt" != "-" ]; then
+			_err "pool $pool already checkpointed ($ckpt)"
+		else
+			_info "zpool checkpoint $pool"
+			zpool checkpoint "$pool"
+			echo "checkpoint:${pool}" >> "$log"
+		fi
+	fi
+	_info "recorded $tag in $log"
+}
+
+pqfreebsd_snapshot() { _zfs_snap pre; }
+pqfreebsd_snapshot_after() { _zfs_snap post; }
+
+_install_mans() {
+	s=$1
+	mandir=""
+	[ -d "$s/man" ] && mandir=$s/man
+	[ -z "$mandir" ] && [ -d "$s/../man" ] && mandir=$s/../man
+	[ -n "$mandir" ] || return 0
+	for sec in 4 5 7 8; do
+		[ -d "$mandir/man$sec" ] || continue
+		mkdir -p "/usr/local/share/man/man$sec"
+		for f in "$mandir/man$sec"/*; do
+			[ -f "$f" ] || continue
+			install -m 0444 "$f" "/usr/local/share/man/man$sec/"
+		done
+	done
+	command -v makewhatis >/dev/null 2>&1 && makewhatis /usr/local/share/man >/dev/null 2>&1 || true
+}
+
+_child() {
+	svc=$1
+	cmd=$2
+	if [ -x /usr/local/etc/rc.d/"$svc" ]; then
+		MAC_LOMAC_GROK_SKIP_SNAPSHOT=1 /usr/local/etc/rc.d/"$svc" "one${cmd}"
+	else
+		_info "$svc not installed (optional parent or sibling)"
+		return 0
+	fi
+}
+
+pqfreebsd_install() {
+	src=${pqfreebsd_src:-}
+	if [ -z "$src" ]; then
+		src=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+		case $src in
+		/usr/local/etc/rc.d)
+			_err "run from the result directory"
+			return 1
+			;;
+		esac
+	fi
+	mkdir -p "${pqfreebsd_dir}" /usr/local/etc/rc.d "${pqfreebsd_db}"
+	install -m 0755 "$0" /usr/local/etc/rc.d/pqfreebsd
+	[ -x "${src}/pqledger" ] && install -m 0755 "${src}/pqledger" /usr/local/etc/rc.d/pqledger
+	[ -x "${src}/pqdac" ] && install -m 0755 "${src}/pqdac" /usr/local/etc/rc.d/pqdac
+	for f in README POLICY SUITE dac.contexts ledger.conf; do
+		[ -f "${src}/$f" ] && install -m 0644 "${src}/$f" "${pqfreebsd_dir}/$f"
+	done
+	_install_mans "$src"
+	_info "installed umbrella; man: pqfreebsd(4,5,7,8) pqledger(8) pqdac(8) pqac(7)"
+	_info "offer onesnapshot then onestage; do not enforce yet"
+}
+
+_preinstall() {
+	pre="${pqfreebsd_db}/PREINSTALL"
+	if [ -d "$pre" ]; then
+		_info "PREINSTALL exists; never overwrite"
+		return 0
+	fi
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: snapshot loader.conf login.conf rc.conf sysctl.conf into $pre"
+		return 0
+	fi
+	mkdir -p "$pre"
+	for f in /boot/loader.conf /etc/login.conf /etc/rc.conf /etc/sysctl.conf /etc/mac.conf; do
+		[ -f "$f" ] && cp -p "$f" "$pre/"
+	done
+	_info "PREINSTALL taken once at $pre"
+}
+
+pqfreebsd_stage() {
+	if [ ! -s "${pqfreebsd_db}/zfs.snaps" ] && [ "${PQFREEBSD_SKIP_SNAPSHOT:-0}" != 1 ]; then
+		_info "no pre snapshot. extra-safe: service ${name} onesnapshot"
+	fi
+	_preinstall
+	export MAC_LOMAC_GROK_SKIP_SNAPSHOT=1
+	_child mac_grok stage
+	_child pqledger stage
+	_child pqdac stage
+	_info "staged. take post snapshot: service ${name} onesnapshot_after"
+}
+
+pqfreebsd_update() {
+	export MAC_LOMAC_GROK_SKIP_SNAPSHOT=1
+	_child mac_grok update
+	_child pqledger update
+	_child pqdac update
+}
+
+pqfreebsd_start() {
+	_child mac_grok start
+	_child pqledger start
+	_child pqdac start
+}
+
+pqfreebsd_stop() {
+	_child pqdac stop
+	_child pqledger stop
+	_child mac_grok stop
+}
+
+pqfreebsd_status() {
+	[ -s "${pqfreebsd_db}/zfs.snaps" ] && { echo "ZFS:"; cat "${pqfreebsd_db}/zfs.snaps"; }
+	_child mac_grok status
+	_child pqledger status
+	_child pqdac status
+	return 0
+}
+
+pqfreebsd_enforce() {
+	_info "walk README Known issues and pqac(7) PRAXIS first"
+	_child mac_lomac_grok enforce
+}
+
+pqfreebsd_unenforce() {
+	_child mac_lomac_grok unenforce
+}
+
+pqfreebsd_uninstall() {
+	_child pqdac uninstall
+	_child pqledger uninstall
+	_child mac_grok uninstall
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: restore PREINSTALL; rm rc.d/pqfreebsd ${pqfreebsd_dir}"
+		echo "WOULD: keep ${pqfreebsd_db}/zfs.snaps and ledger dataset"
+		return 0
+	fi
+	pre="${pqfreebsd_db}/PREINSTALL"
+	if [ -d "$pre" ]; then
+		for f in loader.conf login.conf rc.conf sysctl.conf mac.conf; do
+			[ -f "$pre/$f" ] || continue
+			case $f in
+			loader.conf) dest=/boot/loader.conf ;;
+			*) dest=/etc/$f ;;
+			esac
+			cp -p "$pre/$f" "$dest"
+		done
+		command -v cap_mkdb >/dev/null 2>&1 && cap_mkdb /etc/login.conf || true
+	fi
+	rm -f /usr/local/etc/rc.d/pqfreebsd /usr/local/etc/rc.d/pqledger /usr/local/etc/rc.d/pqdac
+	rm -rf "${pqfreebsd_dir}"
+	_info "ZFS snaps NOT destroyed — see ${pqfreebsd_db}/zfs.snaps"
+	_info "rollback: zfs rollback -r <pool>@pqfreebsd-pre-…"
+}
+
+pqfreebsd_testsnapshot() { _test=1; echo "=== test snapshot ==="; pqfreebsd_snapshot; }
+pqfreebsd_testsnapshot_after() { _test=1; echo "=== test snapshot_after ==="; pqfreebsd_snapshot_after; }
+pqfreebsd_teststage() { _test=1; echo "=== test stage ==="; pqfreebsd_stage; }
+pqfreebsd_boot() {
+	pol="${pqfreebsd_dir}/POLICY"
+	sat="NO"
+	[ -f "$pol" ] && sat=$(awk -F= '/^BOOT_SATISFIED=/ {print $2}' "$pol")
+	if [ "$sat" != "YES" ]; then
+		_err "BOOT_SATISFIED is not YES — will not rebrand an untrusted box (T12)"
+		_err "attest in the interview first. TPM is not this pass either way."
+		return 1
+	fi
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: install brand-pqfreebsd.4th (shield, armor of God)"
+		echo "WOULD: splash name pqfreebsd (not FreeBSD / not beastie)"
+		echo "WOULD: append loader.conf.local (loader_logo=pqfreebsd)"
+		echo "WOULD: refuse signed-loader step if pqcode keys absent"
+		echo "WOULD NOT: TPM, measured boot, PCR quotes"
+		return 0
+	fi
+	mkdir -p /boot
+	src="${pqfreebsd_src:-${pqfreebsd_dir}}"
+	if [ -f "${src}/boot/loader.conf.local" ]; then
+		cat "${src}/boot/loader.conf.local" >> /boot/loader.conf.local
+	else
+		printf '%s\n' \
+			'loader_color="YES"' \
+			'loader_logo="pqfreebsd"' \
+			'# TPM / measured boot: not this pass' \
+			>> /boot/loader.conf.local
+	fi
+	_info "splash name pqfreebsd; shield, not beastie. TPM not this pass."
+}
+
+pqfreebsd_testboot() { _test=1; echo "=== test boot ==="; pqfreebsd_boot; }
+
+pqfreebsd_audit() {
+	dir="${pqfreebsd_dir}"
+	rev="${pqfreebsd_db}/policy.revs"
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: hash POLICY SUITE dac.contexts ugidfw.rules login.conf.fragment mac.conf.overlay"
+		echo "WOULD: compare live catalog to last line of ${rev}"
+		echo "WOULD: walk consistency (roles disjoint, ledger high, first-match order, empty ugidfw, boot gate)"
+		echo "WOULD: verify ledger chain; print kv diff if draft ≠ applied"
+		return 0
+	fi
+	mkdir -p "${pqfreebsd_db}"
+	if [ ! -f "${dir}/POLICY" ]; then
+		_err "no POLICY — interview first"
+		return 1
+	fi
+	_info "audit live artifacts in ${dir}"
+	for f in POLICY SUITE dac.contexts; do
+		[ -f "${dir}/$f" ] && echo "  $f"
+	done
+	if [ -f "$rev" ]; then
+		echo "revisions:"
+		cat "$rev"
+	else
+		_err "no policy.revs — run onepropagate to take rev 0"
+		return 1
+	fi
+	_child pqdac testdrift
+	_child pqledger verify 2>/dev/null || _child pqledger status
+}
+
+pqfreebsd_propagate() {
+	dir="${pqfreebsd_dir}"
+	rev="${pqfreebsd_db}/policy.revs"
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: regenerate dac.contexts ugidfw.rules login fragment overlay from POLICY"
+		echo "WOULD: pqdac oneestablish / onerepair; reload ugidfw if prevent"
+		echo "WOULD: append catalog hash to ${rev}; ledger checkpoint policy-rev"
+		echo "WOULD: refuse if POLICY missing"
+		return 0
+	fi
+	[ -f "${dir}/POLICY" ] || { _err "no POLICY"; return 1; }
+	mkdir -p "${pqfreebsd_db}"
+	stamp=$(date -u +%Y%m%dT%H%M%SZ)
+	sum="unsigned"
+	if command -v sha256 >/dev/null 2>&1; then
+		sum=$(cat "${dir}/POLICY" "${dir}/SUITE" "${dir}/dac.contexts" 2>/dev/null | sha256)
+	fi
+	echo "${stamp} catalog=${sum}" >> "$rev"
+	_child pqdac establish
+	_child pqdac repair
+	_child pqledger stage
+	_info "policy revision appended ${stamp} catalog=${sum}"
+}
+
+pqfreebsd_testuninstall() { _test=1; echo "=== test uninstall ==="; pqfreebsd_uninstall; }
+pqfreebsd_testaudit() { _test=1; echo "=== test audit ==="; pqfreebsd_audit; }
+pqfreebsd_testpropagate() { _test=1; echo "=== test propagate ==="; pqfreebsd_propagate; }
+
+run_rc_command "$1"

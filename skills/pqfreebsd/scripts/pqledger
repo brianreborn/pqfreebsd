@@ -1,0 +1,153 @@
+#!/bin/sh
+# Light-ware License. Copyright (c) 2026 Brian Fundakowski Feldman. See LICENSE in the distribution.
+#
+# PROVIDE: pqledger
+# REQUIRE: FILESYSTEMS
+# KEYWORD: shutdown
+#
+# Filesystem Integrity Evidence. Append-only hash chain on a high dataset.
+# audit(4) is the in-band source; this chain is the evidence.
+# rotate appends a checkpoint record. rewrite is a bug.
+
+# shellcheck disable=SC1091
+. /etc/rc.subr
+
+name="pqledger"
+rcvar="${name}_enable"
+desc="pqfreebsd Integrity Evidence ledger"
+
+extra_commands="install stage update rotate verify uninstall teststage testverify testuninstall"
+
+load_rc_config $name
+
+: "${pqledger_enable:=NO}"
+: "${pqledger_dir:=/usr/local/etc/pqfreebsd}"
+: "${pqledger_db:=/var/db/pqledger}"
+: "${pqledger_dataset:=}"
+
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+status_cmd="${name}_status"
+install_cmd="${name}_install"
+stage_cmd="${name}_stage"
+update_cmd="${name}_update"
+rotate_cmd="${name}_rotate"
+verify_cmd="${name}_verify"
+uninstall_cmd="${name}_uninstall"
+teststage_cmd="${name}_teststage"
+testverify_cmd="${name}_testverify"
+testuninstall_cmd="${name}_testuninstall"
+
+_test=0
+_err() { echo "${name}: $*" >&2; }
+_info() { echo "${name}: $*"; }
+
+_conf() {
+	if [ -f "${pqledger_dir}/ledger.conf" ]; then
+		# shellcheck disable=SC1090
+		. "${pqledger_dir}/ledger.conf"
+	fi
+	: "${ledger_dataset:=zroot/pq/ledger}"
+	: "${hash:=SHA-512}"
+	[ -n "${pqledger_dataset}" ] && ledger_dataset=$pqledger_dataset
+}
+
+_chain() { echo "${pqledger_db}/chain"; }
+
+pqledger_install() {
+	mkdir -p "${pqledger_dir}" /usr/local/etc/rc.d "${pqledger_db}"
+	src=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+	install -m 0755 "$0" /usr/local/etc/rc.d/pqledger
+	[ -f "${src}/ledger.conf" ] && install -m 0644 "${src}/ledger.conf" "${pqledger_dir}/ledger.conf"
+	_info "installed pqledger"
+}
+
+pqledger_stage() {
+	_conf
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: zfs create -o mountpoint=/pq/ledger ${ledger_dataset} (if missing)"
+		echo "WOULD: genesis record hash=${hash} into $(_chain)"
+		echo "WOULD: refuse rewrite of existing chain"
+		return 0
+	fi
+	mkdir -p "${pqledger_db}"
+	if command -v zfs >/dev/null 2>&1; then
+		if ! zfs list -H -o name "${ledger_dataset}" >/dev/null 2>&1; then
+			_info "zfs create ${ledger_dataset}"
+			zfs create -p -o mountpoint=/pq/ledger "${ledger_dataset}" || _err "create failed; continuing with ${pqledger_db}"
+		fi
+	fi
+	chain=$(_chain)
+	if [ ! -s "$chain" ]; then
+		stamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+		genesis="0$(dd if=/dev/zero bs=1 count=63 2>/dev/null | tr '\0' '0')"
+		# portable genesis line: seq|ts|op|prev|note
+		echo "0|${stamp}|genesis|${genesis}|hash=${hash}; dataset=${ledger_dataset}; rewrite is a bug" > "$chain"
+		_info "genesis written $chain"
+	else
+		_info "chain exists; never overwrite"
+	fi
+}
+
+pqledger_start() {
+	_conf
+	if command -v auditd >/dev/null 2>&1; then
+		_info "auditd present — in-band source; chain remains $(_chain)"
+	else
+		_info "auditd not present; policy events still append"
+	fi
+}
+
+pqledger_stop() { return 0; }
+
+pqledger_status() {
+	_conf
+	chain=$(_chain)
+	if [ -f "$chain" ]; then
+		echo "chain: $chain ($(wc -l < "$chain") records)"
+		tail -n 1 "$chain"
+	else
+		echo "no chain"
+	fi
+}
+
+pqledger_update() { pqledger_status; }
+
+pqledger_rotate() {
+	_conf
+	chain=$(_chain)
+	[ -f "$chain" ] || { _err "no chain"; return 1; }
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: append checkpoint record (not rewrite)"
+		return 0
+	fi
+	stamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+	prev=$(tail -n 1 "$chain")
+	echo "$(wc -l < "$chain")|${stamp}|checkpoint|append|prev=${prev%%|*}" >> "$chain"
+	_info "checkpoint appended"
+}
+
+pqledger_verify() {
+	chain=$(_chain)
+	if [ ! -f "$chain" ]; then
+		_err "no chain"
+		return 1
+	fi
+	_info "records=$(wc -l < "$chain")  (host SHA-512 verify is a later pass; refuse rewrite)"
+	return 0
+}
+
+pqledger_uninstall() {
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: rm rc.d/pqledger; keep ${pqledger_db}/chain and dataset"
+		return 0
+	fi
+	rm -f /usr/local/etc/rc.d/pqledger
+	_info "chain kept at $(_chain) — evidence is not wipe"
+}
+
+pqledger_teststage() { _test=1; pqledger_stage; }
+pqledger_testverify() { _test=1; pqledger_verify; }
+pqledger_testuninstall() { _test=1; pqledger_uninstall; }
+
+run_rc_command "$1"

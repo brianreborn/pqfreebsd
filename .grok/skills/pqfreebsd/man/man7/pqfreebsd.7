@@ -1,0 +1,248 @@
+.Dd August 22, 2026
+.Dt PQFREEBSD 7
+.Os
+.Sh NAME
+.Nm pqfreebsd
+.Nd post-quantum access control: ledger evidence and repaired A_D
+.Sh SYNOPSIS
+.Nm
+extends
+.Xr pqac 7 .
+.Bd -literal -offset indent
+mandoc -T pdf pqfreebsd.7 > pqfreebsd.pdf
+mandoc -T lint pqfreebsd.7
+.Ed
+.Sh ABSTRACT
+.Xr pqac 7
+argued that
+.Em A_D ,
+.Em A_M ,
+and MMU translation are quantum-adversary-stable mediation on a von Neumann
+.Fx
+defender: not post-quantum cryptography, not a quantum ISA.
+T1 and T2 are implemented by
+.Nm freebsd-mac-grok .
+.Pp
+What the slogans omitted is Anderson's third property and the residual
+access matrix.
+.Nm
+packages those as morphisms.
+.Em pqledger
+is a filesystem-level Integrity Evidence chain.
+.Em pqdac
+is a restricted
+.Em A_D
+established at create and repaired on drift.
+Neither is Kyber.
+Neither is Faraday.
+.Pp
+A further requirement of the system is
+.Em not
+implemented in this pass: the data itself must have integrity that can
+be confirmed, to a certain extent
+.Pq T10, Nm pqconfirm .
+.Sh THESES
+Deniable separately.
+T1–T5 remain
+.Xr pqac 7 .
+.Bl -tag -width T10xx
+.It T6
+Unrestricted
+.Em A_D
+is an HRU protection system; safety is undecidable.
+A restricted specification
+.Pq path-regex to owner, group, mode, inherit
+plus a repair morphism is a different relation: intended
+.Em A_D
+is restored; residual owner-grants are bounded in duration.
+This does not make
+.Em A_D
+into
+.Em A_M .
+.It T7
+.Xr mac 4
+approximates complete mediation and isolation.
+Verifiability is not supplied.
+A hash-chained ledger of vnode, label, and policy-morphism events is the
+monitor's evidence.
+The ledger object is high in
+.Em L .
+Tampering is a hash-collision problem
+.Pq Grover halves the bits; production uses SHA-512 or SHA-3 .
+That is
+.Em A_auth
+of the evidence, not of the subject.
+The suite still does not
+.Xr kldload 8
+Kyber.
+.It T8
+Dynamic establishment is the create-time morphism.
+Repair is the restore morphism when actual is not intended.
+.Xr setfsmac 8
+first-match and DAC first-match are combinators, not lattice operations.
+Conjunction with
+.Em A_M
+is still not a product of proofs.
+Optional prevention
+.Pq Xr ugidfw 8
+is a different module with a different proof
+.Pq empty ruleset is allow-all .
+.It T9
+The ledger daemon is a subject.
+If
+.Em O
+factors through it, T4 applies.
+The ledger is not Faraday, not a naming retrofit, and not a secrecy lattice.
+Recovery remains inside the isolation claim.
+.It T10
+.Pq required; not this pass
+.Em A_M
+constrains who may write.
+The ledger records that a write occurred.
+Neither lets a later subject confirm that the bits they read are the bits
+that were written.
+.Xr zfs 8
+checksums detect silent corruption inside the pool; they are not a
+subject-visible confirmation API.
+A content digest, or a Merkle over the labeled store, bound to a ledger
+checkpoint, is confirmable to the extent of the hash.
+Grover halves the bits.
+This is not Faraday and not information-theoretic.
+Next skill:
+.Nm pqconfirm .
+.It T11
+.Pq required; not this pass
+A PQ-stable monitor interpreting RSA-signed code is a forged policy,
+correctly enforced.
+T2 is mediation, not a cryptographic game.
+The system is not therefore post-quantum secure.
+Kernel, klds, pkg, policy, and
+.Xr zfs 8
+send streams are code, or code-shaped.
+If they are unsigned, or signed with RSA/ECC, Shor forges the input to
+.Em A_M .
+Authentication here is of code, not of credentials.
+Redundancy is two independent reductions: ML-DSA
+.Pq FIPS 204, lattices
+and SLH-DSA
+.Pq FIPS 205, hashes
+— not two disks.
+Fletcher, RAID-Z, and AES-at-rest are not a second signature.
+Held:
+.Nm pqcode ,
+.Nm pqzfs .
+.It T12
+.Pq gated; TPM not this pass
+Once the operator attests they are sufficiently satisfied that the system is
+post-quantum hardened to the degree that gives them a sense of security, the
+umbrella offers
+.Cm oneboot :
+the splash name becomes
+.Nm pqfreebsd ;
+the beastie is replaced by the shield
+.Pq the armor of God ;
+the loader is taken off the unsigned GENERIC path only as far as this pass
+can close.
+TPM and measured boot are not this pass.
+Default is no.
+Do not rebrand a box you do not yet trust.
+Branding is not a second signature family.
+.It T13
+After install, the operator must see that POLICY, SUITE, DAC, ugidfw, login
+labels, MAC overlays, and the splash agree; must propagate a change through
+all of them at once; and must read the diff of successive iterations.
+Consistency is a predicate over that conjunction, not a product of proofs.
+Each propagation is a named revision whose catalog hash is chained and
+recorded in the ledger.
+An audit that cannot show what changed is not an audit.
+.Cm oneaudit ,
+.Cm onepropagate .
+.El
+.Sh PRAXIS
+.Ss Genesis is a named record
+An empty chain is not evidence.
+The first record names the policy hash, the dataset, and the hash.
+.Xr audit 4
+is the in-band source;
+.Pa /var/audit
+is not the chain.
+Rotation appends a checkpoint record.
+Rewrite is a bug.
+.Ss Label the ledger before enforce
+A high dataset unlabeled at
+.Cm enforce
+is an unlabeled hole
+.Pq empty interpretation .
+Overlays precede the official PLM because the combinator is first-match.
+.Ss Repair bounds duration, not the syscall
+.Xr chmod 2
+still succeeds in repair mode.
+A concurrent reader may see the drifted mode.
+Say so.
+.Cm prevent
+is
+.Xr mac_bsdextended 4
+generated from the same spec.
+Do not rest a proof on aux covering xattrs
+.Pq PR 178667 .
+.Ss Restricted language
+No arbitrary grant verbs in the spec.
+That is the HRU cut.
+.Ss Event integrity is not payload integrity
+The ledger confirms an op happened.
+It does not confirm the bytes of a file.
+Do not pretend a scrub discharges T10.
+.Ss Sign the bits that run
+.Xr pkg 8
+RSA, unsigned
+.Xr kldload 8 ,
+unsigned
+.Nm zfs send ,
+unsigned policy files: each is an
+.Em A_auth
+of code that T2 set aside.
+Hybrid ML-DSA + SLH-DSA is the redundancy.
+Do not wrap ZFS keys in RSA.
+Do not call the system post-quantum secure while those rows are classical
+or empty.
+.Sh SEE ALSO
+.Xr pqac 7 ,
+.Xr pqfreebsd 8 ,
+.Xr pqledger 8 ,
+.Xr pqdac 8 ,
+.Xr mac_grok 8 ,
+.Xr mac_lomac 4 ,
+.Xr audit 4 ,
+.Xr ugidfw 8 ,
+.Xr setfsmac 8 ,
+.Xr zfs 8
+.Pp
+Anderson, J. P., ESD-TR-73-51, 1972.
+Harrison, M. A., Ruzzo, W. L., Ullman, J. D., CACM 19(8), 1976.
+.Xr pqac 7
+for Bell, Biba, Fraser, Goguen–Meseguer, Shor, Grover, NIST PQC
+.Pq A_auth only .
+.Sh HISTORY
+Spoken the same day as
+.Xr pqac 7
+as the missing morphisms: evidence and repaired
+.Em A_D .
+T10 recorded as a requirement and held.
+.Sh AUTHORS
+.An Grok
+and the operator of
+.Nm freebsd-mac-grok ,
+2026-08-22.
+T1 and T2 are the parent packages.
+T6–T9 remain the operator's until the host carries them.
+T10 remains the operator's, unimplemented.
+.Sh BUGS
+.Dq Post-quantum
+still denotes Kyber unless
+.Xr pqac 7
+is said aloud.
+This paper is unsigned.
+.Sh LICENSE
+Light-ware License.
+Copyright (c) 2026 Brian Fundakowski Feldman.
+This product includes software developed by Brian Fundakowski Feldman.

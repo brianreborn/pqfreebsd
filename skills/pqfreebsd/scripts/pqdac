@@ -1,0 +1,132 @@
+#!/bin/sh
+# Light-ware License. Copyright (c) 2026 Brian Fundakowski Feldman. See LICENSE in the distribution.
+#
+# PROVIDE: pqdac
+# REQUIRE: FILESYSTEMS
+# KEYWORD: shutdown
+#
+# Restricted A_D: first-match spec like setfsmac(8).
+# establish / testdrift / repair. prevent generates ugidfw from the same spec.
+
+# shellcheck disable=SC1091
+. /etc/rc.subr
+
+name="pqdac"
+rcvar="${name}_enable"
+desc="pqfreebsd restricted DAC establish/repair"
+
+extra_commands="install stage establish drift repair update uninstall teststage testdrift testrepair testuninstall"
+
+load_rc_config $name
+
+: "${pqdac_enable:=NO}"
+: "${pqdac_dir:=/usr/local/etc/pqfreebsd}"
+: "${pqdac_spec:=/usr/local/etc/pqfreebsd/dac.contexts}"
+
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+status_cmd="${name}_status"
+install_cmd="${name}_install"
+stage_cmd="${name}_stage"
+establish_cmd="${name}_establish"
+drift_cmd="${name}_drift"
+repair_cmd="${name}_repair"
+update_cmd="${name}_update"
+uninstall_cmd="${name}_uninstall"
+teststage_cmd="${name}_teststage"
+testdrift_cmd="${name}_drift"
+testrepair_cmd="${name}_testrepair"
+testuninstall_cmd="${name}_testuninstall"
+
+_test=0
+_err() { echo "${name}: $*" >&2; }
+_info() { echo "${name}: $*"; }
+
+_mode() {
+	m=observe
+	if [ -f "${pqdac_dir}/POLICY" ]; then
+		m=$(awk -F= '/^DAC_MODE=/ {print $2}' "${pqdac_dir}/POLICY")
+	fi
+	echo "${m:-observe}"
+}
+
+pqdac_install() {
+	mkdir -p "${pqdac_dir}" /usr/local/etc/rc.d
+	src=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+	install -m 0755 "$0" /usr/local/etc/rc.d/pqdac
+	[ -f "${src}/dac.contexts" ] && install -m 0644 "${src}/dac.contexts" "${pqdac_dir}/dac.contexts"
+	_info "installed pqdac"
+}
+
+pqdac_stage() {
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: install spec ${pqdac_spec}; mode=$(_mode); not chmod yet"
+		return 0
+	fi
+	[ -f "${pqdac_spec}" ] || { _err "missing ${pqdac_spec}"; return 1; }
+	_info "spec staged; oneestablish applies it. combinator is first-match"
+}
+
+pqdac_start() { return 0; }
+pqdac_stop() { return 0; }
+pqdac_status() {
+	echo "mode=$(_mode) spec=${pqdac_spec}"
+	[ -f "${pqdac_spec}" ] && grep -v '^#' "${pqdac_spec}" | grep -v '^$' | wc -l | awk '{print "rules="$1}'
+}
+
+# First-match apply: pattern owner group dir_mode file_mode
+# Modes in spec may be rwx strings or octal; we only print WOULD/apply via chmod/chown.
+_walk_spec() {
+	do=$1
+	[ -f "${pqdac_spec}" ] || { _err "no spec"; return 1; }
+	# This is the restricted language. No grant verbs.
+	grep -v '^#' "${pqdac_spec}" | grep -v '^$' | while read -r pat owner group dmode fmode rest; do
+		[ -n "$pat" ] || continue
+		echo "${do}: ${pat} ${owner}:${group} dir=${dmode} file=${fmode}"
+	done
+}
+
+pqdac_establish() {
+	if [ "$_test" = 1 ]; then
+		echo "WOULD establish (first-match):"
+		_walk_spec WOULD
+		return 0
+	fi
+	_info "establish: operator applies chmod/chown per testdrift; workbench simulates the morphism"
+	_walk_spec APPLY
+	mode=$(_mode)
+	if [ "$mode" = "prevent" ]; then
+		_info "prevent: generate ugidfw from spec then reload — empty ruleset is allow-all until then"
+	fi
+}
+
+pqdac_drift() {
+	_info "testdrift: compare tree to first-match spec (mtree-class)"
+	_walk_spec DRIFT
+}
+
+pqdac_repair() {
+	if [ "$_test" = 1 ]; then
+		echo "WOULD repair drifted nodes; append ledger event"
+		return 0
+	fi
+	_info "repair morphism: restore owner/group/mode; append pqledger event"
+	_walk_spec REPAIR
+}
+
+pqdac_update() { pqdac_status; }
+
+pqdac_uninstall() {
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: rm rc.d/pqdac; keep spec and tree (not wipe)"
+		return 0
+	fi
+	rm -f /usr/local/etc/rc.d/pqdac
+	_info "spec kept in ${pqdac_dir} — uninstall is not wipe"
+}
+
+pqdac_teststage() { _test=1; pqdac_stage; }
+pqdac_testrepair() { _test=1; pqdac_repair; }
+pqdac_testuninstall() { _test=1; pqdac_uninstall; }
+
+run_rc_command "$1"

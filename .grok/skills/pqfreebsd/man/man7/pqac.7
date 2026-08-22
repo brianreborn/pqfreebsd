@@ -1,0 +1,853 @@
+.Dd August 22, 2026
+.Dt PQAC 7
+.Os
+.Sh NAME
+.Nm pqac
+.Nd post-quantum access control: exoteric mediation, esoteric observation
+.Sh SYNOPSIS
+.Nm
+is a short paper.
+.Bd -literal -offset indent
+mandoc -T pdf pqac.7 > pqac.pdf
+mandoc -T lint pqac.7
+.Ed
+.Sh ABSTRACT
+Post-quantum
+.Em cryptography
+is a claim about the residual hardness of named problems
+.Pq lattices, hashes, codes
+when the adversary's uniform class is
+.Em BQP
+rather than
+.Em BPP .
+Post-quantum
+.Em access control ,
+as used here, is a different claim: that the defender's
+.Em authorization
+relation is not an instance of such a problem, and therefore does not
+collapse under Shor or Grover.
+.Pp
+The defender is a classical stored-program machine
+.Pq von Neumann: one linear store, code as data, binary words
+running a
+.Fx
+kernel with
+.Xr mac 4
+hooks.
+The adversary is quantum: polynomial-time quantum algorithms on the
+usual public-key names, Grover search over unstructured domains, and,
+as a working hypothesis, coupling to the electrical and electromagnetic
+plant
+.Pq power distribution network, return, near-field
+including entanglement or entanglement-enhanced metrology.
+The adversary is
+.Em not
+assumed to be executing a quantum ISA on the defender.
+.Pp
+.Em Exoterically ,
+discretionary access control, lattice mandatory access control, and
+MMU translation are interpreted predicates over credentials, labels,
+and address-space metadata.
+They do not reduce to discrete logarithm or period-finding.
+A BQP adversary who would
+.Em act as
+a subject must still produce a classical write accepted by the vnode
+path, the MAC policy module, and the translation lookaside.
+What remains BQP-sensitive is
+.Em authentication
+.Pq binding a name to a subject before a label attaches :
+.Xr sshd 8 ,
+TLS, package signatures, then
+.Xr login.conf 5 .
+.Pp
+.Em Esoterically ,
+those predicates are themselves electrical events.
+A page-table walk is current on a rail; a label in a system extended
+attribute is a pattern of stored charge that, when interpreted, switches
+bitlines.
+The in-band/out-of-band cut is an alphabet cut
+.Pq syscalls versus analog traces ,
+not a cut in the physics.
+If an observation function on the plant has a kernel-visible subject
+in its factorization, the monitor still constrains the support of the
+observation.
+If it does not factor, the monitor is silent.
+Independence of the observation from high objects is
+.Em imperviousness
+.Pq a non-interference statement .
+A quantitative bound on leakage is
+.Em resistance .
+These are not interchangeable.
+Quantum advantage on the plant is not a corollary of Shor.
+Packaging
+.Em A_M
+on GENERIC
+.Pq rc.d, Xr setfsmac 8 , ZFS, login classes, a 2001 PLM
+supplied operational lemmas the slogans omit: empty lattices,
+first-match combinators, obsolete
+.Em Obj
+alphabets, the login cut, RDTUN ifnets, and recovery as part of
+the monitor.
+.Sh MACHINE AND ADVERSARY
+.Ss Defender
+A von Neumann host: shared store, sequential fetch, binary encoding.
+.Fx
+GENERIC provides
+.Ql options MAC .
+We take
+.Xr mac_lomac 4
+as the integrity policy
+.Pq floating labels, low-watermark
+and Unix DAC as the residual access matrix on the same objects.
+The MMU implements a function from
+.Pq virtual page, privilege, rights
+to
+.Pq frame, fault .
+Virtual memory may revoke
+.Xr mmap 2
+mappings when LOMAC demotes a subject
+.Pq Xr mac_lomac 4 ,
+.Va security.mac.mmap_revocation .
+The TCB is the kernel plus the loaded policy modules.
+.Xr mac 9
+does not claim complete root containment; neither do we.
+.Pp
+This is not a quantum architecture.
+Qubit memory, CPTP evolution as the instruction semantics, and
+no-cloning as a confinement axiom are out of model.
+CHERI-style capabilities would be a different classical machine;
+they are not this paper.
+.Ss Adversary
+Uniform class
+.Em BQP
+plus Grover's quadratic over unstructured search
+.Pq oracle
+.Em O : {0,1}^n -> {0,1} ,
+expected
+.Em O(2^{n/2})
+queries.
+Shor's algorithm places integer factorization and discrete log in
+.Em BQP ;
+the usual PKI names
+.Pq RSA, finite-field DH, ECDH, ECDSA
+are therefore not authentication against this adversary.
+Grover does
+.Em not
+yield a symbolic executor, a confused-deputy oracle, or a kernel-bug
+finder.
+Unstructured search over a 32-bit ASLR slide is incomparable to
+finding a
+.Xr mac 9
+hook bypass.
+.Pp
+Plant coupling
+.Pq T3
+is hypothesized, not demonstrated here: a completely-positive
+instrument on some electromagnetic degree of freedom correlated with
+defender computation, possibly entanglement-enhanced
+.Pq spin squeezing, NV-center or SQUID magnetometry
+beyond the standard quantum limit toward the Heisenberg limit.
+A 300 K CMOS die and copper PDN are a thermal bath; decoherence
+times for macroscopic entanglement with the rail are not assumed
+generous.
+T3 asserts only that some distinguishing observation may exist, not
+that it is cheap.
+.Ss Out of scope
+Replacing the naming path with ML-KEM, ML-DSA, or SLH-DSA is
+necessary and insufficient.
+Necessary: otherwise the adversary forges the name that
+.Xr login 1
+will label.
+Insufficient: a correctly named subject is still mediated by DAC, MAC,
+and the MMU, which never consulted the modulus.
+.Sh EXOTERIC: NAMING AND MEDIATION
+Authentication binds an identity to a process.
+Authorization relates that process to objects and to regions of the
+store.
+The first, on contemporary
+.Fx ,
+is cryptographic or a local console.
+The second is an access matrix
+.Pq DAC: owner-directed
+.Xr chmod 2
+and
+.Xr chown 2 ,
+uid/gid
+composed with a lattice policy
+.Pq MAC
+composed with translation rights
+.Pq MMU .
+.Pp
+Let
+.Em Sub
+be subjects
+.Pq credentials
+and
+.Em Obj
+objects
+.Pq vnodes, mappings, sockets, ifnets .
+DAC is a function
+.Em A_D : Sub x Obj -> 2^{ops}
+modifiable by the object's owner.
+MAC is a function
+.Em A_M
+computed from labels
+.Em lambda(s) , lambda(o)
+in a partial order
+.Em (L, preceq)
+and not owner-modifiable.
+Anderson's reference monitor
+.Pq complete mediation, isolation, verifiability
+is approximated by
+.Xr mac 4
+entry points on vnode, VM, IPC, and network objects.
+Complete mediation is an aspiration;
+.Xr mac 9
+states that not all attack channels on a privileged subject are
+hooked.
+.Pp
+Shor destroys
+.Em A_auth
+when
+.Em A_auth
+is RSA/ECC.
+It does not inhabit
+.Em A_D
+or
+.Em A_M .
+There is no reduction from period-finding to
+.Ql lomac/high
+or to the allocation of a PTE.
+A BQP adversary who would become
+.Em s
+in
+.Em Sub
+must still induce a classical state the hooks accept.
+That is
+.Sy quantum-adversary-stable mediation :
+the decision procedure's complexity class is not the source of its
+security, because the decision is not a cryptographic game.
+It is an interpreted predicate in the kernel.
+.Sh LATTICES
+Bell-LaPadula is a secrecy lattice: no read up, no write down.
+Biba is an integrity lattice: no read down, no write up.
+.Xr mac_lomac 4
+is Biba-like integrity with
+.Em subject relabeling
+on read-down: a subject at grade
+.Em g
+that reads an object at
+.Em g' < g
+is demoted toward
+.Em g'
+.Pq low-watermark, floating label .
+Subsequent writes to objects dominated by the old
+.Em g
+fail.
+Auxiliary grades
+.Ql [aux]
+and ranges
+.Ql (lo-hi)
+exist for exec-time assumption and for administrative exemption
+.Ql equal .
+.Pp
+This axiom is
+.Em not
+non-interference for secrecy.
+Goguen-Meseguer non-interference, and the observational-determinism
+and unwinding lemmas used to prove it, speak to whether high inputs
+are visible in low outputs.
+LOMAC
+.Em permits
+the read that secrecy forbids, then removes write-up.
+A side-channel thesis about emanations of high
+.Em secrets
+is therefore not discharged by LOMAC; it would want MLS, Biba's
+no-read-down, or an enclave whose observation function is specified
+in analog.
+LOMAC's short proof, and the reason this suite uses it, is
+integrity:
+a sandbox subject cannot write-up into high OS objects after a low
+read.
+.Pp
+.Xr setfsmac 8
+composes specfiles by
+.Em first match
+.Pq later regexes for the same path are dropped silently .
+That is a policy combinator, not a lattice operation; overlays must
+precede the official PLM or a leading
+.Ql /dev
+catchall
+.Ql equal
+rule shadows later high device nodes.
+.Sh MECHANISM DIVERSITY
+DAC, MAC, and MMU are not replicas of one lock
+.Pq replication would share one specification and one failure .
+They are three interpretations of
+.Dq may this subject disturb this region
+with distinct failure modes:
+.Bl -bullet
+.It
+DAC fails when an owner
+.Pq or a hijacked uid
+grants
+.Em ops
+the lattice would refuse.
+.It
+MAC fails when an object is unlabeled, when
+.Ql equal
+is over-applied, when first-match drops a high rule, or when a hook
+is missing
+.Pq Xr mac 9 .
+.It
+MMU fails when a mapping is granted that the lattice would later wish
+revoked, when a wild pointer is already in-kernel, or when
+microarchitectural leakage
+.Pq Spectre-class
+reads across translations the PTE still forbids architecturally.
+.El
+.Pp
+A quantum adversary who factors one modulus walks around all three.
+A quantum adversary who obtains a classical write still faces the
+other two if the write is not already supervisor-mode.
+Diversity is not a work factor in
+.Em n
+and does not grow with qubits.
+It is the absence of a single specification whose one bug is total.
+.Pp
+Login remains the cut.
+.Xr login.conf 5
+attaches
+.Em lambda(s)
+after authentication.
+A forged name is a forged subject.
+Isolation after a correctly named login is what
+.Xr mac_lomac_grok 8
+and
+.Xr mac_grok 8
+implement: groups as roles, official contexts, ZFS recursive
+snapshots as recovery, PREINSTALL as behavioral restore.
+That practice is not argued here; the manuals argue it.
+.Sh ESOTERIC: THE OBSERVATION FUNCTION
+Extend the system with an observation alphabet disjoint from syscalls.
+Let
+.Em Tr
+be executions
+.Pq traces of hooks, translations, and pipeline switching
+and let
+.Em O : Tr -> H
+map a trace into a Hilbert space
+.Pq or, classically, into a time series in R^k :
+supply current, chassis potential, near-field
+.Em B ,
+impedance echo on the adapter primary.
+TEMPEST, SPA/DPA, and RAMBO-style bus modulation are the classical
+.Em O .
+T3 asserts that some quantum instrument may refine
+.Em O .
+.Pp
+.Em In-band
+is the syscall alphabet.
+.Em Out-of-band
+is
+.Em O .
+Both are functions of the same electrons.
+A PTE walk is not adjacent to the PDN; it
+.Em is
+a PDN event.
+A
+.Xr chmod 2
+is charge in a line.
+The clerk's cut
+.Pq kernel story versus physics
+does not imply that authorization is
+.Dq not electrical .
+It implies that the kernel names only some of the electrical events.
+.Pp
+Say
+.Em O
+.Em factors through a subject
+when there exists a projection
+.Em pi : Tr -> Sub
+.Pq the kernel-visible principal whose switching dominated the analog
+and a map
+.Em O' : Sub x Tr -> H
+with
+.Em O = O' o (pi x id)
+in the relevant coordinates.
+Then constraining
+.Em pi Ns 's
+image
+.Pq who may run, which objects they may map, whether they are demoted
+constrains the support of
+.Em O .
+Sandbox credentials, LOMAC demotion, seeotheruids, and page rights
+become statements about which traces are in the domain of a useful
+.Em O' .
+That is resistance, if one then bounds
+.Em I(high; O)
+or an analogous distinguishing advantage.
+.Pp
+Say
+.Em O
+.Em does not factor
+when an authorized hot core, or the idle plant, already yields a
+distinguishing observation of high objects with no unprivileged
+modulator.
+Then
+.Em A_D ,
+.Em A_M ,
+and the MMU are silent:
+the computation is allowed, and
+.Em O
+reads it.
+The remaining claims are physical: constant-power dual-rail logic,
+filtered PDN, Faraday, spatial isolation of high work.
+Those do not follow from
+.Pa mac_lomac.ko .
+.Pp
+.Em Imperviousness
+is observational equivalence: for all traces
+.Em t, t'
+agreeing on low inputs,
+.Em O(t)
+and
+.Em O(t')
+are indistinguishable
+.Pq trace distance, or a computational distinguisher with the adversary's instrument .
+That is non-interference with respect to
+.Em O ,
+not with respect to
+.Xr write 2 .
+POSIX MAC does not supply it.
+LOMAC in particular supplies the wrong axiom for emanation
+.Em secrecy :
+the authorized trusted subject computing on a high object
+.Em is
+the hot core
+.Em O
+wanted.
+.Ss Cost of T3
+Shor is a clean reduction in the quantum circuit model against a
+named algebraic problem.
+Coupling
+.Em O
+to a multilayer board at several gigahertz, under a ground plane,
+in GENERIC's background switching, is an experimental physics
+problem.
+Entanglement with the rail must survive a thermal bath, or the
+enhancement must be in the
+.Em sensor
+.Pq squeezed spin, NV, SQUID
+not in a Bell pair with the victim's electrons.
+Placement, bandwidth, a correlator, and usually a local modulator
+remain.
+The modulator, if required, is a process, hence a candidate for
+.Em pi .
+Do not take quantum advantage on the plant as a lemma from BQP.
+.Sh THESES
+Deniable separately.
+.Bl -tag -width T3xx
+.It T1
+Membership in
+.Em BQP
+does not by itself produce a classical write accepted by the
+reference monitor.
+.It T2
+.Em A_D ,
+.Em A_M ,
+and MMU translation are quantum-adversary-stable mediation on a von
+Neumann defender.
+They are post-quantum access control in that sense, and not
+post-quantum cryptography.
+.It T3
+.Pq working hypothesis
+Some instrument on the plant, possibly entanglement-enhanced,
+can distinguish defender computation.
+.It T4
+If
+.Em O
+factors through a kernel-visible subject, T1 and T2 constrain
+.Em O .
+If not, T1 and T2 are silent and the property is physical
+non-interference.
+.It T5
+Quantum advantage for
+.Em O
+is not free.
+Decoherence, placement, and distinguishing a vnode in GENERIC's
+noise are the adversary's burden, not Shor's corollary.
+.El
+.Pp
+T1 and T2 are implemented by this suite's rc.d packages.
+T3 is assumed so that T4 is utterable.
+T4 is two theorems until a coupling map is exhibited.
+T5 keeps T3 from swallowing T1 and T2.
+The following lemmas are residue from building those packages and
+from Handbook and mailing-list failures that the slogans do not
+mention.
+.Sh PRAXIS
+.Ss Empty interpretation
+Enabling
+.Em A_M
+before
+.Xr setfsmac 8
+is a different relation: unlabeled objects versus labeled processes,
+.Er EPERM
+noise.
+.Va security.mac.lomac.enabled Ns =0
+until a
+.Xr setfmac 8
+probe and then
+.Xr setfsmac 8
+is the statement that the lattice must be total on the mounted
+.Em Obj
+before the monitor interprets it.
+.Xr getfmac 8
+.Er EINVAL
+until
+.Nm mac_lomac
+is loaded is a domain error, not a ZFS failure.
+.Ss Combinators are not joins
+.Xr setfsmac 8
+first-match is not least upper bound in
+.Em L .
+The official PLM lists
+.Li /dev
+catchall
+.Ql equal
+before
+.Pa /dev/mdctl
+.Ql high ;
+the latter never applies.
+Overlays
+.Pq dev-modern, x11-xorg, site
+precede the PLM because the combinator is regex order.
+A proof of
+.Em A_M
+that quotes the PLM without quoting the combinator is a proof of a
+different policy.
+.Ss The object alphabet moves
+The 2001 PLM names
+.Xr agp 4 ,
+syscons,
+.Pa /tmp/.X11-unix .
+GENERIC now names
+.Xr vt 4 ,
+.Xr evdev 4
+.Pa event* ,
+DRM
+.Pa card*
+.Pq master, treat as old agp, high
+and
+.Pa renderD*
+.Pq unprivileged, equal ,
+.Xr hid 4
+.Pa hidraw .
+A policy written against obsolete names is an unlabeled hole.
+Handbook Xorg failure is often that hole, or
+.Xr mac_partition 4 ,
+not a mystery in the lattice.
+.Ss Subjects are created at login
+.Em lambda(s)
+is a
+.Xr login.conf 5
+field, compiled by
+.Xr cap_mkdb 1 ,
+attached by
+.Xr login 1 .
+The shell used to edit the file is not in
+.Em Sub
+under the new class.
+.Xr login.conf 5
+has no group-to-label map; roles are
+.Xr pw 8
+groups bound to classes.
+Expecting the editing session to be labeled is a type error.
+.Ss Network objects are in the lattice
+Untrusted ifnets default
+.Ql low .
+.Va security.mac.lomac.trust_all_interfaces
+is RDTUN
+.Pq Xr loader.conf 5 ,
+not a live
+.Xr sysctl 8 .
+Remote-only enforce demotes or kills the authentication path.
+.Va ptys_equal
+covers the tty objects
+.Xr login 1
+needs.
+Handbook: implement MAC over a remote connection with extreme
+caution.
+This is T1 applied to the administrator's own subject.
+.Ss The store is not UFS-shaped
+ZFS has no
+.Xr tunefs 8
+.Cm multilabel .
+Labels live in the system extattr namespace
+.Pq OpenZFS
+.Dq freebsd:system
+prefix .
+User-namespace
+.Ql xattr=sa
+versus
+.Ql dir
+is a different API; do not flip it to
+.Dq fix
+LOMAC.
+Probe
+.Xr setfmac 8
+on
+.Pa /tmp ;
+abort with
+.Va enabled Ns =0
+if
+.Er EINVAL
+persists after
+.Xr kldload 8 .
+UFS
+.Ql multilabel
+on
+.Pa /
+is not sticky without the Handbook
+.Pa fstab
+read-only dance.
+.Ss Integrity is experienced as a bug
+.Ql _secure_path: unable to stat .login_conf
+when a high subject uses
+.Xr su 1
+into a low home is LOMAC/Biba as specified.
+.Ql whoami
+prints 0 and
+.Xr su 1
+says
+.Dq who are you?
+when
+.Em A_M
+is unloaded while
+.Xr login.conf 5
+still carries
+.Ql label= ,
+or when
+.Pa master.passwd
+inherited a conflicting label.
+Root
+.Ql equal(equal-equal)
+is exemption, not containment
+.Pq Xr mac 9 .
+Fraser's
+.Ql pump ,
+.Ql syslogd ,
+.Ql sshd
+trusted-binary list is Linux LOMAC; this module uses
+.Ql equal
+on
+.Pa /tmp ,
+.Pa /var/log ,
+.Pa /var/run ,
+.Pa /sbin/dhclient
+.Ql high[low] ,
+and
+.Va ptys_equal .
+Do not copy the USENIX exception list into a specfile.
+Auxiliary grades may not apply to extattr I/O
+.Pq PR 178667 ;
+do not rest a proof on aux covering xattrs.
+.Ss Conjunction is not a product of proofs
+.Xr mac_seeotheruids 4
+is orthogonal
+.Pq no labels
+and a short proof.
+.Xr mac_ifoff 4
+.Va other_enabled Ns =0
+denies the ifnet, hence the authentication path.
+.Xr mac_partition 4
+needs labels and fights Xorg and
+.Ql top .
+Biba stacked on LOMAC is a product of incompatible axioms.
+.Xr ugidfw 8
+empty is allow-all; new users miss rules until module reload.
+.Va specificgid
+is one GID, historically argued both ways about root
+.Pq kern/72263, bin/79714 .
+.Ss Recovery is inside the isolation claim
+A lockout is a failed interpretation, not successful confinement.
+PREINSTALL restores
+.Em behavior :
+unload, copy back
+.Xr login.conf 5
+and
+.Xr loader.conf 5 ,
+.Xr cap_mkdb 1 ,
+restore login classes.
+MAC xattrs remain;
+.Em A_M
+becomes the identity without the kld.
+.Xr zfs 8
+.Cm snapshot Fl r
+.Pq filesystems and zvols
+is the dataset morphism.
+.Xr zpool-checkpoint 8
+rewind discards later transaction groups and the checkpoint itself
+.Pq one checkpoint per pool; OpenZFS 12646 .
+.Cm uninstall
+is not wipe and not rewind.
+.Cm test*
+before each
+.Cm one* .
+.Ss Authentication still sits in front
+None of the above places
+.Em A_auth
+in a BQP-hard problem.
+T2 is mediation after a name.
+The suite does not
+.Xr kldload 8
+Kyber.
+.Ss The cook and O
+If a plant observation needs a modulator, that process is in
+.Em Sub
+and the sandbox, label, and
+.Xr mmap 2
+revocation story applies
+.Pq T4, factoring .
+If the trusted subject is already the hot core, LOMAC will not mute
+emanations of what it was allowed to compute
+.Pq T4, non-factoring; change the lattice or specify analog O .
+.Sh PROOF OBLIGATIONS
+A proof of the esoteric half must:
+.Bl -enum
+.It
+Exhibit
+.Em O
+.Pq current, B-field, impedance, squeezed magnetometry
+and the traces it distinguishes.
+.It
+Factor or refuse to factor
+.Em O
+through
+.Em pi : Tr -> Sub
+.Pq credential, mapping, vnode
+versus the plant alone.
+.It
+If it factors, show independence
+.Pq imperviousness
+or bound
+.Em I(high; O)
+or a distinguisher's advantage
+.Pq resistance .
+Do not conflate the two.
+.It
+If it does not factor, discharge the remainder outside
+.Xr mac 4 :
+PDN filter, constant power, shielding, air gap, or a secrecy
+lattice / enclave whose analog
+.Em O
+is in the spec.
+.It
+Preserve LOMAC's axiom.
+Do not derive no-read-down from a low-watermark.
+If the goal is emanation secrecy, say so and change the lattice.
+.El
+.Sh SEE ALSO
+.Xr cap_mkdb 1 ,
+.Xr chmod 1 ,
+.Xr login 1 ,
+.Xr mandoc 1 ,
+.Xr su 1 ,
+.Xr mmap 2 ,
+.Xr agp 4 ,
+.Xr evdev 4 ,
+.Xr hid 4 ,
+.Xr mac 4 ,
+.Xr mac_ifoff 4 ,
+.Xr mac_lomac 4 ,
+.Xr mac_partition 4 ,
+.Xr mac_seeotheruids 4 ,
+.Xr vt 4 ,
+.Xr loader.conf 5 ,
+.Xr login.conf 5 ,
+.Xr mac_grok 7 ,
+.Xr mac_lomac_grok 7 ,
+.Xr getfmac 8 ,
+.Xr kldload 8 ,
+.Xr mac_generic_grok 8 ,
+.Xr mac_grok 8 ,
+.Xr mac_lomac_grok 8 ,
+.Xr pw 8 ,
+.Xr setfmac 8 ,
+.Xr setfsmac 8 ,
+.Xr sshd 8 ,
+.Xr sysctl 8 ,
+.Xr tunefs 8 ,
+.Xr ugidfw 8 ,
+.Xr zfs 8 ,
+.Xr zpool-checkpoint 8 ,
+.Xr mac 9
+.Pp
+Anderson, J. P.,
+.Dq Computer Security Technology Planning Study ,
+ESD-TR-73-51, 1972
+.Pq reference monitor .
+Bell, D. E. and LaPadula, L. J., ESD-TR-73-278
+.Pq secrecy lattice .
+Biba, K. J.,
+.Dq Integrity Considerations for Secure Computer Systems ,
+MTR-3153, 1977.
+Fraser, T.,
+.Dq LOMAC: Low Water-Mark Integrity Protection for COTS Environments ,
+USENIX FREENIX 2001.
+Goguen, J. A. and Meseguer, J.,
+.Dq Security Policies and Security Models ,
+IEEE S&P 1982
+.Pq non-interference .
+Grover, L. K., STOC 1996.
+Harrison, M. A., Ruzzo, W. L., Ullman, J. D.,
+.Dq Protection in Operating Systems ,
+CACM 19(8), 1976.
+Shor, P. W., FOCS 1994.
+NIST PQC, for
+.Em A_auth
+only.
+The
+.Fx
+Handbook ch.19
+.Pq MAC practice and troubleshooting .
+.Sh HISTORY
+Spoken as a refinement of
+.Dq post-quantum access control
+on a classical
+.Xr mac_lomac 4
+host: not a cryptographic suite, not a quantum OS, a BQP adversary,
+then the plant, then the observation function.
+Rewritten for a technical audience, then extended with praxis from
+packaging
+.Em A_M
+on GENERIC the same day.
+.Sh AUTHORS
+.An Grok
+and the operator of
+.Nm freebsd-mac-grok ,
+2026-08-22.
+T1 and T2 are the packages.
+T3 and T4 remain the operator's.
+.Sh BUGS
+.Dq Post-quantum
+denotes Kyber unless
+.Nm
+is said aloud.
+The defender's ISA is binary stored-program, not a quantum ISA.
+Grover is not an exploit generator.
+T3 is neither free nor forbidden here.
+.Xr kldload 8
+of
+.Nm mac_lomac
+is neither Faraday nor a naming retrofit; it is a dominance test on a
+labeled store.
+This paper is unsigned; a later PGP pass is out of band.
+
+.Sh LICENSE
+Light-ware License.
+Copyright (c) 2026 Brian Fundakowski Feldman.
+See
+.Pa LICENSE
+in the source distribution.

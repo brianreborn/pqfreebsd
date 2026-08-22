@@ -1,0 +1,3 @@
+[submodule "vendor/freebsd-mac-grok"]
+	path = vendor/freebsd-mac-grok
+	url = https://github.com/brianreborn/freebsd-mac-grok.git

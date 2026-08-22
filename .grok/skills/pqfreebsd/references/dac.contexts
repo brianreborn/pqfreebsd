@@ -1,0 +1,13 @@
+# pqdac specfile — first match wins (same combinator as setfsmac(8)).
+# path-regex  owner  group  dir_mode  file_mode
+# Restricted language: no arbitrary grant verbs.
+^/pq/ledger                  root     wheel    rwx------ rw-------  # ledger
+^/etc/master\.passwd$        root     wheel    rw------- rw-------  # master
+^/etc                        root     wheel    rwxr-xr-x rw-r--r--  # etc
+^/home/green                 green    green    rwxr-xr-x rw-r--r--  # green-home
+^/home/dev                   dev      dev      rwxr-xr-x rw-r--r--  # dev-home
+^/home                       root     wheel    rwxr-xr-x rw-r--r--  # home
+^/var/log                    root     wheel    rwxr-xr-x rw-r--r--  # varlog
+^/tmp                        root     wheel    rwxrwxrwt rw-rw-rw-  # tmp
+^/usr                        root     wheel    rwxr-xr-x rw-r--r--  # usr
+^/                           root     wheel    rwxr-xr-x rw-r--r--  # rootfs
