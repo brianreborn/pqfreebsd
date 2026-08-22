@@ -7,8 +7,8 @@ description: >
   successive policy audit, and a loader gated on attestation. Use when the user
   wants /pqfreebsd, pqac, audit ledger, DAC repair, oneaudit/onepropagate,
   or a trusted base that is not PQC in the kernel. Payload confirmation
-  (pqconfirm / T10) and code authentication (pqcode / T11) are required
-  of the system and not implemented in this skill.
+  (pqconfirm / T10) remains required of a later cut. pqcode (T11) is held,
+  open-ended, and not a 1.0 requirement.
 ---
 
 # pqfreebsd
@@ -24,14 +24,13 @@ T1 and T2 are the parent packages (quantum-adversary-stable mediation, not
 Kyber). This skill adds T6–T9: restricted A_D with establish/repair, and
 Anderson verifiability as a hash-chained filesystem ledger.
 
-**Held, required, not this skill:** T10 / `pqconfirm` — the data itself must
-have integrity that can be confirmed, to a certain extent (content digest or
-Merkle of the labeled store, bound to a ledger checkpoint). T11 / `pqcode` and
-`pqzfs` — authentication of *code* (kernel, kld, pkg, policy, zfs send), not
-of credentials, with two independent signature families (ML-DSA and SLH-DSA).
-Do not implement these as a side quest inside `/pqfreebsd`. Do not claim ZFS
-scrub, RAID-Z, or pkg RSA discharges them. If the user asks for payload
-confirmation or PQ code signing, say it is the next skill and stop.
+**Held, required of a later cut, not this skill:** T10 / `pqconfirm`.
+**Held, open-ended, not a 1.0 requirement:** T11 / `pqcode` — authentication
+of *code* (kernel, kld, pkg, policy), not of credentials, with two independent
+signature families (ML-DSA and SLH-DSA). Catalog the hops. Do not claim the
+chain is unbroken. Do not implement pqcode as a side quest inside `/pqfreebsd`.
+If the user names pqcode, cut that skill then. `pqzfs` and `mac-sebsd` wait
+until named.
 
 ## Output
 
@@ -85,11 +84,9 @@ Ask, in order. Record in `POLICY`.
 6. Confirm they know `oneuninstall` is behavior restore, not wipe, not rewind.
 7. Confirm they know T10 / payload confirmation is **required of the system
    and not implemented here**.
-8. Confirm they know T11 / code authentication (pkg RSA, unsigned kld, unsigned
-   zfs send) is **required and not implemented here**. Confirm they know T15:
-   an unbroken cryptographic chain of trust is necessary, and every
-   cryptographic particular must eventually be PQ (ML-DSA+SLH-DSA, ML-KEM).
-   This pass catalogs hops. It does not claim the chain is unbroken.
+8. Confirm they know T11 / pqcode is **catalogued, open-ended, and not a 1.0
+   requirement**. T15: the hops are listed; this pass does not claim the chain
+   is unbroken. Do not pretend pkg RSA discharges origin.
 12. **Beta-end bounds (T16).** The work is not done until each remaining claim
     has a parameterized bound: what it proves, where it stops, classical bits
     (or n/a), qubit BQP, qudit / non-binary quantum, and CVQC. Fill the sheet

@@ -135,7 +135,7 @@ export function evaluateClaims(world: World): Claim[] {
       thesis: "T11",
       title: "Bits the monitor interprets are PQ-authenticated",
       status: "held",
-      detail: "Not this pass. RSA/unsigned kld is a missing conjunct. T2 still holds on a box that has not enabled pqcode.",
+      detail: "Held, open-ended, not a 1.0 requirement. RSA/unsigned kld is a missing conjunct of a later cut. T2 still holds. Do not claim the chain is unbroken.",
       holdsWhen: "ML-DSA and SLH-DSA on kernel, kld, pkg, policy",
       degradesWhen: "absence is silent (not claimed), not a product failure",
     },

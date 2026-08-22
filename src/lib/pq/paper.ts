@@ -70,7 +70,7 @@ export const THESES: Thesis[] = [
     id: "T11",
     kind: "held",
     title: "A PQ-stable monitor interpreting RSA-signed code is a forged policy, correctly enforced",
-    body: "T2 is mediation, not a cryptographic game. The system is not therefore post-quantum secure. Kernel, klds, pkg, freebsd-update, setfsmac policy, zfs send streams, and the rc.d this suite emits are code, or code-shaped. If they are unsigned, or signed with RSA/ECC, Shor forges the input to A_M. Authentication here is of code, not of credentials. Redundancy is two independent reductions — ML-DSA (FIPS 204, lattices) and SLH-DSA (FIPS 205, hashes) — not two disks. Fletcher, RAID-Z, and AES-at-rest are not a second signature. Held: pqcode, pqzfs. The suite still does not kldload Kyber; it would sign the bits the monitor runs.",
+    body: "T2 is mediation, not a cryptographic game. The system is not therefore post-quantum secure. Kernel, klds, pkg, freebsd-update, setfsmac policy, zfs send streams, and the rc.d this suite emits are code, or code-shaped. If they are unsigned, or signed with RSA/ECC, Shor forges the input to A_M. Authentication here is of code, not of credentials. Redundancy is two independent reductions — ML-DSA (FIPS 204, lattices) and SLH-DSA (FIPS 205, hashes) — not two disks. Fletcher, RAID-Z, and AES-at-rest are not a second signature. Held and open-ended: pqcode is not a 1.0 requirement. The catalog remains. Do not claim the chain is unbroken.",
   },
   {
     id: "T12",
@@ -213,4 +213,4 @@ pqfreebsd does not replace those packages. It interviews, then emits a result di
 
 pqfreebsd(7) is updated as those morphisms land. pqac(7) remains the basis and is not rewritten for each one.
 
-Held, required, not this pass: pqconfirm, pqcode, pqzfs, mac-sebsd, measured boot.`;
+Held, not 1.0: pqcode (open-ended). Held, required of a later cut: pqconfirm, pqzfs, mac-sebsd, measured boot.`;

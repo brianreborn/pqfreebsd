@@ -20,7 +20,7 @@ function CodeAuth() {
   return (
     <div className="grid gap-8">
       <header className="max-w-3xl">
-        <p className="text-xs uppercase tracking-[0.18em] text-warn">T11 · T15 · chain of trust · held</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-warn">T11 · T15 · catalog · not a 1.0 gate</p>
         <h1 className="mt-2 text-3xl font-medium tracking-tight">
           The chain must be unbroken. Every cryptographic particular must become post-quantum.
         </h1>

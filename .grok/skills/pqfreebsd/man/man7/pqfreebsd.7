@@ -134,10 +134,13 @@ chained catalog hashes
 .Pp
 Held until named as skills:
 .Nm pqconfirm ,
-.Nm pqcode ,
 .Nm pqzfs ,
 .Nm mac-sebsd ,
 measured boot.
+.Nm pqcode
+is held and open-ended; it is
+.Em not
+a 1.0 requirement.
 .Sh SKILLS
 One skill per
 .Em proof ,
@@ -285,7 +288,7 @@ Grover halves the bits.
 Next skill:
 .Nm pqconfirm .
 .It T11
-.Pq required; not this pass
+.Pq held; open-ended; not a 1.0 requirement
 A PQ-stable monitor interpreting RSA-signed code is a forged policy,
 correctly enforced.
 Kernel, klds, pkg, policy, and
@@ -299,10 +302,10 @@ Redundancy is two independent reductions: ML-DSA
 and SLH-DSA
 .Pq FIPS 205
 — not two disks.
-Fletcher, RAID-Z, and AES-at-rest are not a second signature.
-Held:
-.Nm pqcode ,
-.Nm pqzfs .
+The catalog remains.
+.Nm pqcode
+is cut when named, not as a 1.0 gate.
+Do not claim the chain is unbroken.
 .It T12
 .Pq gated; TPM not this pass
 .Cm oneboot
