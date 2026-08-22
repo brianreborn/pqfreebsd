@@ -41,7 +41,7 @@ export const SKILL_NODES: SkillNode[] = [
   {
     id: "lomac",
     label: "mac-lomac",
-    subtitle: "A_M integrity",
+    subtitle: "high- / low-integrity",
     kind: "parent",
     href: "/lattice",
     x: 72,

@@ -34,13 +34,13 @@ export function evaluateClaims(world: World): Claim[] {
       id: "mediation",
       module: "mac_lomac",
       thesis: "T1–T2",
-      title: "Write-up is denied; BQP does not inhabit chmod",
+      title: "Low-integrity cannot overwrite high-integrity OS files",
       status: !p.withLomac ? "silent" : !world.enforce ? "silent" : "holds",
       detail: !p.withLomac
-        ? "LOMAC not composed. This box does not claim the lattice."
+        ? "mac_lomac not composed. This box does not claim the integrity lattice."
         : !world.enforce
           ? "Staged (enabled=0). Claim not made until oneenforce."
-          : "A_M interpreting. Sandbox cannot write-up after a low read.",
+          : "A low-integrity process cannot overwrite high-integrity OS files after reading low-integrity data.",
       holdsWhen: "mac_lomac loaded, labeled, enabled=1",
       degradesWhen: "never into a product with other modules — unlabeled is a different relation",
     },
@@ -115,7 +115,7 @@ export function evaluateClaims(world: World): Claim[] {
       status: report.ok ? "holds" : report.draft ? "degraded" : report.fails.length ? "broken" : "degraded",
       detail: report.summary,
       holdsWhen: "onepropagate; catalog hash chained; oneaudit clean",
-      degradesWhen: "draft ≠ applied. Does not un-prove write-up.",
+      degradesWhen: "draft ≠ applied. Does not un-prove high-integrity overwrite protection.",
     },
     {
       id: "boot",
@@ -185,7 +185,7 @@ export function evaluateClaims(world: World): Claim[] {
       thesis: "T15",
       title: "Unbroken cryptographic chain of trust; every particular PQ",
       status: "held",
-      detail: chainBreak().reason + " Required eventually. Not claimed this pass. A broken CoT does not un-prove write-up.",
+      detail: chainBreak().reason + " Required eventually. Not claimed this pass. A broken CoT does not un-prove high-integrity overwrite protection.",
       holdsWhen: "every crypto hop is ML-DSA+SLH-DSA, ML-KEM, or Grover-accounted hash under a PQ-signed root",
       degradesWhen: "a classical or unsigned hop breaks the chain from that point down — T14 still applies to mediation",
     },

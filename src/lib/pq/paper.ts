@@ -16,7 +16,7 @@ export const THESES: Thesis[] = [
     id: "T2",
     kind: "inherited",
     title: "Mediation is not a cryptographic game",
-    body: "A_D, A_M, and MMU translation are quantum-adversary-stable mediation on a von Neumann defender. They are post-quantum access control in that sense, and not post-quantum cryptography. Shor destroys A_auth when A_auth is RSA/ECC. It does not inhabit chmod or lomac/high.",
+    body: "A_D, A_M, and MMU translation are quantum-adversary-stable mediation on a von Neumann defender. They are post-quantum access control in that sense, and not post-quantum cryptography. Shor destroys A_auth when A_auth is RSA/ECC. It does not inhabit chmod or a high-integrity label.",
   },
   {
     id: "T3",
@@ -46,7 +46,7 @@ export const THESES: Thesis[] = [
     id: "T7",
     kind: "pqfreebsd",
     title: "Anderson verifiability is a ledger, not a slogan",
-    body: "Complete mediation and isolation are approximated by mac(4) and mac_lomac(4). Verifiability is not. A filesystem-level hash-chained ledger of vnode, label, and policy-morphism events is the monitor's Integrity Evidence. The ledger object is high in L; sandbox write-up fails. Tampering with the chain is a hash-collision problem (Grover halves the bits: production uses SHA-512 or SHA-3). That is A_auth of the evidence, not of the subject. The suite still does not kldload Kyber.",
+    body: "Complete mediation and isolation are approximated by mac(4) and mac_lomac(4). Verifiability is not. A filesystem-level hash-chained ledger of vnode, label, and policy-morphism events is the monitor's Integrity Evidence. The ledger object is high-integrity; a low-integrity process cannot overwrite it. Tampering with the chain is a hash-collision problem (Grover halves the bits: production uses SHA-512 or SHA-3). That is A_auth of the evidence, not of the subject. The suite still does not kldload Kyber.",
   },
   {
     id: "T8",
@@ -88,19 +88,19 @@ export const THESES: Thesis[] = [
     id: "T14",
     kind: "pqfreebsd",
     title: "Claims degrade by conjunct, not as a product",
-    body: "A missing or stranded protocol weakens only the claims that named it. If the box cannot securely transport the Integrity Evidence to another host and have that host validate the store, the off-host IE claim is degraded. Write-up, local chain, repaired A_D, successive policy, and the splash are not thereby false. A deployment that includes and enables that module, and adheres to its protocol, keeps those claims in full. Silent (module not included) is not degraded (module included, protocol unmet). Do not report the suite as a single bit. Inverse of “conjunction is not a product of proofs.”",
+    body: "A missing or stranded protocol weakens only the claims that named it. If the box cannot securely transport the Integrity Evidence to another host and have that host validate the store, the off-host IE claim is degraded. High-integrity overwrite protection, local chain, repaired A_D, successive policy, and the splash are not thereby false. A deployment that includes and enables that module, and adheres to its protocol, keeps those claims in full. Silent (module not included) is not degraded (module included, protocol unmet). Do not report the suite as a single bit. Inverse of “conjunction is not a product of proofs.”",
   },
   {
     id: "T15",
     kind: "held",
     title: "The cryptographic chain of trust must be unbroken, and every particular post-quantum",
-    body: "A necessary requirement of the trusted base, distinct from T2. Walk firmware db → loader → kernel → kld → pkg → freebsd-update → policy → rc.d → ledger checkpoint → zfs send → replica transport. Each hop that is cryptography must eventually be a post-quantum algorithm: ML-DSA and SLH-DSA for signatures, ML-KEM for transport, SHA-512 or SHA-3 Grover-accounted for hashes. AES-at-rest is secrecy, not origin. Hybrid (classical+PQ) is a transition particular; Shor still forges the classical half. A classical or missing hop breaks the chain from that point down. It does not un-prove write-up (T14). This pass catalogs the hops. It does not claim the chain is unbroken. Held: pqcode, pqzfs, replica transport.",
+    body: "A necessary requirement of the trusted base, distinct from T2. Walk firmware db → loader → kernel → kld → pkg → freebsd-update → policy → rc.d → ledger checkpoint → zfs send → replica transport. Each hop that is cryptography must eventually be a post-quantum algorithm: ML-DSA and SLH-DSA for signatures, ML-KEM for transport, SHA-512 or SHA-3 Grover-accounted for hashes. AES-at-rest is secrecy, not origin. Hybrid (classical+PQ) is a transition particular; Shor still forges the classical half. A classical or missing hop breaks the chain from that point down. It does not un-prove high-integrity overwrite protection (T14). This pass catalogs the hops. It does not claim the chain is unbroken. Held: pqcode, pqzfs, replica transport.",
   },
   {
     id: "T16",
     kind: "pqfreebsd",
     title: "Beta ends at parameterized bounds, not at a slogan",
-    body: "At the end of beta the system is provably secure up to the conjunction of named bounds, and no further. Each claimed measure states what is proven, where the proof stops, and expected resistance against classical PPT, qubit BQP (Grover, Shor, BHT), qudit / non-binary quantum, and continuous-variable machines. Mediation is n/a bits in every model: BQP, qudits, and analog machines still write through the hook. Cryptographic particulars have numbers, already birthday- and Grover-accounted, or an honest 0. A zero on pkg-RSA does not zero write-up. Empty bounds are the remainder of the work. Do not ship “provably secure” without this sheet.",
+    body: "At the end of beta the system is provably secure up to the conjunction of named bounds, and no further. Each claimed measure states what is proven, where the proof stops, and expected resistance against classical PPT, qubit BQP (Grover, Shor, BHT), qudit / non-binary quantum, and continuous-variable machines. Mediation is n/a bits in every model: BQP, qudits, and analog machines still write through the hook. Cryptographic particulars have numbers, already birthday- and Grover-accounted, or an honest 0. A zero on pkg-RSA does not zero high-integrity overwrite protection. Empty bounds are the remainder of the work. Do not ship “provably secure” without this sheet.",
   },
   {
     id: "T17",
@@ -194,13 +194,13 @@ pqfreebsd(7) is the living paper. It builds onward: Integrity Evidence, restrict
 
 export const EXOTERIC = `Authentication binds an identity to a process. Authorization relates that process to objects and to regions of the store. The first, on contemporary FreeBSD, is cryptographic or a local console. The second is an access matrix (DAC: owner-directed chmod and chown, uid/gid) composed with a lattice policy (MAC) composed with translation rights (MMU).
 
-Shor destroys A_auth when A_auth is RSA/ECC. It does not inhabit A_D or A_M. There is no reduction from period-finding to lomac/high or to the allocation of a PTE. That is quantum-adversary-stable mediation: the decision procedure's complexity class is not the source of its security, because the decision is not a cryptographic game. It is an interpreted predicate in the kernel.
+Shor destroys A_auth when A_auth is RSA/ECC. It does not inhabit A_D or A_M. There is no reduction from period-finding to a high-integrity label or to the allocation of a PTE. That is quantum-adversary-stable mediation: the decision procedure's complexity class is not the source of its security, because the decision is not a cryptographic game. It is an interpreted predicate in the kernel.
 
 The predicate is interpreted over bits that arrived somehow: a kernel, a kld, a pkg, a policy file, a zfs send stream. If those bits are authenticated by RSA, the game T2 set aside is back, sitting in front of the monitor.`;
 
 export const ESOTERIC = `Those predicates are themselves electrical events. A page-table walk is current on a rail; a label in a system extended attribute is a pattern of stored charge. The in-band/out-of-band cut is an alphabet cut (syscalls versus analog traces), not a cut in the physics.
 
-Imperviousness is a non-interference statement: traces that agree on low inputs yield indistinguishable observations. Resistance is a quantitative bound on leakage. These are not interchangeable. LOMAC supplies integrity (no write-up after a low read), not emanation secrecy. POSIX MAC does not supply observational equivalence with respect to O.`;
+Imperviousness is a non-interference statement: traces that agree on low inputs yield indistinguishable observations. Resistance is a quantitative bound on leakage. These are not interchangeable. LOMAC supplies integrity (a low-integrity process cannot overwrite high-integrity files after reading low-integrity data), not emanation secrecy. POSIX MAC does not supply observational equivalence with respect to O.`;
 
 export const DERIVATION = `freebsd-mac-grok ships three skills. freebsd-mac-lomac writes roles as pw(8) groups, the official PLM, Xorg and /dev overlays, PREINSTALL uninstall. freebsd-mac-generic writes orthogonal modules (seeotheruids by default). freebsd-mac is the umbrella: zfs snapshot -r (filesystems and zvols) and optional zpool-checkpoint(8) before and after staging. No bectl(8). Sibling max-headroom-grok installs the agent wrapper; sandbox subjects are where agents live.
 

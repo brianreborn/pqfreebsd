@@ -20,7 +20,7 @@ export type CodeAuth = {
  *
  * T15: the chain must eventually be unbroken, and every cryptographic
  * particular replaced with a post-quantum algorithm. A classical hop breaks
- * the chain from that point down. It does not un-prove write-up (T14).
+ * the chain from that point down. It does not un-prove high-integrity overwrite protection (T14).
  *
  * Redundancy is two independent reductions, not two disks.
  */
@@ -213,4 +213,4 @@ export const AUTH_CLAIM = `Mediation (A_D, A_M, MMU) is quantum-adversary-stable
 
 An unbroken cryptographic chain of trust is a necessary requirement of the trusted base (T15). Each cryptographic particular in that chain — firmware db, loader, kernel, kld, pkg, freebsd-update, policy, rc.d, ledger checkpoint, zfs send, replica transport — must eventually be replaced with post-quantum algorithms. Signatures: ML-DSA (FIPS 204) and SLH-DSA (FIPS 205). Transport: ML-KEM (FIPS 203). Hashes: SHA-512 or SHA-3, Grover-accounted. AES-at-rest is secrecy, not origin.
 
-A classical or missing hop breaks the chain from that point down. Hybrid (classical+PQ) is a transition particular, not the eventual chain: Shor still forges the classical half. T14 still holds: a broken CoT does not un-prove write-up. This pass catalogs the hops. It does not claim the chain is unbroken.`;
+A classical or missing hop breaks the chain from that point down. Hybrid (classical+PQ) is a transition particular, not the eventual chain: Shor still forges the classical half. T14 still holds: a broken CoT does not un-prove high-integrity overwrite protection. This pass catalogs the hops. It does not claim the chain is unbroken.`;

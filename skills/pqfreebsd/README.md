@@ -52,7 +52,8 @@ Rollback: `zfs rollback -r <pool>@pqfreebsd-pre-…`. Names: `/var/db/pqfreebsd/
 
 ## pqledger
 
-Append-only dataset (default `zroot/pq/ledger`), labeled **lomac/high**.
+Append-only dataset (default `zroot/pq/ledger`), labeled **high-integrity**
+(`lomac/high` in the kernel).
 Records: vnode ops, label morphisms, establish/repair, enforce. Hash chain
 (SHA-512 on the host). **audit(4)** is the in-band source; `/var/audit` is
 **not** the chain. Rotation appends a checkpoint record. Rewrite is a bug.
@@ -96,7 +97,7 @@ Known issues; do not duplicate every row here.
 | Issue | Source | What happens | What this package does |
 | --- | --- | --- | --- |
 | BSM is not tamper-evident | audit(4) | root can truncate `/var/audit` | chain on high dataset is the evidence |
-| Ledger unlabeled at enforce | pqac empty interpretation | write-up undefined | overlay labels the dataset high first |
+| Ledger unlabeled at enforce | pqac empty interpretation | overwrite undefined | overlay labels the dataset high-integrity first |
 | Repair is not prevention | pqfreebsd(7) T6 | concurrent reader may see drifted mode | say so; prevent is ugidfw, different proof |
 | Unrestricted A_D is HRU | CACM 19(8) 1976 | safety undecidable | restricted spec only; no grant verbs |
 | Ledger daemon is a subject | pqac T4 | O may factor through it | high label; not Faraday |

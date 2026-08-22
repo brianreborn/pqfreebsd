@@ -57,6 +57,43 @@ does not factor through a kernel-visible subject, T1 and T2 are silent.
 .Pp
 This page does not re-prove T1–T5.
 It inherits them and names the morphisms the slogans omitted.
+.Sh LABELS
+.Xr mac_lomac 4
+is the integrity lattice.
+When speaking to an operator, say
+.Sy high-integrity
+and
+.Sy low-integrity .
+Do not say only
+.Ql high
+or
+.Ql low
+as if those were self-explanatory.
+.Pp
+.Bl -tag -width low-integrityxx
+.It high-integrity
+OS and other files a lowered process must not overwrite.
+Kernel:
+.Ql lomac/high
+.Pq subjects: Ql lomac/high(low-high) .
+.It low-integrity
+User files, agents, home directories, and the level a process drops to after
+reading them.
+Kernel:
+.Ql lomac/low
+for objects;
+.Ql lomac/10[2]
+for a process that starts already lowered.
+Those are the same integrity in speech.
+.It exempt
+Outside the lattice.
+Root
+.Ql equal(equal-equal)
+is exemption, not containment.
+.El
+.Pp
+Short proof: a low-integrity process cannot overwrite a high-integrity OS
+file after reading low-integrity data.
 .Sh THIS SUITE
 .Nm freebsd-mac-grok
 ships
@@ -248,7 +285,7 @@ Claims degrade by conjunct, not as a product.
 A missing or stranded protocol weakens only the claims that named it.
 If the box cannot securely transport the Integrity Evidence to another host
 and have that host validate the store, the off-host IE claim is degraded.
-Write-up, local chain, repaired
+High-integrity overwrite protection, local chain, repaired
 .Em A_D ,
 successive policy, and the splash are not thereby false.
 Silent
@@ -269,7 +306,7 @@ for transport, SHA-512 or SHA-3 Grover-accounted for hashes.
 AES-at-rest is secrecy, not origin.
 Hybrid is a transition particular; Shor still forges the classical half.
 A classical or missing hop breaks the chain from that point down.
-It does not un-prove write-up
+It does not un-prove high-integrity overwrite protection
 .Pq T14 .
 This pass catalogs the hops.
 It does not claim the chain is unbroken.
@@ -283,7 +320,7 @@ qudit / non-binary quantum, and continuous-variable machines.
 Mediation is n/a bits in every model.
 Cryptographic particulars have numbers, already birthday- and
 Grover-accounted, or an honest 0.
-A zero on pkg-RSA does not zero write-up.
+A zero on pkg-RSA does not zero high-integrity overwrite protection.
 Empty bounds are the remainder of the work.
 Do not ship
 .Dq provably secure

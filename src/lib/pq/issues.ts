@@ -93,7 +93,7 @@ export const ISSUES: Issue[] = [
     layer: "ledger",
     source: "pqac(7) empty interpretation",
     issue: "Ledger dataset unlabeled at enforce",
-    happens: "Sandbox write-up is not defined against an unlabeled object; hole in A_M.",
+    happens: "A low-integrity overwrite of an unlabeled object is not defined; hole in the lattice.",
     does: "Label zroot/pq/ledger high in the overlay before the PLM. onelabel probes it.",
   },
   {
@@ -182,7 +182,7 @@ export const ISSUES: Issue[] = [
     source: "pqfreebsd(7) T14",
     issue: "Suite reported as one bit",
     happens: "Network stranded; operator concludes “the system is insecure” or “all claims fail.”",
-    does: "Degrade only the conjunct that named the protocol. Off-host IE degraded; write-up, local chain, A_D still hold. Silent ≠ degraded. A box that includes and enables the replica and can transport keeps that claim.",
+    does: "Degrade only the conjunct that named the protocol. Off-host IE degraded; high-integrity overwrite protection, local chain, A_D still hold. Silent ≠ degraded. A box that includes and enables the replica and can transport keeps that claim.",
   },
   {
     id: "cot-classical",
@@ -190,7 +190,7 @@ export const ISSUES: Issue[] = [
     source: "pqfreebsd(7) T15",
     issue: "Chain of trust claimed unbroken while a hop is RSA or unsigned",
     happens: "Operator treats LOMAC + SHA-256 ledger as a PQ trusted base.",
-    does: "Walk hops 1–13. Break at first origin hop that is not ML-DSA+SLH-DSA / ML-KEM. Catalog; do not claim. T14: broken CoT does not un-prove write-up.",
+    does: "Walk hops 1–13. Break at first origin hop that is not ML-DSA+SLH-DSA / ML-KEM. Catalog; do not claim. T14: broken CoT does not un-prove high-integrity overwrite protection.",
   },
   {
     id: "slogan-secure",

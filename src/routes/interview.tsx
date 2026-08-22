@@ -43,9 +43,9 @@ function Interview() {
         <div className="rounded-xl border border-border bg-surface p-6">
           <h2 className="text-lg font-medium">Agreed (workbench)</h2>
           <dl className="mt-4 grid gap-2 font-mono text-sm">
-            <Row k="trusted" v={`${world.policy.trustedGroup} ∋ ${world.policy.trustedMembers.join(", ")}`} />
-            <Row k="sandbox" v={`${world.policy.sandboxGroup} ∋ ${world.policy.sandboxMembers.join(", ")}`} />
-            <Row k="root" v={world.policy.rootLabel} />
+            <Row k="high-integrity role" v={`${world.policy.trustedGroup} ∋ ${world.policy.trustedMembers.join(", ")}`} />
+            <Row k="low-integrity role" v={`${world.policy.sandboxGroup} ∋ ${world.policy.sandboxMembers.join(", ")}`} />
+            <Row k="root" v="exempt (not contained)" />
             <Row k="ledger" v={world.policy.ledgerDataset} />
             <Row k="A_D" v={world.policy.dacMode} />
             <Row k="hash" v={world.policy.hashName} />

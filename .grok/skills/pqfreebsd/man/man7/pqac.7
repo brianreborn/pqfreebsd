@@ -241,6 +241,20 @@ that reads an object at
 is demoted toward
 .Em g'
 .Pq low-watermark, floating label .
+In speech this suite says
+.Sy high-integrity
+for
+.Ql lomac/high
+and
+.Sy low-integrity
+for
+.Ql lomac/low
+and the handbook sandbox grade
+.Ql lomac/10[2] .
+.Ql equal
+is
+.Sy exempt
+.Pq not contained .
 Subsequent writes to objects dominated by the old
 .Em g
 fail.
@@ -259,7 +273,7 @@ and unwinding lemmas used to prove it, speak to whether high inputs
 are visible in low outputs.
 LOMAC
 .Em permits
-the read that secrecy forbids, then removes write-up.
+the read that secrecy forbids, then forbids overwriting higher-integrity files.
 A side-channel thesis about emanations of high
 .Em secrets
 is therefore not discharged by LOMAC; it would want MLS, Biba's
@@ -267,7 +281,8 @@ no-read-down, or an enclave whose observation function is specified
 in analog.
 LOMAC's short proof, and the reason this suite uses it, is
 integrity:
-a sandbox subject cannot write-up into high OS objects after a low
+a low-integrity process cannot overwrite high-integrity OS files after a
+low-integrity read.
 read.
 .Pp
 .Xr setfsmac 8

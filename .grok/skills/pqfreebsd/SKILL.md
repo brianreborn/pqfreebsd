@@ -67,13 +67,17 @@ interview phase. `test*` immediately before each `one*`.
 
 Ask, in order. Record in `POLICY`.
 
-1. Compose parent LOMAC? Default yes. Official PLM, root `equal(equal-equal)`,
-   trusted `high(low-high)`, sandbox `lomac/10[2]`, homes `/home/.*` low.
+1. Compose parent mac_lomac(4)? Default yes. Speak **high-integrity** and
+   **low-integrity** to the operator (kernel still writes `lomac/high` and
+   `lomac/low`). Official policy: OS files high-integrity, home directories
+   low-integrity, root exempt (not contained). High-integrity role starts at
+   `high(low-high)`; low-integrity role at `lomac/10[2]`.
 2. Orthogonal: **mac_seeotheruids(4)** only, exempt GID 0. Do not stack Biba/MLS.
    Do not enable **mac_ifoff(4)** blindly.
-3. Trusted group name and members. Sandbox group name and members.
-   `DEFAULT_ROLE=sandbox`.
-4. Ledger dataset (default `zroot/pq/ledger`). Label `lomac/high`. Hash
+3. High-integrity group name and members (humans who may start able to write
+   OS files). Low-integrity group name and members (agents, builders, guests).
+   New users default to the low-integrity role.
+4. Ledger dataset (default `zroot/pq/ledger`). Label **high-integrity**. Hash
    SHA-512 on the host (workbench may show SHA-256). Source: audit(4) + vnode
    + policy morphisms. Rotation appends a checkpoint record; rewrite is a bug.
 5. A_D morphism: `observe` / `repair` (default) / `prevent`. prevent generates

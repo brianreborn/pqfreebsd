@@ -13,7 +13,7 @@ T16 (parameterized bounds). The port cannot measure "sufficiently advanced."
 
 oneenforce is refused while pqfreebsd_llm_attested is not YES on a
 via-port install. That is the install conjunct, not A_M. A missing LLM
-does not un-prove write-up on a box that was already labeled.
+does not un-prove high-integrity overwrite protection on a box that was already labeled.
 
 oneboot (splash, Forth logo) still requires BOOT_SATISFIED=YES.
 TPM is not this pass. Do not kldload mac_lomac until a test window.

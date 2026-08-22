@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { childrenOf, resultColor } from "@/lib/pq/host";
+import { integrityShow } from "@/lib/pq/labels";
 import { formatMode } from "@/lib/pq/policy";
 import { usePq } from "@/lib/pq/store";
 import { Button } from "@/components/ui/button";
@@ -26,8 +27,9 @@ export function Host() {
           <p className="text-xs uppercase tracking-[0.18em] text-muted">Simulated GENERIC · ruach-shaped</p>
           <h1 className="mt-2 text-3xl font-medium tracking-tight">Drive the reference monitor.</h1>
           <p className="mt-2 max-w-prose text-muted">
-            Login attaches lambda(s). Enforce only after label. Sandbox write-up fails. Owner chmod
-            still works — then A_D repair, if you asked for it.
+            Login attaches integrity. Turn the lattice on only after files are labeled. A
+            low-integrity process cannot overwrite high-integrity OS files. The owner can still
+            chmod — then discretionary repair, if you asked for it.
           </p>
         </div>
         <Button variant="ghost" onClick={reset}>
@@ -75,8 +77,8 @@ export function Host() {
         <h2 className="text-sm font-medium text-muted">Worked attempts</h2>
         <div className="grid gap-2 md:grid-cols-2">
           <Demo
-            title="Sandbox write-up"
-            body="dev writes /usr/bin/pwn — A_M should deny once enforced and labeled."
+            title="Low-integrity overwrite of OS"
+            body="dev writes /usr/bin/pwn — the lattice should deny once on and labeled."
             onRun={() => {
               dispatch({ type: "label" });
               dispatch({ type: "enforce" });
@@ -93,8 +95,8 @@ export function Host() {
             }}
           />
           <Demo
-            title="Ledger write-up"
-            body="sandbox tries to scribble /pq/ledger/HEAD. High object, low subject."
+            title="Low-integrity scribble on the ledger"
+            body="dev tries to write /pq/ledger/HEAD. High-integrity object, low-integrity process."
             onRun={() => {
               dispatch({ type: "label" });
               dispatch({ type: "enforce" });
@@ -124,7 +126,8 @@ export function Host() {
           </div>
           {here ? (
             <p className="mt-2 text-xs text-muted">
-              {here.kind} {here.owner}:{here.group} {formatMode(here.mode)} {here.label}
+              {here.kind} {here.owner}:{here.group} {formatMode(here.mode)} {integrityShow(here.label)}
+              <span className="ml-2 font-mono">{here.label}</span>
             </p>
           ) : null}
           <ul className="mt-4 grid gap-1">
@@ -133,7 +136,7 @@ export function Host() {
                 <button type="button" className="min-h-11 text-left font-mono text-sm" onClick={() => (n.kind === "dir" ? setCwd(n.path) : dispatch({ type: "read", path: n.path }))}>
                   {n.path === "/" ? "/" : n.path.slice(cwd === "/" ? 1 : cwd.length + 1)}
                   <span className="ml-2 text-xs text-muted">
-                    {formatMode(n.mode)} {n.label}
+                    {formatMode(n.mode)} {integrityShow(n.label)}
                   </span>
                 </button>
                 <span className="flex flex-wrap gap-1">

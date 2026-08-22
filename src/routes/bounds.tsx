@@ -70,7 +70,7 @@ function Bounds() {
       <p className="max-w-3xl text-sm text-muted">
         Bits already include birthday (collision) and Grover/BHT where they apply. n/a means the
         measure is not a cryptographic game. 0 means the particular is broken or missing under that
-        adversary — not that write-up failed. Assumptions are named so they can be replaced.
+        adversary — not that high-integrity overwrite protection failed. Assumptions are named so they can be replaced.
       </p>
 
       <div className="flex flex-wrap gap-3">

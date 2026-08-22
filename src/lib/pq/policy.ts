@@ -24,7 +24,7 @@ export const INTERVIEW = [
   {
     key: "withLomac" as const,
     title: "Integrity lattice",
-    ask: "Protect OS integrity with mac_lomac(4)? Short proof: sandbox cannot write-up into high OS objects after a low read.",
+    ask: "Protect OS files with mac_lomac(4)? Short proof: a low-integrity process cannot overwrite high-integrity OS files after reading low-integrity data. Kernel names stay lomac/high and lomac/low; we say high-integrity and low-integrity.",
     kind: "bool" as const,
   },
   {
@@ -35,28 +35,28 @@ export const INTERVIEW = [
   },
   {
     key: "trustedMembers" as const,
-    title: "Trusted role",
-    ask: "Which accounts join lomac-trusted (humans who may start at OS integrity)? Roles are groups, not per-user overlays.",
+    title: "High-integrity role",
+    ask: "Which accounts may start at high-integrity (humans who can write OS files until they read low-integrity data)? Roles are groups, not per-user overlays. Kernel class still uses lomac/high(low-high).",
     kind: "csv" as const,
   },
   {
     key: "sandboxMembers" as const,
-    title: "Sandbox role",
-    ask: "Which accounts join lomac-sandbox (agents, builders, guests)? New users default here.",
+    title: "Low-integrity role",
+    ask: "Which accounts start at low-integrity (agents, builders, guests)? New users default here. They cannot overwrite high-integrity OS files after reading user data. Kernel class still uses lomac/10[2].",
     kind: "csv" as const,
   },
   {
     key: "homesMatchClass" as const,
-    title: "Homes",
-    ask: "Keep official PLM (/home/.* low)? Overlay homes to match class only if you insist — harder to prove.",
+    title: "Home directories",
+    ask: "Keep home directories low-integrity (official policy, easier to prove)? Overlay them to match the user's role only if you insist — a high-integrity home is harder to prove.",
     kind: "invert-bool" as const,
-    yesLabel: "Official PLM (homes low)",
-    noLabel: "Homes match class",
+    yesLabel: "Homes stay low-integrity",
+    noLabel: "Homes match the user's role",
   },
   {
     key: "ledgerDataset" as const,
     title: "Ledger dataset",
-    ask: "ZFS dataset for the Integrity Evidence chain. Must be labeled high before enforce. Rotation appends; rewrite is a bug.",
+    ask: "ZFS dataset for the Integrity Evidence chain. Must be labeled high-integrity before the lattice is turned on. Rotation appends; rewrite is a bug.",
     kind: "text" as const,
   },
   {

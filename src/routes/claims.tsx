@@ -30,7 +30,8 @@ function Claims() {
         </h1>
         <p className="mt-3 text-muted">
           Security claims degrade by module. If you are network-stranded and cannot securely
-          transport the ledger to another host, the off-host IE claim is weakened. Write-up,
+          transport the ledger to another host, the off-host IE claim is weakened. High-integrity
+          overwrite protection, the local chain, repaired A_D, and the rest are not.
           local chain, repaired A_D, and the rest are not. A deployment that includes and
           enables that protocol, and adheres to it, keeps the claim. Do not report the suite
           as a single bit.

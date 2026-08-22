@@ -20,7 +20,7 @@ function Confirm() {
       <section className="rounded-xl border border-dashed border-border bg-surface p-6">
         <h2 className="font-medium">What would be confirmed</h2>
         <p className="mt-3 text-sm text-muted">
-          LOMAC says a sandbox cannot write-up. The ledger says a write happened, in order, under a
+          mac_lomac says a low-integrity process cannot overwrite high-integrity files. The ledger says a write happened, in order, under a
           hash of events. Neither lets green, later, confirm that the bytes in{" "}
           <span className="font-mono text-fg">/home/green/notes</span> are the bytes that were
           written. That is payload integrity, not event integrity, not access-matrix integrity.

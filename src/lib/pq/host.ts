@@ -403,7 +403,7 @@ export function reduce(prev: World, action: Action): Step {
     const target = world.ledger.find((e) => e.seq === action.seq);
     if (!target) return deny(world, "tamper", String(action.seq), "no such record");
     if (world.enforce && !dominatesWrite(actor, world.nodes["/pq/ledger"])) {
-      return deny(world, "tamper", "/pq/ledger", "LOMAC write-up: sandbox cannot rewrite a high ledger");
+      return deny(world, "tamper", "/pq/ledger", "low-integrity cannot overwrite high-integrity ledger");
     }
     world.ledger = world.ledger.map((e) =>
       e.seq === action.seq ? { ...e, detail: e.detail + " [tampered]" } : e,
@@ -467,7 +467,7 @@ export function reduce(prev: World, action: Action): Step {
     const parent = world.nodes[parentPath(path)];
     if (!parent) return deny(world, "create", path, "ENOENT parent");
     if (world.enforce && !dominatesWrite(actor, parent)) {
-      return deny(world, "create", path, `LOMAC write-up against ${parent.path} (${parent.label})`);
+      return deny(world, "create", path, `low-integrity cannot create under high-integrity ${parent.path}`);
     }
     if (!dacAllows(actor, parent, "w")) return deny(world, "create", path, "DAC: parent not writable");
     const rule = matchRule(world.rules, path);
@@ -506,7 +506,7 @@ export function reduce(prev: World, action: Action): Step {
 
   if (action.type === "write") {
     if (world.enforce && !dominatesWrite(actor, object)) {
-      return deny(world, "write", path, `LOMAC write-up: ${actor.label} ↛ ${object.label}`);
+      return deny(world, "write", path, `low-integrity cannot overwrite high-integrity ${path}`);
     }
     if (!dacAllows(actor, object, "w")) return deny(world, "write", path, "DAC: EACCES");
     world.nodes[path] = { ...object, content: action.content ?? object.content + "written\n" };
@@ -524,7 +524,7 @@ export function reduce(prev: World, action: Action): Step {
     if (path === "/" || path === "/pq/ledger") return deny(world, "unlink", path, "EBUSY");
     const parent = world.nodes[parentPath(path)];
     if (world.enforce && parent && !dominatesWrite(actor, parent)) {
-      return deny(world, "unlink", path, `LOMAC write-up against parent ${parent.label}`);
+      return deny(world, "unlink", path, `low-integrity cannot unlink under high-integrity parent`);
     }
     if (parent && !dacAllows(actor, parent, "w")) return deny(world, "unlink", path, "DAC: parent not writable");
     delete world.nodes[path];
@@ -537,7 +537,7 @@ export function reduce(prev: World, action: Action): Step {
         ? { mode: action.mode }
         : { owner: action.owner, group: action.group };
     if (world.enforce && !dominatesWrite(actor, object)) {
-      return deny(world, action.type, path, `LOMAC write-up: cannot restated DAC on ${object.label}`);
+      return deny(world, action.type, path, `low-integrity cannot restate discretionary bits on high-integrity ${path}`);
     }
     const isOwner = actor.name === object.owner || actor.uid === 0;
     if (!isOwner) return deny(world, action.type, path, "DAC: not owner");
@@ -586,7 +586,7 @@ function maybeDemote(step: Step, actor: Subject, object: FsNode, kind: "read" | 
     const s = step.world.subjects[actor.name];
     s.effective = og;
     step.demoted = true;
-    step.message += `; LOMAC demote ${actor.name} → grade ${og} (low-watermark)`;
+    step.message += `; dropped to low-integrity after reading ${object.path}`;
   }
   return step;
 }
