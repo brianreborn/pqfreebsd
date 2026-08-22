@@ -20,7 +20,8 @@ function Home() {
           trusted base around it: Integrity Evidence, repaired A_D, successive policy audit, a
           gated boot splash. Claims degrade by conjunct: a stranded replica weakens off-host IE,
           not write-up. Code signatures, ZFS send authentication, payload confirmation, and SEBSD
-          remain held.
+          remain held. The beta ends when each remaining claim has a parameterized bound
+          (classical, qubit, qudit, CVQC) — not when a slogan says “provably secure.”
         </p>
         <div className="flex flex-wrap gap-3">
           <Button asChild>

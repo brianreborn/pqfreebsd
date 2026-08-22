@@ -192,4 +192,12 @@ export const ISSUES: Issue[] = [
     happens: "Operator treats LOMAC + SHA-256 ledger as a PQ trusted base.",
     does: "Walk hops 1–13. Break at first origin hop that is not ML-DSA+SLH-DSA / ML-KEM. Catalog; do not claim. T14: broken CoT does not un-prove write-up.",
   },
+  {
+    id: "slogan-secure",
+    layer: "suite",
+    source: "pqfreebsd(7) T16",
+    issue: "“Provably secure” without parameterized bounds",
+    happens: "Beta ships a slogan. No classical/quantum numbers, no ‘up to’.",
+    does: "Emit the bounds sheet. n/a for mediation in every quantum model. 0 where Shor or a missing hop applies. Remainder is empty bounds, not a product failure.",
+  },
 ];

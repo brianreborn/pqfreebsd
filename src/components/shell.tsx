@@ -18,6 +18,7 @@ const NAV = [
   { to: "/claims", label: "Claims" },
   { to: "/confirm", label: "Held" },
   { to: "/code", label: "Code" },
+  { to: "/bounds", label: "Bounds" },
   { to: "/boot", label: "Boot" },
   { to: "/issues", label: "Issues" },
   { to: "/export", label: "Emit" },

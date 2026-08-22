@@ -86,6 +86,10 @@ Ask, in order. Record in `POLICY`.
    an unbroken cryptographic chain of trust is necessary, and every
    cryptographic particular must eventually be PQ (ML-DSA+SLH-DSA, ML-KEM).
    This pass catalogs hops. It does not claim the chain is unbroken.
+12. **Beta-end bounds (T16).** The work is not done until each remaining claim
+    has a parameterized bound: what it proves, where it stops, classical bits
+    (or n/a), qubit BQP, qudit / non-binary quantum, and CVQC. Fill the sheet
+    as modules land. Do not emit “provably secure” as a slogan.
 9. **Bootloader gate (default no).** Ask: are they sufficiently satisfied that
    the system is post-quantum hardened to the degree that gives them a sense of
    security? Only if yes: offer `oneboot` — splash name becomes pqfreebsd, beastie

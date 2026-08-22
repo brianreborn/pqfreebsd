@@ -96,6 +96,12 @@ export const THESES: Thesis[] = [
     title: "The cryptographic chain of trust must be unbroken, and every particular post-quantum",
     body: "A necessary requirement of the trusted base, distinct from T2. Walk firmware db → loader → kernel → kld → pkg → freebsd-update → policy → rc.d → ledger checkpoint → zfs send → replica transport. Each hop that is cryptography must eventually be a post-quantum algorithm: ML-DSA and SLH-DSA for signatures, ML-KEM for transport, SHA-512 or SHA-3 Grover-accounted for hashes. AES-at-rest is secrecy, not origin. Hybrid (classical+PQ) is a transition particular; Shor still forges the classical half. A classical or missing hop breaks the chain from that point down. It does not un-prove write-up (T14). This pass catalogs the hops. It does not claim the chain is unbroken. Held: pqcode, pqzfs, replica transport.",
   },
+  {
+    id: "T16",
+    kind: "pqfreebsd",
+    title: "Beta ends at parameterized bounds, not at a slogan",
+    body: "At the end of beta the system is provably secure up to the conjunction of named bounds, and no further. Each claimed measure states what is proven, where the proof stops, and expected resistance against classical PPT, qubit BQP (Grover, Shor, BHT), qudit / non-binary quantum, and continuous-variable machines. Mediation is n/a bits in every model: BQP, qudits, and analog machines still write through the hook. Cryptographic particulars have numbers, already birthday- and Grover-accounted, or an honest 0. A zero on pkg-RSA does not zero write-up. Empty bounds are the remainder of the work. Do not ship “provably secure” without this sheet.",
+  },
 ];
 
 export const PRAXIS = [
