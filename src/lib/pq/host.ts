@@ -116,6 +116,8 @@ export function createWorld(policy: Policy): World {
     revs: [],
     appliedCatalog: "",
     applied: [],
+    stranded: false,
+    replicaOk: false,
   };
   const genesis = appendEvent(world, {
     op: "label",
@@ -154,7 +156,9 @@ export type Action =
   | { type: "addRule"; rule: World["rules"][number] }
   | { type: "removeRule"; id: string }
   | { type: "propagate" }
-  | { type: "audit" };
+  | { type: "audit" }
+  | { type: "replicate" }
+  | { type: "strand"; on: boolean };
 
 export type Step = {
   world: World;
@@ -267,6 +271,52 @@ export function reduce(prev: World, action: Action): Step {
       detail: draft
         ? `audit: draft ≠ applied (${catalog.slice(0, 12)} vs ${(world.appliedCatalog || "none").slice(0, 12)})`
         : `audit: catalog=${catalog.slice(0, 12)} fails=${fails} revs=${world.revs.length} chain=${world.chainOk ? "ok" : "BROKEN"}`,
+    });
+  }
+  if (action.type === "strand") {
+    const world = cloneWorld(prev);
+    world.stranded = action.on;
+    if (action.on) world.replicaOk = false;
+    return push(world, {
+      op: "strand",
+      subject: world.actor,
+      object: world.policy.replicaPeer || "net",
+      result: "info",
+      detail: action.on
+        ? "network stranded — off-host IE cannot be transported; other claims unchanged"
+        : "network restored — replica protocol may run if included and enabled",
+    });
+  }
+  if (action.type === "replicate") {
+    const world = cloneWorld(prev);
+    const p = world.policy;
+    if (!p.replicaEnabled) {
+      return deny(
+        world,
+        "replicate",
+        p.replicaPeer || "peer",
+        "replica module not included — no off-host IE claim to discharge (T14 silent)",
+      );
+    }
+    if (world.stranded) {
+      return deny(
+        world,
+        "replicate",
+        p.replicaPeer || "peer",
+        "stranded — cannot securely transport the ledger; local IE and mediation are not thereby false",
+      );
+    }
+    if (!p.replicaPeer.trim()) {
+      return deny(world, "replicate", "peer", "replica enabled but no peer named");
+    }
+    world.replicaOk = true;
+    const head = world.ledger.length ? world.ledger[world.ledger.length - 1].hash : "";
+    return push(world, {
+      op: "replicate",
+      subject: world.actor,
+      object: p.replicaPeer,
+      result: "allow",
+      detail: `peer ${p.replicaPeer} stored HEAD ${head.slice(0, 12)}; independent storage confirmed`,
     });
   }
 

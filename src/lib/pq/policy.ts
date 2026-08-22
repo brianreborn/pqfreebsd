@@ -16,6 +16,8 @@ export const DEFAULT_POLICY: Policy = {
   withSeeotheruids: true,
   homesMatchClass: false,
   bootSatisfied: false,
+  replicaEnabled: false,
+  replicaPeer: "",
 };
 
 export const INTERVIEW = [
@@ -74,6 +76,18 @@ export const INTERVIEW = [
     title: "Bootloader gate",
     ask: "Are you sufficiently satisfied that this system is post-quantum hardened to the degree that gives you a sense of security? Only then may the umbrella secure the bootloader (TPM is not this pass), replace the splash name with pqfreebsd, and replace the beastie with the shield — the armor of God. Default no. Do not rebrand a box you do not yet trust.",
     kind: "bool" as const,
+  },
+  {
+    key: "replicaEnabled" as const,
+    title: "Off-host IE",
+    ask: "Include and enable the ledger replica protocol — a second host that stores and validates the Integrity Evidence? If you are network-stranded and cannot securely transport the chain, that claim degrades. Mediation and local IE do not. Default no: do not claim independent storage you cannot perform.",
+    kind: "bool" as const,
+  },
+  {
+    key: "replicaPeer" as const,
+    title: "Replica peer",
+    ask: "Name of the peer that will store the ledger (hostname). Empty if the replica module is not included. A named peer on a stranded box is a degraded claim, not a silent one.",
+    kind: "text" as const,
   },
 ];
 

@@ -1,5 +1,6 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { audit } from "@/lib/pq/audit";
+import { claimTally, evaluateClaims } from "@/lib/pq/claims";
 import { findDrift } from "@/lib/pq/dac";
 import { headHash } from "@/lib/pq/host";
 import { usePq } from "@/lib/pq/store";
@@ -14,6 +15,7 @@ const NAV = [
   { to: "/ledger", label: "Ledger" },
   { to: "/dac", label: "A_D" },
   { to: "/audit", label: "Audit" },
+  { to: "/claims", label: "Claims" },
   { to: "/confirm", label: "Held" },
   { to: "/code", label: "Code" },
   { to: "/boot", label: "Boot" },
@@ -27,22 +29,17 @@ export function Shell() {
   const drift = findDrift(world.nodes, world.rules).length;
   const hash = headHash(world);
   const report = audit(world);
+  const tally = claimTally(evaluateClaims(world));
 
   return (
     <div className="min-h-dvh bg-bg text-fg">
       <header className="border-b border-border bg-surface">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
           <Link to="/" className="flex min-h-11 items-center gap-3">
-            <img
-              src="/shield.jpg"
-              alt=""
-              width={32}
-              height={32}
-              className="h-8 w-8 rounded-sm object-cover"
-            />
+            <img src="/favicon.svg" alt="" width={32} height={32} className="h-8 w-8" />
             <span>
               <span className="block font-medium tracking-tight">pqfreebsd</span>
-              <span className="block text-xs text-muted">post-quantum access control</span>
+              <span className="block text-xs text-muted">post-quantum trusted FreeBSD</span>
             </span>
           </Link>
           <div className="flex flex-wrap items-center gap-2 text-xs font-mono tabular-nums text-muted">
@@ -51,8 +48,8 @@ export function Shell() {
             <Chip label={world.chainOk ? `ie ${hash}` : "chain BROKEN"} tone={world.chainOk ? "ok" : "deny"} />
             <Chip label={drift ? `drift ${drift}` : "A_D clean"} tone={drift ? "warn" : "ok"} />
             <Chip
-              label={report.ok ? "audit ok" : report.draft ? "draft" : "audit"}
-              tone={report.ok ? "ok" : report.draft ? "warn" : "deny"}
+              label={tally.broken ? "claims broken" : tally.degraded ? `degraded ${tally.degraded}` : `holds ${tally.holds}`}
+              tone={tally.broken ? "deny" : tally.degraded ? "warn" : "ok"}
             />
           </div>
         </div>

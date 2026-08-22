@@ -176,4 +176,12 @@ export const ISSUES: Issue[] = [
     happens: "Rebranding an untrusted box is a sticker, not a proof.",
     does: "oneboot only after BOOT_SATISFIED=YES. Name pqfreebsd, shield not beastie. TPM not this pass. Branding is not a second signature family.",
   },
+  {
+    id: "claims-product",
+    layer: "suite",
+    source: "pqfreebsd(7) T14",
+    issue: "Suite reported as one bit",
+    happens: "Network stranded; operator concludes “the system is insecure” or “all claims fail.”",
+    does: "Degrade only the conjunct that named the protocol. Off-host IE degraded; write-up, local chain, A_D still hold. Silent ≠ degraded. A box that includes and enables the replica and can transport keeps that claim.",
+  },
 ];

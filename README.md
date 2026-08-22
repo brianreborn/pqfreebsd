@@ -4,9 +4,9 @@
 **Copyright © 2026 Brian Fundakowski Feldman.**
 **License: [Light-ware](LICENSE).** See **[NOTICE.md](NOTICE.md)**.
 
-Grok **plugin** plus a workbench for **post-quantum access control** on FreeBSD:
-not Kyber in the kernel, but quantum-adversary-stable mediation (**pqac(7)**)
-with two morphisms the parent suite omitted.
+Grok **plugin** plus a workbench for a **post-quantum trusted FreeBSD**:
+quantum-adversary-stable mediation (**pqac(7)**), Integrity Evidence, repaired
+A_D, successive policy audit, a gated boot splash. Not Kyber in the kernel.
 
 | Layer | What |
 | --- | --- |

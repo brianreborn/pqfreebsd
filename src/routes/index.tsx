@@ -13,14 +13,14 @@ function Home() {
           derived from freebsd-mac-grok · pqac(7)
         </p>
         <h1 className="max-w-3xl text-4xl font-medium tracking-[-0.03em] text-fg md:text-5xl">
-          Post-quantum access control is mediation, not Kyber.
+          A post-quantum trusted base. Not Kyber in the kernel.
         </h1>
         <p className="max-w-prose text-muted">
-          Shor destroys a name. It does not inhabit chmod, a LOMAC label, or a PTE. This pass adds
-          a filesystem Integrity Evidence ledger and a discretionary matrix that is established at
-          create and repaired on drift. Payload confirmation, code signatures, ZFS send
-          authentication, and SEBSD are held: the monitor is PQ-stable; the bits it interprets are
-          not yet.
+          Mediation does not collapse under Shor. That is not the whole system. pqfreebsd is the
+          trusted base around it: Integrity Evidence, repaired A_D, successive policy audit, a
+          gated boot splash. Claims degrade by conjunct: a stranded replica weakens off-host IE,
+          not write-up. Code signatures, ZFS send authentication, payload confirmation, and SEBSD
+          remain held.
         </p>
         <div className="flex flex-wrap gap-3">
           <Button asChild>
@@ -38,7 +38,7 @@ function Home() {
       <SkillGraph />
 
       <section className="grid gap-4">
-        <h2 className="text-lg font-medium tracking-tight">Ten theses, one of them held</h2>
+        <h2 className="text-lg font-medium tracking-tight">Theses, some held, none a product</h2>
         <div className="grid gap-3 md:grid-cols-2">
           {THESES.map((t) => (
             <article

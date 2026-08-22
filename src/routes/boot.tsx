@@ -50,15 +50,15 @@ function Boot() {
         <p className="text-xs uppercase tracking-[0.18em] text-ok">T12 · attested · TPM not this pass</p>
         <h1 className="mt-2 text-3xl font-medium tracking-tight">pqfreebsd on the splash. The shield, not the beastie.</h1>
         <p className="mt-3 text-muted">
-          You attested. The umbrella may now emit oneboot: name, mark, and the loader path this pass
-          can actually close. Measured boot remains held.
+          You attested. The mark is the armor of the trusted base — mediation, evidence, signed
+          bits — not a sticker that says “access control.” Measured boot remains held.
         </p>
       </header>
 
       <figure className="overflow-hidden rounded-xl border border-border bg-surface">
         <img
           src="/splash.jpg"
-          alt="pqfreebsd boot splash: steel shield and menu, TPM not this pass"
+          alt="pqfreebsd boot splash: steel shield, post-quantum trusted FreeBSD, TPM not this pass"
           className="h-auto w-full"
           width={1792}
           height={1008}

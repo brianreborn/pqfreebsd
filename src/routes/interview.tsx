@@ -50,6 +50,14 @@ function Interview() {
             <Row k="A_D" v={world.policy.dacMode} />
             <Row k="hash" v={world.policy.hashName} />
             <Row k="boot" v={world.policy.bootSatisfied ? "attested · oneboot offered" : "not yet · beastie stays"} />
+            <Row
+              k="replica"
+              v={
+                world.policy.replicaEnabled
+                  ? `enabled → ${world.policy.replicaPeer || "(no peer)"}`
+                  : "not included · off-host IE silent"
+              }
+            />
           </dl>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button onClick={commit}>Rebuild host from POLICY</Button>
@@ -139,7 +147,7 @@ function Field({
     return (
       <input
         className="min-h-11 w-full rounded-md border border-border bg-bg px-3 font-mono text-sm text-fg"
-        value={String(policy[q.key])}
+        value={String(policy[q.key] ?? "")}
         onChange={(e) => patch({ [q.key]: e.target.value } as Partial<Policy>)}
       />
     );

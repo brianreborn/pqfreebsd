@@ -1,8 +1,9 @@
 # pqfreebsd
 
-Post-quantum **access control** for FreeBSD: compose **freebsd-mac-grok** and
-layer a filesystem **Integrity Evidence** ledger plus dynamically established
-and repaired **DAC**. Read **pqac(7)** then **pqfreebsd(7)**.
+Post-quantum **trusted FreeBSD**: compose **freebsd-mac-grok** and layer
+Integrity Evidence, repaired **DAC**, successive policy audit, and a gated
+boot splash. Mediation (**pqac(7)**) is the core, not the whole system.
+Read **pqac(7)** then **pqfreebsd(7)**.
 
 This is the **skill**. When it runs it writes a **result directory** that
 installs as ports-style **rc.subr(8)** services: `pqfreebsd`, `pqledger`,

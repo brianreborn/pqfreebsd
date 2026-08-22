@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as BootRouteImport } from './routes/boot'
+import { Route as ClaimsRouteImport } from './routes/claims'
 import { Route as CodeRouteImport } from './routes/code'
 import { Route as ConfirmRouteImport } from './routes/confirm'
 import { Route as DacRouteImport } from './routes/dac'
@@ -36,6 +37,11 @@ const AuditRoute = AuditRouteImport.update({
 const BootRoute = BootRouteImport.update({
   id: '/boot',
   path: '/boot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClaimsRoute = ClaimsRouteImport.update({
+  id: '/claims',
+  path: '/claims',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CodeRoute = CodeRouteImport.update({
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/audit': typeof AuditRoute
   '/boot': typeof BootRoute
+  '/claims': typeof ClaimsRoute
   '/code': typeof CodeRoute
   '/confirm': typeof ConfirmRoute
   '/dac': typeof DacRoute
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/audit': typeof AuditRoute
   '/boot': typeof BootRoute
+  '/claims': typeof ClaimsRoute
   '/code': typeof CodeRoute
   '/confirm': typeof ConfirmRoute
   '/dac': typeof DacRoute
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/audit': typeof AuditRoute
   '/boot': typeof BootRoute
+  '/claims': typeof ClaimsRoute
   '/code': typeof CodeRoute
   '/confirm': typeof ConfirmRoute
   '/dac': typeof DacRoute
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/'
     | '/audit'
     | '/boot'
+    | '/claims'
     | '/code'
     | '/confirm'
     | '/dac'
@@ -156,6 +166,7 @@ export interface FileRouteTypes {
     | '/'
     | '/audit'
     | '/boot'
+    | '/claims'
     | '/code'
     | '/confirm'
     | '/dac'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '/'
     | '/audit'
     | '/boot'
+    | '/claims'
     | '/code'
     | '/confirm'
     | '/dac'
@@ -187,6 +199,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuditRoute: typeof AuditRoute
   BootRoute: typeof BootRoute
+  ClaimsRoute: typeof ClaimsRoute
   CodeRoute: typeof CodeRoute
   ConfirmRoute: typeof ConfirmRoute
   DacRoute: typeof DacRoute
@@ -220,6 +233,13 @@ declare module '@tanstack/react-router' {
       path: '/boot'
       fullPath: '/boot'
       preLoaderRoute: typeof BootRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/claims': {
+      id: '/claims'
+      path: '/claims'
+      fullPath: '/claims'
+      preLoaderRoute: typeof ClaimsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/code': {
@@ -299,6 +319,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuditRoute: AuditRoute,
   BootRoute: BootRoute,
+  ClaimsRoute: ClaimsRoute,
   CodeRoute: CodeRoute,
   ConfirmRoute: ConfirmRoute,
   DacRoute: DacRoute,

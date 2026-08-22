@@ -1,13 +1,14 @@
 ---
 name: pqfreebsd
 description: >
-  Post-quantum FreeBSD access control: compose freebsd-mac-grok (mac_lomac
+  Post-quantum trusted FreeBSD: compose freebsd-mac-grok (mac_lomac
   integrity, orthogonal modules, ZFS snapshot -r) and layer a filesystem
-  Integrity Evidence ledger plus dynamically established and repaired DAC.
-  Use when the user wants /pqfreebsd, pqac, audit ledger, DAC repair,
-  ugidfw generated from a spec, or “post-quantum access control” that is
-  not PQC in the kernel. Payload confirmation (pqconfirm / T10) is
-  required of the system and is not implemented in this skill.
+  Integrity Evidence ledger, dynamically established and repaired DAC,
+  successive policy audit, and a gated boot splash. Use when the user
+  wants /pqfreebsd, pqac, audit ledger, DAC repair, oneaudit/onepropagate,
+  or a trusted base that is not PQC in the kernel. Payload confirmation
+  (pqconfirm / T10) and code authentication (pqcode / T11) are required
+  of the system and not implemented in this skill.
 ---
 
 # pqfreebsd
@@ -92,6 +93,12 @@ Ask, in order. Record in `POLICY`.
     login labels, overlay, splash. `onepropagate` applies a change through all of
     them and appends a chained catalog hash (`policy.revs` + ledger). `test*` first.
     An audit that cannot show the kv-diff of successive iterations is not an audit.
+11. **Off-host IE (default no).** Is there a second host that will store and
+    validate the ledger? If yes: include the replica protocol, name the peer.
+    If the box is later network-stranded and cannot securely transport the chain,
+    **that claim degrades; mediation and local IE do not.** A deployment that
+    includes and enables the module and adheres to it keeps the claim. Silent
+    (not included) is not degraded. Do not report the suite as a single bit (T14).
 
 ## Checkpoint (required)
 

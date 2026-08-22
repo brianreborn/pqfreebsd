@@ -84,6 +84,12 @@ export const THESES: Thesis[] = [
     title: "Successive policy is itself an auditable object",
     body: "After install, the operator must be able to see that POLICY, SUITE, DAC, ugidfw, login labels, MAC overlays, and the splash agree, to propagate a change through all of them at once, and to read the diff of successive iterations. Consistency is a predicate over that conjunction, not a product of proofs. Each propagation is a named revision whose catalog hash is chained (prevCatalog) and recorded in the ledger. An audit that cannot show what changed is not an audit. oneaudit / onepropagate. test* first.",
   },
+  {
+    id: "T14",
+    kind: "pqfreebsd",
+    title: "Claims degrade by conjunct, not as a product",
+    body: "A missing or stranded protocol weakens only the claims that named it. If the box cannot securely transport the Integrity Evidence to another host and have that host validate the store, the off-host IE claim is degraded. Write-up, local chain, repaired A_D, successive policy, and the splash are not thereby false. A deployment that includes and enables that module, and adheres to its protocol, keeps those claims in full. Silent (module not included) is not degraded (module included, protocol unmet). Do not report the suite as a single bit. Inverse of “conjunction is not a product of proofs.”",
+  },
 ];
 
 export const PRAXIS = [

@@ -17,7 +17,9 @@ export type Op =
   | "verify"
   | "login"
   | "propagate"
-  | "audit";
+  | "audit"
+  | "replicate"
+  | "strand";
 
 export type ResultKind = "allow" | "deny" | "repair" | "info" | "broken";
 
@@ -89,6 +91,8 @@ export type Policy = {
   withSeeotheruids: boolean;
   homesMatchClass: boolean;
   bootSatisfied: boolean;
+  replicaEnabled: boolean;
+  replicaPeer: string;
 };
 
 export type PolicyRev = {
@@ -127,4 +131,6 @@ export type World = {
   revs: PolicyRev[];
   appliedCatalog: string;
   applied: Artifact[];
+  stranded: boolean;
+  replicaOk: boolean;
 };
