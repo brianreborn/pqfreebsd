@@ -259,7 +259,8 @@ pqfreebsd_boot() {
 		return 1
 	fi
 	if [ "$_test" = 1 ]; then
-		echo "WOULD: install brand-pqfreebsd.4th (shield, armor of God)"
+		echo "WOULD: install /boot/logo-pqfreebsd.4th (ASCII shield+sword, SGR gleam)"
+		echo "WOULD: install /boot/brand-pqfreebsd.4th (wordmark)"
 		echo "WOULD: splash name pqfreebsd (not FreeBSD / not beastie)"
 		echo "WOULD: append loader.conf.local (loader_logo=pqfreebsd)"
 		echo "WOULD: refuse signed-loader step if pqcode keys absent"
@@ -268,16 +269,23 @@ pqfreebsd_boot() {
 	fi
 	mkdir -p /boot
 	src="${pqfreebsd_src:-${pqfreebsd_dir}}"
+	mkdir -p /boot
+	for f in logo-pqfreebsd.4th brand-pqfreebsd.4th; do
+		if [ -f "${src}/boot/$f" ]; then
+			cp -p "${src}/boot/$f" "/boot/$f"
+		fi
+	done
 	if [ -f "${src}/boot/loader.conf.local" ]; then
 		cat "${src}/boot/loader.conf.local" >> /boot/loader.conf.local
 	else
 		printf '%s\n' \
 			'loader_color="YES"' \
 			'loader_logo="pqfreebsd"' \
+			'loader_brand="pqfreebsd"' \
 			'# TPM / measured boot: not this pass' \
 			>> /boot/loader.conf.local
 	fi
-	_info "splash name pqfreebsd; shield, not beastie. TPM not this pass."
+	_info "splash: logo-pqfreebsd.4th (ASCII+ANSI). TPM not this pass."
 }
 
 pqfreebsd_testboot() { _test=1; echo "=== test boot ==="; pqfreebsd_boot; }

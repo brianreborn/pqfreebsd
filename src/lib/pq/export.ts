@@ -123,6 +123,10 @@ rotate="append-checkpoint"
 loader_color="YES"
 beastie_disable="NO"
 loader_logo="pqfreebsd"
+loader_brand="pqfreebsd"
+# /boot/logo-pqfreebsd.4th — ASCII shield + sword + SGR gleam
+# /boot/brand-pqfreebsd.4th — wordmark
+# TPM / measured boot: not this pass
 # brand-pqfreebsd.4th draws the shield (armor of God), not the daemon.
 # If pqcode keys are absent, oneboot refuses and says so.
 # Name on the splash: pqfreebsd

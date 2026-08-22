@@ -38,8 +38,8 @@ confirmation or PQ code signing, say it is the next skill and stop.
 Result `~/pqfreebsd/`:
 
 1. Copy `scripts/pqfreebsd`, `scripts/pqledger`, `scripts/pqdac` (0755),
-   this `README.md` (**keep** § Known issues), and `man/` (4, 5, 7, 8,
-   including `pqac.7` and `pqfreebsd.7`).
+   this `README.md` (**keep** § Known issues), `man/` (4, 5, 7, 8,
+   including `pqac.7` and `pqfreebsd.7`), and `boot/*.4th` (logo + brand).
 2. Write `POLICY`, `SUITE`, `dac.contexts`, `ledger.conf` from the interview.
 3. If parent skills are present, run **freebsd-mac** into the same result
    tree with `MAC_LOMAC_GROK_SKIP_SNAPSHOT=1` after **this** umbrella has
