@@ -17,6 +17,7 @@ coverage/
 .tanstack/
 .grok/status
 .grok/app-env.json
+*.bundle
 
 
 # platform grok skills; keep only pqfreebsd

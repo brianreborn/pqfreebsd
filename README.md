@@ -36,6 +36,12 @@ Parent **freebsd-mac-grok** is a **top-level git submodule** (`vendor/freebsd-ma
 Each later FreeBSD MAC skill (pqzfs, pqcode, mac-sebsd, …) gets its own repo and
 is added the same way, after you say so.
 
+```sh
+git clone --recurse-submodules https://github.com/brianreborn/pqfreebsd.git
+# first push (repo may need creating):
+#   gh repo create brianreborn/pqfreebsd --public --source=. --remote=origin --push
+```
+
 ## Checkpoints
 
 After every milestone — a main module or a freebsd-mac skill at top-level —
