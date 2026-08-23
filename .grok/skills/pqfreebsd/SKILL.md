@@ -77,11 +77,12 @@ LOMAC (pqac(7)). Do not interview the operator about hand-`kldload`.
 
 **Agent / suite duty:** **pqk is ideally preloaded by loader(8)**
 (`pqfreebsd_load="YES"` in `/boot/loader.conf.local`, plus ZFS compat when
-ZFS is in play). install/stage/start ensure those lines and `kldload` only
-as a same-session fallback until reboot. Missing optional `.ko` does not
-fail start; `setfmac` `EINVAL` on ZFS means install that compat and reboot
-or re-`start`. Abort with `enabled=0` if `EINVAL` persists (probe `/tmp`
-as in pqac(7)).
+ZFS is in play). **Later ideal:** that same loader path with **full TPM e2e**
+(measured boot / attestation) — **not this pass**. install/stage/start
+ensure loader lines and `kldload` only as a same-session fallback until
+reboot. Missing optional `.ko` does not fail start; `setfmac` `EINVAL` on
+ZFS means install that compat and reboot or re-`start`. Abort with
+`enabled=0` if `EINVAL` persists (probe `/tmp` as in pqac(7)).
 
 ## Output
 
@@ -151,7 +152,8 @@ Ask, in order. Record in `POLICY`.
 9. **Loader gate (default no).** Ask: are they sufficiently satisfied that
    the system is post-quantum hardened to the degree that gives them a sense of
    security? Only if yes: offer `oneboot` — take the loader off unsigned
-   GENERIC only as far as keys exist. **TPM / measured boot is not this pass.**
+   GENERIC only as far as keys exist. **TPM / measured boot is not this pass**
+   (full TPM e2e on the pqk loader-preload path is the later ideal).
    Splash art is cosmetic (cross default). If no, leave the stock loader.
    Do not rebrand a box they do not yet trust.
 10. After install: `oneaudit` shows consistency among POLICY, SUITE, DAC, ugidfw,
@@ -199,8 +201,8 @@ Root, via **service(8)** `one*` (enable defaults to NO):
 3. `onestage` — PREINSTALL once, never overwrite; parent stage; create ledger
    dataset if missing; install specfiles
 4. `onesnapshot_after`
-5. `start` / `onestart` — KLDs on every start/boot and at install/stage;
-   `enabled=0`
+5. `start` / `onestart` — pqk ideally already loader-preloaded; fallback
+   kldload if needed; `enabled=0`
 6. `pqledger` `onestage` / `oneverify`
 7. `pqdac` `oneestablish` / `testdrift` / `onerepair`
 8. parent `onelabel` / `onechecklabels`

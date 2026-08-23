@@ -18,7 +18,7 @@ papers not in base: [docs](http://www.trustedbsd.org/docs.html).
 | Layer | What |
 | --- | --- |
 | Parent | **mac_lomac(4)** integrity, orthogonal modules, **zfs snapshot -r**, PREINSTALL. No **bectl(8)**. |
-| **Kernel KLDs** | **[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** (**pqk**, not LLM-dependent) — skeletal `pqfreebsd.ko` always required (will be critical: lockdown without modifying FreeBSD source); siblings as needed to enable. Not built by **pqf skills**; **ideally loader-preloaded**. |
+| **Kernel KLDs** | **[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** (**pqk**, not LLM-dependent) — skeletal `pqfreebsd.ko` always required (will be critical: lockdown without modifying FreeBSD source); siblings as needed to enable. Not built by **pqf skills**; **ideally loader-preloaded**, later with **full TPM e2e** (not this cut). |
 | **pqledger** | Filesystem Integrity Evidence: hash-chained vnode/policy log on a **high** dataset. |
 | **pqdac** | Restricted A_D spec, established at create, repaired on drift. Optional ugidfw prevent. |
 
@@ -46,7 +46,8 @@ is added the same way, after you say so.
 are **not** built on demand by **pqf skills**.
 [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel) is a
 separate deliverable: only skeletal `pqfreebsd.ko` is always required;
-siblings load as needed to enable. **Ideally loader-preloaded** every boot;
+siblings load as needed to enable. **Ideally loader-preloaded** every boot
+(and later with **full TPM e2e** on that path — not this cut);
 install/stage/start only ensure `loader.conf.local` and fall back to
 `kldload` until reboot.
 
