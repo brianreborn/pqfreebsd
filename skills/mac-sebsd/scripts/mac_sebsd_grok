@@ -1,0 +1,106 @@
+#!/bin/sh
+# Light-ware License. Copyright (c) 2026 Brian Fundakowski Feldman.
+#
+# PROVIDE: mac_sebsd_grok
+# REQUIRE: FILESYSTEMS
+# KEYWORD: shutdown
+#
+# SEBSD / FLASK-TE. There is no mac_sebsd.ko in GENERIC 14/15.
+# one* refuse a load unless SEBSD_KLD is a kernel-matched file.
+
+# shellcheck disable=SC1091
+. /etc/rc.subr
+
+name="mac_sebsd_grok"
+rcvar="${name}_enable"
+desc="SEBSD catalog; refuse kldload unless a dated kernel-matched module is named"
+
+extra_commands="install stage uninstall teststage testkld start"
+load_rc_config $name
+
+: "${mac_sebsd_grok_enable:=NO}"
+: "${mac_sebsd_grok_dir:=/usr/local/etc/mac_sebsd_grok}"
+: "${mac_sebsd_grok_src:=}"
+
+start_cmd="${name}_start"
+stop_cmd=":"
+install_cmd="${name}_install"
+stage_cmd="${name}_stage"
+uninstall_cmd="${name}_uninstall"
+teststage_cmd="${name}_teststage"
+testkld_cmd="${name}_testkld"
+
+_err() { echo "${name}: $*" >&2; }
+_info() { echo "${name}: $*"; }
+
+_policy() {
+	p="${mac_sebsd_grok_dir}/POLICY"
+	[ -f "$p" ] && . "$p"
+	: "${SEBSD_KLD:=}"
+	: "${SEBSD_BUILT_FOR:=}"
+	: "${SEBSD_DATE:=}"
+}
+
+mac_sebsd_grok_install() {
+	src=${mac_sebsd_grok_src:-$(dirname "$0")}
+	install -d /usr/local/etc/rc.d "${mac_sebsd_grok_dir}"
+	install -m 755 "$0" /usr/local/etc/rc.d/mac_sebsd_grok
+	[ -f "${src}/POLICY" ] && install -m 644 "${src}/POLICY" "${mac_sebsd_grok_dir}/POLICY"
+	[ -f "${src}/README.md" ] && install -m 644 "${src}/README.md" "${mac_sebsd_grok_dir}/README.md"
+	_info "installed catalog only"
+}
+
+mac_sebsd_grok_stage() {
+	_policy
+	_info "SEBSD_KLD=${SEBSD_KLD:-empty}"
+	_info "SEBSD_BUILT_FOR=${SEBSD_BUILT_FOR:-unset}"
+	_info "SEBSD_DATE=${SEBSD_DATE:-unset}"
+	if [ -z "$SEBSD_KLD" ]; then
+		_info "no module named. stage is catalog. kldload refused."
+		return 0
+	fi
+	if [ ! -f "$SEBSD_KLD" ]; then
+		_err "SEBSD_KLD is not a file: $SEBSD_KLD"
+		return 1
+	fi
+	_info "named module present; still run testkld before start"
+	return 0
+}
+
+mac_sebsd_grok_teststage() {
+	_test=1
+	mac_sebsd_grok_stage
+}
+
+mac_sebsd_grok_testkld() {
+	_policy
+	if [ -z "$SEBSD_KLD" ]; then
+		_err "FAIL: no SEBSD_KLD. Stock GENERIC has no sebsd. Last tree: 7.0-SEBSD 2006-07-05."
+		return 1
+	fi
+	if [ ! -f "$SEBSD_KLD" ]; then
+		_err "FAIL: SEBSD_KLD missing: $SEBSD_KLD"
+		return 1
+	fi
+	kern=$(sysctl -n kern.osreldate 2>/dev/null || echo unknown)
+	_info "would kldload $SEBSD_KLD (kern.osreldate=$kern built_for=${SEBSD_BUILT_FOR:-?} date=${SEBSD_DATE:-?})"
+	_info "not loading in testkld"
+	return 0
+}
+
+mac_sebsd_grok_start() {
+	_policy
+	if [ -z "$SEBSD_KLD" ] || [ ! -f "$SEBSD_KLD" ]; then
+		_err "oneenforce/onestart refused: no kernel-matched sebsd.ko. This is not bitrot-unknown — it is absent from GENERIC."
+		return 1
+	fi
+	_err "load of a third-party sebsd.ko is still T11 (unsigned/code-auth). Not this pass unless pqcode attests it."
+	return 1
+}
+
+mac_sebsd_grok_uninstall() {
+	rm -f /usr/local/etc/rc.d/mac_sebsd_grok
+	_info "removed rc.d; POLICY kept unless you delete ${mac_sebsd_grok_dir}"
+}
+
+run_rc_command "$1"

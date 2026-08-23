@@ -15,7 +15,8 @@ description: >
 
 Read `README.md` and `man/man7/pqac.7` first, then `man/man7/pqfreebsd.7`.
 This skill **derives from** freebsd-mac-grok. Also load **freebsd-mac**,
-**freebsd-mac-lomac**, and **freebsd-mac-generic** when those pieces run.
+**freebsd-mac-lomac**, and **freebsd-mac-base** (GENERIC `options MAC` modules;
+old name freebsd-mac-generic) when those pieces run.
 Do not vendor their rc.d; compose them.
 
 The kernel access-control this suite composes is the **TrustedBSD MAC
@@ -27,7 +28,7 @@ base install**: http://www.trustedbsd.org/docs.html — especially
 [UCAM-CL-TR-818](https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-818.pdf),
 [CACM 2013](https://queue.acm.org/detail.cfm?id=2436814).
 Project: http://www.trustedbsd.org/  MAC: http://www.trustedbsd.org/mac.html
-SEBSD (idle; do not cut a skill until named): http://www.trustedbsd.org/sebsd.html
+SEBSD: [sebsd.html](http://www.trustedbsd.org/sebsd.html) — last tree 7.0-SEBSD 2006-07-05; **mac-sebsd** refuses kldload on GENERIC.
 OpenBSM: http://www.trustedbsd.org/audit.html
 
 `${SKILL_DIR}` = this skill directory.
@@ -41,8 +42,8 @@ Anderson verifiability as a hash-chained filesystem ledger.
 of *code* (kernel, kld, pkg, policy), not of credentials, with two independent
 signature families (ML-DSA and SLH-DSA). Catalog the hops. Do not claim the
 chain is unbroken. Do not implement pqcode as a side quest inside `/pqfreebsd`.
-If the user names pqcode, cut that skill then. `pqzfs` and `mac-sebsd` wait
-until named.
+If the user names pqcode, cut that skill then. `pqzfs` waits until named.
+**mac-sebsd** is cut as a catalog: no `.ko` in GENERIC; do not kldload.
 
 ## Output
 
@@ -83,8 +84,10 @@ Ask, in order. Record in `POLICY`.
    `lomac/low`). Official policy: OS files high-integrity, home directories
    low-integrity, root exempt (not contained). High-integrity role starts at
    `high(low-high)`; low-integrity role at `lomac/10[2]`.
-2. Orthogonal: **mac_seeotheruids(4)** only, exempt GID 0. Do not stack Biba/MLS.
-   Do not enable **mac_ifoff(4)** blindly.
+2. Base GENERIC modules: **mac_seeotheruids(4)** only by default, exempt GID 0.
+   Optional **mac_portacl(4)** (bind, not packets). Do not stack Biba/MLS.
+   Do not enable **mac_ifoff(4)** blindly. ipfw uid/gid is not this interview
+   (saved last; would start ugidfw-shaped).
 3. High-integrity group name and members (humans who may start able to write
    OS files). Low-integrity group name and members (agents, builders, guests).
    New users default to the low-integrity role.
@@ -132,8 +135,8 @@ sh scripts/checkpoint.sh "milestone: <name> — <what landed>"
 Do not skip this. Add new MAC skills as **top-level git submodules**, like
 `vendor/freebsd-mac-grok`, only after the operator names the skill.
 Do **not** invent `mac-rbac` that wraps LOMAC and SEBSD. One skill per
-proof: lattice stays parent lomac; orthogonal `.ko` stay in generic's
-catalog; SEBSD is its own skill when named (Type Enforcement, not grades).
+proof: lattice stays parent lomac; GENERIC `.ko` are **freebsd-mac-base**;
+SEBSD is **mac-sebsd** (TE catalog; kldload refused on stock). ipfw is last.
 
 ## Port (after the skills exist)
 

@@ -184,8 +184,10 @@ file after reading low-integrity data.
 ships
 .Nm freebsd-mac-lomac
 .Pq roles as groups, official PLM, PREINSTALL ,
-.Nm freebsd-mac-generic
-.Pq orthogonal modules ,
+.Nm freebsd-mac-base
+.Pq GENERIC Xr mac 4
+modules; old name
+.Nm freebsd-mac-generic ,
 and the umbrella
 .Pq Xr zfs 8 Cm snapshot Fl r ,
 no
@@ -220,12 +222,20 @@ chained catalog hashes
 Held until named as skills:
 .Nm pqconfirm ,
 .Nm pqzfs ,
-.Nm mac-sebsd ,
 measured boot.
+.Nm mac-sebsd
+is cut as a catalog: no
+.Pa .ko
+in GENERIC 14/15; last tree 7.0-SEBSD 2006-07-05;
+.Cm kldload
+refused.
 .Nm pqcode
 is held and open-ended; it is
 .Em not
 a 1.0 requirement.
+ipfw
+.Cm uid / gid
+is saved last; first pass would be ugidfw-shaped.
 .Sh SKILLS
 One skill per
 .Em proof ,
@@ -240,11 +250,17 @@ compose.
 .Nm freebsd-mac-lomac
 is the integrity lattice
 .Pq high-integrity / low-integrity; groups as the role binding .
-.Nm freebsd-mac-generic
-is the catalog of orthogonal modules that share that texture
+.Nm freebsd-mac-base
+is what a base
+.Fx
+kernel with
+.Li options MAC
+already ships
 .Pq Xr mac_seeotheruids 4
-by default; ifoff, partition, portacl, biba, mls, none stay in the catalog
+by default; ifoff, partition, portacl, ipacl stay in that catalog
 until enabled, not as new top-level skills .
+.Nm freebsd-mac-generic
+was the old name.
 Do not fork a skill because the daemon is copy-paste.
 .Pp
 Do
@@ -266,8 +282,16 @@ Conjunction is not a product of proofs
 .Pq Xr pqac 7 .
 .Pp
 .Nm mac-sebsd
-remains a separate skill, created only when the operator names it: different
-language, different compiler, unsigned policy is code-equivalent
+is Type Enforcement, cut as a catalog:
+last published tree is 7.0-SEBSD
+.Pq 2006-07-05 ;
+there is no
+.Pa mac_sebsd.ko
+in GENERIC 14/15.
+.Cm onestart
+refuses a guessed
+.Pa .ko .
+Unsigned policy is code-equivalent
 .Pq T11 .
 .Nm pqzfs
 and

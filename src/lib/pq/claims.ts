@@ -165,9 +165,9 @@ export function evaluateClaims(world: World): Claim[] {
       thesis: "held",
       title: "Type Enforcement as complete mediation language",
       status: "held",
-      detail: "Not a skill until you say so. LOMAC is not TE. Vance & Watson, Security-Enhanced BSD, NAI Labs 2003: http://www.trustedbsd.org/sebsd-july2003.pdf — idle; http://www.trustedbsd.org/sebsd.html",
-      holdsWhen: "FLASK/TE loaded and a policy compiled",
-      degradesWhen: "absence is silent",
+      detail: "Skill exists. No mac_sebsd.ko in GENERIC 14/15. Last tree 7.0-SEBSD 2006-07-05. onestart refused until a kernel-matched dated module is named. Absence is silent for T2.",
+      holdsWhen: "FLASK/TE loaded from a kernel-matched module, policy compiled",
+      degradesWhen: "missing kld is silent, not a product failure of LOMAC",
     },
     {
       id: "tpm",

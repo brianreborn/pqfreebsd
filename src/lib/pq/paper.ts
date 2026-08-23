@@ -189,7 +189,7 @@ export const PRAXIS = [
   {
     id: "skill-cut",
     title: "One skill per proof, not per .ko",
-    body: "Do not put LOMAC and SEBSD under an “RBAC” skill. LOMAC is high-integrity / low-integrity. SEBSD is Type Enforcement. Groups-as-roles is the binding, already in freebsd-mac-lomac, not a third axiom. Orthogonal modules (seeotheruids, ifoff, partition, …) stay in freebsd-mac-generic’s catalog until enabled. mac-sebsd, pqzfs, pqcode wait until named. Same rc.d texture is not the same proof.",
+    body: "Do not put LOMAC and SEBSD under an “RBAC” skill. LOMAC is high-integrity / low-integrity. SEBSD is Type Enforcement. Groups-as-roles is the binding, already in freebsd-mac-lomac, not a third axiom. GENERIC modules are freebsd-mac-base (old name: generic). mac-sebsd is a catalog: no .ko in 14/15 GENERIC; last tree 2006. ipfw uid is last, ugidfw-shaped first.",
   },
 ];
 
@@ -209,10 +209,10 @@ Imperviousness is a non-interference statement: traces that agree on low inputs 
 
 export const DERIVATION = `The access-control kernel this suite composes is the TrustedBSD MAC Framework (Watson et al., USENIX ATC 2003; DISCEX III 2003), upstreamed into FreeBSD 5.0 as mac(4)/mac(9). The papers are at http://www.trustedbsd.org/docs.html — they are not in the base install. SEBSD is FLASK/TE as a MAC module (Vance & Watson, NAI Labs 2003); that project is idle; we do not cut a skill until named.
 
-freebsd-mac-grok ships three skills. freebsd-mac-lomac writes roles as pw(8) groups, the official PLM, Xorg and /dev overlays, PREINSTALL uninstall. freebsd-mac-generic writes orthogonal modules (seeotheruids by default). freebsd-mac is the umbrella: zfs snapshot -r (filesystems and zvols) and optional zpool-checkpoint(8) before and after staging. No bectl(8). Sibling max-headroom-grok installs the agent wrapper; sandbox subjects are where agents live.
+freebsd-mac-grok ships three skills. freebsd-mac-lomac writes roles as pw(8) groups, the official PLM, Xorg and /dev overlays, PREINSTALL uninstall. freebsd-mac-base is the GENERIC mac(4) set (old name: freebsd-mac-generic): seeotheruids, portacl, ugidfw, ifoff, ipacl, … — what options MAC already ships. Not SEBSD. Not ipfw. freebsd-mac is the umbrella: zfs snapshot -r (filesystems and zvols) and optional zpool-checkpoint(8) before and after staging. No bectl(8). Sibling max-headroom-grok installs the agent wrapper; sandbox subjects are where agents live.
 
 pqfreebsd does not replace those packages. It interviews, then emits a result directory that composes them and adds morphisms as they land. pqledger: append-only, hash-chained, labeled high-integrity. pqdac: restricted spec, first-match, establish/repair/prevent. pqaudit: oneaudit / onepropagate, chained catalog hashes. pqboot: loader gated on attestation (TPM not this pass; splash art is not the claim). sysutils/pqfreebsd: in-tree port; skill-capable LLM attested before via-port oneenforce. test* before one*. Recovery remains PREINSTALL plus the recursive snap.
 
 pqfreebsd(7) is updated as those morphisms land. pqac(7) remains the basis and is not rewritten for each one.
 
-Held, not 1.0: pqcode (open-ended). Held, required of a later cut: pqconfirm, pqzfs, mac-sebsd, measured boot.`;
+Held, not 1.0: pqcode (open-ended). Held, required of a later cut: pqconfirm, pqzfs, measured boot. mac-sebsd is cut: TE catalog; kldload refused — no .ko in GENERIC 14/15; last tree 7.0-SEBSD 2006-07-05. ipfw uid/gid is saved last; first pass would be ugidfw-shaped, not a packet-filter suite.`;

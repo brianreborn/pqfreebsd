@@ -214,6 +214,14 @@ export const ISSUES: Issue[] = [
     source: "pqfreebsd(7) SKILLS",
     issue: "One skill that loads both LOMAC and SEBSD and calls it RBAC",
     happens: "Operator thinks types are grades. Conjunction treated as a product.",
-    does: "Keep lomac and generic as parent. Catalog extra .ko in generic. SEBSD is its own skill when named. Groups-as-roles is the binding, not the axiom.",
+    does: "Keep lomac and freebsd-mac-base as parent. GENERIC .ko in base. SEBSD is mac-sebsd (catalog; kldload refused on stock). Groups-as-roles is the binding, not the axiom.",
+  },
+  {
+    id: "sebsd-no-kld",
+    layer: "held",
+    source: "trustedbsd.org/sebsd.html; 7.0-SEBSD 2006-07-05",
+    issue: "No mac_sebsd.ko in GENERIC 14/15",
+    happens: "kldload sebsd fails. 2006 object is ABI rot, not a policy.",
+    does: "mac-sebsd: catalog + refuse onestart unless a kernel-matched dated module is named. Not known to work recently.",
   },
 ];
