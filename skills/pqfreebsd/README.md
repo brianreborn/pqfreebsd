@@ -22,13 +22,18 @@ Not PQC in the kernel. Not Faraday. Not root containment.
 **Held:** payload confirmation (T10 / `pqconfirm`) is required of the system
 and is **not** implemented here.
 
-## ZFS multilabel (trivial bug — suite absorbs it)
+## pqfreebsd_kernel (skeleton required; siblings as needed)
 
-OpenZFS does not set `MNT_MULTILABEL` like UFS. Proper fix is upstream.
-Until then [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)
-provides a tiny compat KLD. **Operators are not asked to do anything special:**
-`onestart` loads it quietly when the `.ko` are installed. This skill does not
-build that tree on demand. Do not flip dataset `xattr=` to “fix” LOMAC.
+[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel): only
+**`pqfreebsd.ko` is always required**. Any number of sibling `pqfreebsd_*`
+KLDs may be needed **to enable** a given path; the suite loads them when
+installed. Operators are not asked to hand-`kldload`. This skill does not
+build that tree on demand.
+
+**ZFS multilabel** (optional until labels-on-ZFS are needed): OpenZFS does not
+set `MNT_MULTILABEL` like UFS. Proper fix upstream;
+`pqfreebsd_compat_zfs_multilabel` papers over it. Do not flip dataset `xattr=`
+to “fix” LOMAC.
 
 ## Invoke
 

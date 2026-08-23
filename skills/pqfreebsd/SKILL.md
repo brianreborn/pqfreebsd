@@ -46,33 +46,29 @@ chain is unbroken. Do not implement pqcode as a side quest inside `/pqfreebsd`.
 If the user names pqcode, cut that skill then. `pqzfs` waits until named.
 **mac-sebsd** is cut as a catalog: no `.ko` in GENERIC; do not kldload.
 
-## pqfreebsd_kernel (compat for a trivial bug — not a user ceremony)
-
-ZFS mounts do not set `MNT_MULTILABEL` (UFS does). That is a **trivial host
-bug** that blocks MAC labels as EAs on ZFS. The **proper fix is upstream**.
-Until then, a small sibling KLD tree papers over it:
+## pqfreebsd_kernel (only the skeleton is always required)
 
 **https://github.com/brianreborn/pqfreebsd_kernel**
-(`pqfreebsd.ko` core + `pqfreebsd_compat_zfs_multilabel.ko` and later siblings)
 
-**Core vs compat:** `pqfreebsd.ko` owns suite **enforcement** / **audit** state
-(`security.pqfreebsd.*`, kernel messages on change). It does **not** load
-compat or feature KLDs. Bug-accommodation and other critical features live in
-sibling modules that `MODULE_DEPEND` on the core; the **userland suite** loads
-them.
+| | |
+| --- | --- |
+| **Always required** | `pqfreebsd.ko` — skeletal core (`security.pqfreebsd.enforcement` / `.audit`; kernel messages on change). |
+| **As needed to enable** | Any number of sibling `pqfreebsd_*` KLDs. The suite may need several for a full enablement path; none are required merely to have the core. |
 
-**Do not require anything special of the operator for this.** Do not interview
-about it. Do not ask them to hand-`kldload`. Do not flip dataset `xattr=` to
-“fix” LOMAC (pqac(7)). Do not vendor or build this tree on demand inside the
-create-skill bits — it stays a separate kernel deliverable.
+The core **does not** load siblings. Userland does. Do not vendor or build this
+tree on demand inside create-skill bits.
 
-**Agent / suite duty:** when the `.ko` files are installed on the module path,
-`service pqfreebsd onestart` loads core then compat quietly
-(`_pqfreebsd_compat_load` in `scripts/pqfreebsd`). If they are missing, start
-still proceeds; a later `setfmac` `EINVAL` on ZFS means install the KLDs
-(ordinary `make && make install` from that repo) and re-`onestart` — still not
-an operator ritual to document as a PRAXIS step. Abort with `enabled=0` if
-`EINVAL` persists after load (probe `/tmp` as in pqac(7)).
+**Today’s enablement sibling (mid-install blocker):** ZFS does not set
+`MNT_MULTILABEL` (UFS does). `pqfreebsd_compat_zfs_multilabel` papers over that
+trivial bug until upstream fixes it. Needed to **enable** ZFS MAC labels as
+EAs — not to load the skeleton. Do not flip dataset `xattr=` to “fix” LOMAC
+(pqac(7)). Do not interview the operator about hand-`kldload`.
+
+**Agent / suite duty:** `onestart` quietly loads the required core, then any
+installed siblings wanted for this host (`_pqfreebsd_kld_load`). Missing
+optional `.ko` does not fail start; `setfmac` `EINVAL` on ZFS means install
+the multilabel compat and re-`onestart`. Abort with `enabled=0` if `EINVAL`
+persists (probe `/tmp` as in pqac(7)).
 
 ## Output
 
@@ -95,9 +91,9 @@ Result `~/pqfreebsd/`:
 3. `onestage` — PREINSTALL, parent children, ledger dataset, DAC spec installed
    not yet applied.
 4. **Offer** `onesnapshot_after`.
-5. `onestart` (loads parent children; quietly loads pqfreebsd_kernel compat
-   if `.ko` are installed — see § above), `enabled=0`. Then `pqledger onestage`,
-   `pqdac oneestablish`, parent `onelabel` / `onechecklabels`.
+5. `onestart` (loads parent children; quietly loads required `pqfreebsd.ko`
+   and any installed sibling KLDs — see § above), `enabled=0`. Then
+   `pqledger onestage`, `pqdac oneestablish`, parent `onelabel` / `onechecklabels`.
 6. `oneenforce` only if they ask; walk Gotchas **and** Known issues **and**
    pqac(7) PRAXIS first. Console.
 7. Recover: `oneuninstall` then optional `zfs rollback -r pool@pqfreebsd-pre-…`.
@@ -190,7 +186,7 @@ Root, via **service(8)** `one*` (enable defaults to NO):
 3. `onestage` — PREINSTALL once, never overwrite; parent stage; create ledger
    dataset if missing; install specfiles
 4. `onesnapshot_after`
-5. `onestart` — load modules (incl. quiet pqfreebsd_kernel compat if present),
+5. `onestart` — load required `pqfreebsd.ko` + any sibling KLDs present,
    `enabled=0`
 6. `pqledger` `onestage` / `oneverify`
 7. `pqdac` `oneestablish` / `testdrift` / `onerepair`

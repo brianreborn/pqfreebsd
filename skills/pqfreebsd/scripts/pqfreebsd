@@ -191,22 +191,23 @@ pqfreebsd_update() {
 	_child pqdac update
 }
 
-# ZFS does not set MNT_MULTILABEL (trivial bug; proper fix is upstream).
-# Load pqfreebsd_kernel compat quietly when the .ko are on the module path.
-# Do not make this an operator ceremony; do not fail start if absent.
-_pqfreebsd_compat_load() {
+# Only pqfreebsd.ko is always required. Sibling pqfreebsd_* KLDs are loaded
+# when present so enablement paths can use them; absence is not a start failure.
+# Core does not load siblings — this userland helper does.
+_pqfreebsd_kld_load() {
 	if [ "$_test" = 1 ]; then
-		echo "WOULD: kldload pqfreebsd pqfreebsd_compat_zfs_multilabel (if present)"
+		echo "WOULD: kldload pqfreebsd (required); siblings if present"
 		return 0
 	fi
 	kldstat -q -n zfs 2>/dev/null || kldload zfs 2>/dev/null || true
 	kldstat -q -n pqfreebsd 2>/dev/null || kldload pqfreebsd 2>/dev/null || true
+	# Optional enablement / compat modules (any number over time):
 	kldstat -q -n pqfreebsd_compat_zfs_multilabel 2>/dev/null || \
 		kldload pqfreebsd_compat_zfs_multilabel 2>/dev/null || true
 }
 
 pqfreebsd_start() {
-	_pqfreebsd_compat_load
+	_pqfreebsd_kld_load
 	_child mac_grok start
 	_child pqledger start
 	_child pqdac start

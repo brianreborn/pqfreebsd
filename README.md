@@ -15,7 +15,7 @@ papers not in base: [docs](http://www.trustedbsd.org/docs.html).
 | Layer | What |
 | --- | --- |
 | Parent | **mac_lomac(4)** integrity, orthogonal modules, **zfs snapshot -r**, PREINSTALL. No **bectl(8)**. |
-| **Kernel KLDs** | **[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** — compat for a trivial ZFS `MNT_MULTILABEL` bug (proper fix upstream). Not built by this skill; `onestart` loads installed `.ko` quietly so operators need no special step. |
+| **Kernel KLDs** | **[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** — only skeletal `pqfreebsd.ko` is always required; any number of sibling KLDs may be needed to enable a path. Not built by this skill; `onestart` loads quietly. |
 | **pqledger** | Filesystem Integrity Evidence: hash-chained vnode/policy log on a **high** dataset. |
 | **pqdac** | Restricted A_D spec, established at create, repaired on drift. Optional ugidfw prevent. |
 
