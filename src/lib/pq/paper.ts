@@ -199,6 +199,8 @@ export const PRAXIS = [
   },
 ];
 
+export const MOTTO = "pq all the things";
+
 export const ABSTRACT = `pqac(7) is the basis: A_D, A_M, and MMU translation are quantum-adversary-stable mediation on a von Neumann FreeBSD defender — not post-quantum cryptography, not a quantum ISA. T1 and T2 are freebsd-mac-grok, which packages the TrustedBSD MAC Framework (mac_lomac(4) integrity, orthogonal modules, ZFS snapshot -r). T3–T5 remain the plant and the observation function.
 
 pqfreebsd(7) is the living paper. It builds onward: Integrity Evidence, restricted A_D, successive policy, claims that degrade by conjunct, a catalog of the cryptographic chain of trust, parameterized bounds, a loader gated on attestation, and a port that will not pretend a pkg is the operator. Mediation does not collapse under Shor; the bits the monitor interprets still may. This page records what holds, what is held, and where each proof stops.`;

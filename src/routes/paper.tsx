@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ABSTRACT, DERIVATION, ESOTERIC, EXOTERIC, PRAXIS, THESES } from "@/lib/pq/paper";
+import { ABSTRACT, DERIVATION, ESOTERIC, EXOTERIC, MOTTO, PRAXIS, THESES } from "@/lib/pq/paper";
 import {
   TRUSTEDBSD_AUDIT,
   TRUSTEDBSD_BLURB,
@@ -25,9 +25,7 @@ function Paper() {
       <div className="rounded-xl bg-paper px-6 py-10 text-ink md:px-12 md:py-14">
         <p className="text-xs uppercase tracking-[0.2em] text-subtle">pqac(7) basis · pqfreebsd(7) living paper · 22 August 2026</p>
         <h1 className="mt-4 text-4xl font-medium tracking-[-0.03em]">pqfreebsd</h1>
-        <p className="mt-2 text-lg italic text-subtle">
-          post-quantum trusted FreeBSD — built on pqac(7), updated as morphisms land
-        </p>
+        <p className="mt-2 text-lg italic text-subtle">{MOTTO}</p>
         <Section title="Abstract">{ABSTRACT}</Section>
         <Section title="Exoteric: naming and mediation">{EXOTERIC}</Section>
         <Section title="Esoteric: the observation function">{ESOTERIC}</Section>

@@ -13,7 +13,7 @@ function Home() {
           derived from freebsd-mac-grok · TrustedBSD MAC Framework · pqac(7)
         </p>
         <h1 className="max-w-3xl text-4xl font-medium tracking-[-0.03em] text-fg md:text-5xl">
-          A post-quantum trusted base. Not Kyber in the kernel.
+          pq all the things
         </h1>
         <p className="max-w-prose text-muted">
           Mediation does not collapse under Shor. That is not the whole system. pqfreebsd is the

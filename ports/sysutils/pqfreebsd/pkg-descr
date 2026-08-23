@@ -1,3 +1,5 @@
+pqfreebsd — pq all the things.
+
 pqfreebsd is a post-quantum trusted FreeBSD suite: it composes the
 TrustedBSD MAC Framework (mac_lomac(4) and orthogonal modules), an
 Integrity Evidence ledger, repaired discretionary policy, successive

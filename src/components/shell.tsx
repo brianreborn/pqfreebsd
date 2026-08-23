@@ -41,7 +41,7 @@ export function Shell() {
             <img src="/favicon.svg" alt="" width={32} height={32} className="h-8 w-8" />
             <span>
               <span className="block font-medium tracking-tight">pqfreebsd</span>
-              <span className="block text-xs text-muted">post-quantum trusted FreeBSD</span>
+              <span className="block text-xs text-muted">pq all the things</span>
             </span>
           </Link>
           <div className="flex flex-wrap items-center gap-2 text-xs font-mono tabular-nums text-muted">

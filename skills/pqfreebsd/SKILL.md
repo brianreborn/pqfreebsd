@@ -1,7 +1,7 @@
 ---
 name: pqfreebsd
 description: >
-  Post-quantum trusted FreeBSD: compose freebsd-mac-grok (mac_lomac
+  Post-quantum trusted FreeBSD (motto: pq all the things): compose freebsd-mac-grok (mac_lomac
   integrity, orthogonal modules, ZFS snapshot -r) and layer a filesystem
   Integrity Evidence ledger, dynamically established and repaired DAC,
   successive policy audit, and a loader gated on attestation. Use when the user

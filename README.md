@@ -1,5 +1,7 @@
 # pqfreebsd
 
+**pq all the things**
+
 **Derived from [freebsd-mac-grok](https://github.com/brianreborn/freebsd-mac-grok).**
 **Copyright © 2026 Brian Fundakowski Feldman.**
 **License: [Light-ware](LICENSE).** See **[NOTICE.md](NOTICE.md)**.

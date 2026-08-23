@@ -11,7 +11,7 @@
 
 : brand+ ( x y -- )
   2dup at-xy sage ." pqfreebsd" reset
-  1+ at-xy dim ." post-quantum trusted FreeBSD" reset
+  1+ at-xy dim ." pq all the things" reset
 ;
 
 : brand ( x y -- ) brand+ ;
