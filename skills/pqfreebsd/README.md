@@ -25,10 +25,12 @@ and is **not** implemented here.
 ## pqfreebsd_kernel (skeleton required; siblings as needed)
 
 [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel): only
-**`pqfreebsd.ko` is always required**. Any number of sibling `pqfreebsd_*`
-KLDs may be needed **to enable** a given path; the suite loads them when
-installed. Operators are not asked to hand-`kldload`. This skill does not
-build that tree on demand.
+**`pqfreebsd.ko` is always required**. It is skeletal today and will become
+**extremely critical** — the clean path to lock down kernels without
+modifying FreeBSD source. Any number of sibling `pqfreebsd_*` KLDs may be
+needed **to enable** a given path; the suite loads them when installed.
+Operators are not asked to hand-`kldload`. This skill does not build that
+tree on demand.
 
 **ZFS multilabel** (ZFS hosts only): OpenZFS does not set `MNT_MULTILABEL`.
 Legacy UFS/FFS already does and never had this regression — no compat KLD
