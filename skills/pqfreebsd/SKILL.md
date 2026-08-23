@@ -51,7 +51,7 @@ If the user names pqcode, cut that skill then. `pqzfs` waits until named.
 The try-out machine is **half-installed** with this skill; progress stopped on
 the ZFS `MNT_MULTILABEL` blocker. After [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)
 clears that path, **continue the interrupted `one*` order** — see repository
-root `RELEASE_NOTES.md`. Do not assume a green-field re-interview unless
+root `RELNOTES`. Do not assume a green-field re-interview unless
 `PREINSTALL` / snapshots demand it.
 
 ## pqfreebsd_kernel (only the skeleton is always required)

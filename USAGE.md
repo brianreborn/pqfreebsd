@@ -20,4 +20,4 @@ nanodollar scale `USD = ticks / 1e9`) unless noted. Confirm with **`/usage`**.
 | Detail | See [`pqfreebsd_kernel/USAGE.md`](https://github.com/brianreborn/pqfreebsd_kernel/blob/main/USAGE.md) |
 
 Half-install on the try-out host remains paused on the ZFS multilabel blocker;
-continue after pqk compat is installed (see `RELEASE_NOTES.md`).
+continue after pqk compat is installed (see `RELNOTES`).

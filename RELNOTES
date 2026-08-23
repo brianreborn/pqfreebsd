@@ -1,0 +1,42 @@
+Release notes for pqfreebsd (pqf skills).
+
+This file describes new user-visible features, changes and updates relevant to
+users of this suite.  Each entry should describe the change in no more than
+several sentences and should reference manual pages where an interested user
+can find more information.  Entries should wrap after 80 columns.  Each entry
+should begin with one or more commit IDs on one line, specified as a comma
+separated list and/or range, followed by a colon and a newline.  Entries
+should be separated by a newline.
+
+PQFreeBSD is the official non-fancy project name.  Free(ly)B(le)S(se)D (Freely
+Blessed) is the evocative Unix-style expansion that still reads FreeBSD.
+
+edf1123cc703,2aac45cabdc6,ef4622e55969:
+	pqf skills integrate pqfreebsd_kernel (pqk) without building it.
+	Only pqfreebsd.ko is always required.  ZFS hosts additionally use
+	pqfreebsd_compat_zfs_multilabel.ko.  UFS/FFS does not need that
+	compat module.  Steady state is loader(8) preload via
+	loader.conf(5); kldload(8) is only a same-session fallback until
+	reboot.  install, stage, and start ensure loader.conf.local.
+	See pqfreebsd(8), loader.conf(5), and the pqk RELNOTES.
+
+edf1123cc703:
+	Document that the try-out host is half-installed with this suite,
+	paused on the ZFS MNT_MULTILABEL blocker.  After pqk clears that
+	path, continue the interrupted one* order rather than a green-field
+	re-interview unless PREINSTALL or snapshots require it.  Master
+	projects must keep pqk as a separate kernel deliverable next to
+	(not inside) pqf skills.
+
+ef4622e55969,10fcb691a520:
+	Later ideal: full TPM end-to-end on the pqk loader-preload path
+	(measured boot / attestation).  TPM e2e is not this cut; see
+	pqfreebsd(7) loader gate.
+
+451a1e8bf341:
+	Record Free(ly)B(le)S(se)D (Freely Blessed) as the evocative project
+	name alongside official PQFreeBSD.
+
+63cd2482ae6f:
+	Add USAGE.md for sprint expense tracking; reconcile with interactive
+	/usage as the credit source of truth.
