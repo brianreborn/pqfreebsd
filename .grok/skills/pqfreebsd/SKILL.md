@@ -74,11 +74,12 @@ had this regression — so a non-ZFS host does **not** need
 bug until a proper fix goes upstream. Do not flip dataset `xattr=` to “fix”
 LOMAC (pqac(7)). Do not interview the operator about hand-`kldload`.
 
-**Agent / suite duty:** `onestart` quietly loads the required core; loads the
-ZFS multilabel compat only when ZFS is in play (`_pqfreebsd_kld_load`). Missing
-optional `.ko` does not fail start; `setfmac` `EINVAL` on ZFS means install
-that compat and re-`onestart`. Abort with `enabled=0` if `EINVAL` persists
-(probe `/tmp` as in pqac(7)).
+**Agent / suite duty:** load KLDs on **every `start` (boot)**, during
+**install** and **stage**, and via `onestart` (`_pqfreebsd_kld_load` +
+`loader.conf.local`). Required core always; ZFS multilabel compat only when
+ZFS is in play. Missing optional `.ko` does not fail start; `setfmac`
+`EINVAL` on ZFS means install that compat and re-`start`. Abort with
+`enabled=0` if `EINVAL` persists (probe `/tmp` as in pqac(7)).
 
 ## Output
 
@@ -101,9 +102,9 @@ Result `~/pqfreebsd/`:
 3. `onestage` — PREINSTALL, parent children, ledger dataset, DAC spec installed
    not yet applied.
 4. **Offer** `onesnapshot_after`.
-5. `onestart` (loads parent children; quietly loads required `pqfreebsd.ko`
-   and any installed sibling KLDs — see § above), `enabled=0`. Then
-   `pqledger onestage`, `pqdac oneestablish`, parent `onelabel` / `onechecklabels`.
+5. `start` / `onestart` (KLDs already loaded on install/stage/boot; start
+   loads parent children), `enabled=0`. Then `pqledger onestage`,
+   `pqdac oneestablish`, parent `onelabel` / `onechecklabels`.
 6. `oneenforce` only if they ask; walk Gotchas **and** Known issues **and**
    pqac(7) PRAXIS first. Console.
 7. Recover: `oneuninstall` then optional `zfs rollback -r pool@pqfreebsd-pre-…`.
@@ -196,7 +197,7 @@ Root, via **service(8)** `one*` (enable defaults to NO):
 3. `onestage` — PREINSTALL once, never overwrite; parent stage; create ledger
    dataset if missing; install specfiles
 4. `onesnapshot_after`
-5. `onestart` — load required `pqfreebsd.ko` + any sibling KLDs present,
+5. `start` / `onestart` — KLDs on every start/boot and at install/stage;
    `enabled=0`
 6. `pqledger` `onestage` / `oneverify`
 7. `pqdac` `oneestablish` / `testdrift` / `onerepair`

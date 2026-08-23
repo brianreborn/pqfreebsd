@@ -18,7 +18,7 @@ papers not in base: [docs](http://www.trustedbsd.org/docs.html).
 | Layer | What |
 | --- | --- |
 | Parent | **mac_lomac(4)** integrity, orthogonal modules, **zfs snapshot -r**, PREINSTALL. No **bectl(8)**. |
-| **Kernel KLDs** | **[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** — skeletal `pqfreebsd.ko` always required (will be critical: lockdown without modifying FreeBSD source); siblings as needed to enable. Not built by this skill; `onestart` loads quietly. |
+| **Kernel KLDs** | **[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** — skeletal `pqfreebsd.ko` always required (will be critical: lockdown without modifying FreeBSD source); siblings as needed to enable. Not built by this skill; `start`/boot/install loads quietly. |
 | **pqledger** | Filesystem Integrity Evidence: hash-chained vnode/policy log on a **high** dataset. |
 | **pqdac** | Restricted A_D spec, established at create, repaired on drift. Optional ugidfw prevent. |
 
@@ -45,7 +45,7 @@ is added the same way, after you say so.
 **Kernel modules** are **not** a submodule and are **not** built on demand by
 `/pqfreebsd`. [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)
 is a separate deliverable: only skeletal `pqfreebsd.ko` is always required;
-siblings load as needed to enable. `onestart` does that without an operator
+siblings load as needed to enable. `start` (every boot), install, and stage do that without an operator
 ceremony.
 
 ```sh
@@ -84,7 +84,7 @@ sudo ./pqfreebsd oneinstall
 sudo service pqfreebsd onesnapshot
 sudo service pqfreebsd onestage
 sudo service pqfreebsd onesnapshot_after
-sudo service pqfreebsd onestart   # also quiet-loads ZFS multilabel compat if present
+sudo service pqfreebsd start      # every boot; KLDs + children (also on install/stage)
 sudo service pqledger onestage
 sudo service pqdac oneestablish
 # parent labels:

@@ -151,6 +151,7 @@ pqfreebsd_install() {
 		[ -f "${src}/$f" ] && install -m 0644 "${src}/$f" "${pqfreebsd_dir}/$f"
 	done
 	_install_mans "$src"
+	_pqfreebsd_kld_load
 	_info "installed umbrella; man: pqfreebsd(4,5,7,8) pqledger(8) pqdac(8) pqac(7)"
 	_info "offer onesnapshot then onestage; do not enforce yet"
 }
@@ -177,6 +178,7 @@ pqfreebsd_stage() {
 		_info "no pre snapshot. extra-safe: service ${name} onesnapshot"
 	fi
 	_preinstall
+	_pqfreebsd_kld_load
 	export MAC_LOMAC_GROK_SKIP_SNAPSHOT=1
 	_child mac_grok stage
 	_child pqledger stage
@@ -194,21 +196,52 @@ pqfreebsd_update() {
 # Only pqfreebsd.ko is always required. Sibling KLDs load only when that
 # enablement path applies (e.g. ZFS multilabel compat is ZFS-only — UFS/FFS
 # already supports MNT_MULTILABEL and does not need it).
+#
+# Load on every start (boot), during install, and during stage — not only
+# onestart. Also mark loader.conf.local so modules come up every boot early.
 _pqfreebsd_root_fstype() {
 	mount -p 2>/dev/null | awk '$2 == "/" { print $3; exit }'
+}
+
+_pqfreebsd_using_zfs() {
+	[ "$(_pqfreebsd_root_fstype)" = "zfs" ] && return 0
+	mount -t zfs 2>/dev/null | grep -q . && return 0
+	return 1
+}
+
+_pqfreebsd_kld_loader_conf() {
+	# Ensure early boot load; idempotent.
+	local conf line
+	conf=/boot/loader.conf.local
+	if [ "$_test" = 1 ]; then
+		echo "WOULD: ensure ${conf} has pqfreebsd_load=\"YES\""
+		_pqfreebsd_using_zfs && \
+			echo "WOULD: ensure ${conf} has pqfreebsd_compat_zfs_multilabel_load=\"YES\""
+		return 0
+	fi
+	mkdir -p /boot
+	touch "$conf"
+	line='pqfreebsd_load="YES"'
+	grep -q '^pqfreebsd_load=' "$conf" 2>/dev/null || echo "$line" >> "$conf"
+	if _pqfreebsd_using_zfs; then
+		line='pqfreebsd_compat_zfs_multilabel_load="YES"'
+		grep -q '^pqfreebsd_compat_zfs_multilabel_load=' "$conf" 2>/dev/null || \
+			echo "$line" >> "$conf"
+	fi
 }
 
 _pqfreebsd_kld_load() {
 	if [ "$_test" = 1 ]; then
 		echo "WOULD: kldload pqfreebsd (required)"
-		ft=$(_pqfreebsd_root_fstype)
-		[ "$ft" = "zfs" ] && echo "WOULD: kldload pqfreebsd_compat_zfs_multilabel (ZFS root)"
+		_pqfreebsd_using_zfs && \
+			echo "WOULD: kldload pqfreebsd_compat_zfs_multilabel (ZFS in use)"
+		_pqfreebsd_kld_loader_conf
 		return 0
 	fi
+	_pqfreebsd_kld_loader_conf
 	kldstat -q -n pqfreebsd 2>/dev/null || kldload pqfreebsd 2>/dev/null || true
 	# ZFS-only enablement sibling — not used on legacy UFS/FFS.
-	if [ "$(_pqfreebsd_root_fstype)" = "zfs" ] || \
-	    mount -t zfs 2>/dev/null | grep -q .; then
+	if _pqfreebsd_using_zfs; then
 		kldstat -q -n pqfreebsd_compat_zfs_multilabel 2>/dev/null || \
 			kldload pqfreebsd_compat_zfs_multilabel 2>/dev/null || true
 	fi

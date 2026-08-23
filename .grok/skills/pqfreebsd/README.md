@@ -49,7 +49,7 @@ sudo ~/pqfreebsd/pqfreebsd oneinstall
 sudo service pqfreebsd onesnapshot          # BEFORE — zfs snapshot -r (fs + zvol)
 sudo service pqfreebsd onestage
 sudo service pqfreebsd onesnapshot_after
-sudo service pqfreebsd onestart             # kldload; quiet ZFS multilabel compat; enabled=0
+sudo service pqfreebsd start                # every boot: KLDs + children (also install/stage)
 sudo service pqledger onestage
 sudo service pqdac oneestablish
 sudo service pqdac testdrift

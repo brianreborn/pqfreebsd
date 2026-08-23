@@ -647,8 +647,13 @@ build that tree on demand, and the operator is
 asked to perform a special
 .Xr kldload 8
 ritual:
+.Cm start
+.Pq every boot ,
+install, and stage load the skeletal core always and the ZFS compat only when
+ZFS is in play
+.Pq also via
 .Cm onestart
-loads the skeletal core always and the ZFS compat only when ZFS is in play.
+.Pc .
 Do not compromise suite functionality to avoid the bug, and do not make the
 user paper over it by hand.
 Probe

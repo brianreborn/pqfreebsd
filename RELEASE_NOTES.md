@@ -16,7 +16,7 @@ past early `one*` steps.
 **After the blocker is cleared on that machine, continue the half-finished
 install** — do not treat the box as a clean slate unless snapshots /
 `PREINSTALL` require it. Resume from the suite order (roughly: ensure
-`onestart` has loaded the KLDs → `pqledger` / `pqdac` → parent `onelabel` /
+KLDs loaded via start/boot/install → `pqledger` / `pqdac` → parent `onelabel` /
 `onechecklabels` → optional `oneenforce` in a test window). See
 `skills/pqfreebsd/SKILL.md` § Order and § pqfreebsd_kernel.
 
