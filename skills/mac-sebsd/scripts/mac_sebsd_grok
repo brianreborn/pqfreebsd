@@ -364,6 +364,29 @@ _uninstall_mans() {
 }
 
 # ---------- stage (mutate /etc, after snapshot) ----------
+_sebsd_ingest() {
+	[ -f "$1" ] || return 0
+	while IFS= read -r line || [ -n "$line" ]; do
+		case $line in \#*|"") continue ;; esac
+		key=${line%%=*}
+		val=${line#*=}
+		case $key in
+		TRUSTED_CLASS) trusted_class=$val ;;
+		SANDBOX_CLASS) sandbox_class=$val ;;
+		TRUSTED_GROUP) trusted_group=$val ;;
+		SANDBOX_GROUP) sandbox_group=$val ;;
+		DEFAULT_ROLE) default_role=$val ;;
+		ROOT_LABEL) root_label=$val ;;
+		TRUSTED_LABEL) trusted_label=$val ;;
+		SANDBOX_LABEL) sandbox_label=$val ;;
+		SEBSD_KLD) sebsd_kld=$val ;;
+		SEBSD_DATE) sebsd_date=$val ;;
+		SEBSD_BUILT_FOR) sebsd_built_for=$val ;;
+		REUSE_LOMAC_POLICY) reuse=$val ;;
+		esac
+	done < "$1"
+}
+
 _load_policy() {
 	trusted_class=trusted
 	sandbox_class=sandbox
@@ -378,36 +401,11 @@ _load_policy() {
 	sebsd_built_for=
 	reuse="${mac_sebsd_grok_dir}/../mac_lomac_grok/POLICY"
 	[ -f /usr/local/etc/mac_lomac_grok/POLICY ] && reuse=/usr/local/etc/mac_lomac_grok/POLICY
-	_ingest() {
-		[ -f "$1" ] || return 0
-		while IFS= read -r line || [ -n "$line" ]; do
-			case $line in \#*|"") continue ;; esac
-			key=${line%%=*}
-			val=${line#*=}
-			case $key in
-			TRUSTED_CLASS) trusted_class=$val ;;
-			SANDBOX_CLASS) sandbox_class=$val ;;
-			TRUSTED_GROUP) trusted_group=$val ;;
-			SANDBOX_GROUP) sandbox_group=$val ;;
-			DEFAULT_ROLE) default_role=$val ;;
-			ROOT_LABEL) root_label=$val ;;
-			TRUSTED_LABEL) trusted_label=$val ;;
-			SANDBOX_LABEL) sandbox_label=$val ;;
-			SEBSD_KLD) sebsd_kld=$val ;;
-			SEBSD_DATE) sebsd_date=$val ;;
-			SEBSD_BUILT_FOR) sebsd_built_for=$val ;;
-			REUSE_LOMAC_POLICY) reuse=$val ;;
-			esac
-		done < "$1"
-	}
-	# LOMAC groups first (same pw(8) roles); then SEBSD POLICY may override types only.
-	_ingest "$reuse"
-	# After reuse, restore TE type defaults if lomac wrote lomac/ labels into those keys.
+	_sebsd_ingest "$reuse"
 	case $root_label in lomac/*) root_label='sebsd/sysadm_t' ;; esac
 	case $trusted_label in lomac/*) trusted_label='sebsd/staff_t' ;; esac
 	case $sandbox_label in lomac/*) sandbox_label='sebsd/user_t' ;; esac
-	pf="${mac_sebsd_grok_dir}/POLICY"
-	_ingest "$pf"
+	_sebsd_ingest "${mac_sebsd_grok_dir}/POLICY"
 }
 
 _append_marked() {
