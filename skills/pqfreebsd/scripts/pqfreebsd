@@ -191,19 +191,27 @@ pqfreebsd_update() {
 	_child pqdac update
 }
 
-# Only pqfreebsd.ko is always required. Sibling pqfreebsd_* KLDs are loaded
-# when present so enablement paths can use them; absence is not a start failure.
-# Core does not load siblings — this userland helper does.
+# Only pqfreebsd.ko is always required. Sibling KLDs load only when that
+# enablement path applies (e.g. ZFS multilabel compat is ZFS-only — UFS/FFS
+# already supports MNT_MULTILABEL and does not need it).
+_pqfreebsd_root_fstype() {
+	mount -p 2>/dev/null | awk '$2 == "/" { print $3; exit }'
+}
+
 _pqfreebsd_kld_load() {
 	if [ "$_test" = 1 ]; then
-		echo "WOULD: kldload pqfreebsd (required); siblings if present"
+		echo "WOULD: kldload pqfreebsd (required)"
+		ft=$(_pqfreebsd_root_fstype)
+		[ "$ft" = "zfs" ] && echo "WOULD: kldload pqfreebsd_compat_zfs_multilabel (ZFS root)"
 		return 0
 	fi
-	kldstat -q -n zfs 2>/dev/null || kldload zfs 2>/dev/null || true
 	kldstat -q -n pqfreebsd 2>/dev/null || kldload pqfreebsd 2>/dev/null || true
-	# Optional enablement / compat modules (any number over time):
-	kldstat -q -n pqfreebsd_compat_zfs_multilabel 2>/dev/null || \
-		kldload pqfreebsd_compat_zfs_multilabel 2>/dev/null || true
+	# ZFS-only enablement sibling — not used on legacy UFS/FFS.
+	if [ "$(_pqfreebsd_root_fstype)" = "zfs" ] || \
+	    mount -t zfs 2>/dev/null | grep -q .; then
+		kldstat -q -n pqfreebsd_compat_zfs_multilabel 2>/dev/null || \
+			kldload pqfreebsd_compat_zfs_multilabel 2>/dev/null || true
+	fi
 }
 
 pqfreebsd_start() {

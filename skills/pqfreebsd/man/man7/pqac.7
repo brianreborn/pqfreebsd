@@ -621,9 +621,15 @@ LOMAC.
 .Pp
 This is a
 .Em trivial
-host bug; the proper fix is upstream.
+.Em ZFS
+regression; legacy UFS/FFS already supports
+.Dv MNT_MULTILABEL
+and never lost it.
+The proper fix is upstream.
 .Lk https://github.com/brianreborn/pqfreebsd_kernel pqfreebsd_kernel
-ships a tiny compat KLD that sets
+ships a tiny
+.Em ZFS-only
+compat KLD that sets
 .Dv MNT_MULTILABEL
 when effective
 .Cm xattr
@@ -631,6 +637,7 @@ is
 .Cm on Ns / Ns Cm dir
 or
 .Cm sa .
+A pure UFS/FFS host does not need it.
 The
 .Nm pqfreebsd
 skill does
@@ -641,7 +648,7 @@ asked to perform a special
 .Xr kldload 8
 ritual:
 .Cm onestart
-loads the modules quietly when they are installed.
+loads the skeletal core always and the ZFS compat only when ZFS is in play.
 Do not compromise suite functionality to avoid the bug, and do not make the
 user paper over it by hand.
 Probe

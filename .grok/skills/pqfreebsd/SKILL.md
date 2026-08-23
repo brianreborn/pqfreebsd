@@ -58,17 +58,18 @@ If the user names pqcode, cut that skill then. `pqzfs` waits until named.
 The core **does not** load siblings. Userland does. Do not vendor or build this
 tree on demand inside create-skill bits.
 
-**Today’s enablement sibling (mid-install blocker):** ZFS does not set
-`MNT_MULTILABEL` (UFS does). `pqfreebsd_compat_zfs_multilabel` papers over that
-trivial bug until upstream fixes it. Needed to **enable** ZFS MAC labels as
-EAs — not to load the skeleton. Do not flip dataset `xattr=` to “fix” LOMAC
+**ZFS-only enablement sibling (mid-install blocker on ZFS):** ZFS does not set
+`MNT_MULTILABEL`. Legacy **UFS/FFS** already does — it predates ZFS and never
+had this regression — so a non-ZFS host does **not** need
+`pqfreebsd_compat_zfs_multilabel`. On ZFS, that KLD papers over the trivial
+bug until upstream fixes it. Do not flip dataset `xattr=` to “fix” LOMAC
 (pqac(7)). Do not interview the operator about hand-`kldload`.
 
-**Agent / suite duty:** `onestart` quietly loads the required core, then any
-installed siblings wanted for this host (`_pqfreebsd_kld_load`). Missing
+**Agent / suite duty:** `onestart` quietly loads the required core; loads the
+ZFS multilabel compat only when ZFS is in play (`_pqfreebsd_kld_load`). Missing
 optional `.ko` does not fail start; `setfmac` `EINVAL` on ZFS means install
-the multilabel compat and re-`onestart`. Abort with `enabled=0` if `EINVAL`
-persists (probe `/tmp` as in pqac(7)).
+that compat and re-`onestart`. Abort with `enabled=0` if `EINVAL` persists
+(probe `/tmp` as in pqac(7)).
 
 ## Output
 

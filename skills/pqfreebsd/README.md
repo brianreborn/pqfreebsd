@@ -30,10 +30,10 @@ KLDs may be needed **to enable** a given path; the suite loads them when
 installed. Operators are not asked to hand-`kldload`. This skill does not
 build that tree on demand.
 
-**ZFS multilabel** (optional until labels-on-ZFS are needed): OpenZFS does not
-set `MNT_MULTILABEL` like UFS. Proper fix upstream;
-`pqfreebsd_compat_zfs_multilabel` papers over it. Do not flip dataset `xattr=`
-to “fix” LOMAC.
+**ZFS multilabel** (ZFS hosts only): OpenZFS does not set `MNT_MULTILABEL`.
+Legacy UFS/FFS already does and never had this regression — no compat KLD
+there. On ZFS, `pqfreebsd_compat_zfs_multilabel` papers over it until upstream
+fixes it. Do not flip dataset `xattr=` to “fix” LOMAC.
 
 ## Invoke
 
@@ -109,7 +109,7 @@ Known issues; do not duplicate every row here.
 | ifoff drops the wire | mac_ifoff(4) | seeotheruids-only default |
 | ugidfw empty = allow-all | mac_bsdextended(4) | do not claim prevent is on until testdrift clean |
 | Aux/extattr | PR 178667 | ledger is a high dataset, not aux |
-| ZFS not UFS multilabel | freebsd-security; pqac(7) | Trivial bug; proper fix upstream. Suite loads [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel) compat from `onestart` when `.ko` installed — no operator ritual; probe /tmp; do not flip `xattr=` |
+| ZFS not UFS multilabel | freebsd-security; pqac(7) | ZFS-only regression (UFS/FFS fine). Suite loads multilabel compat on ZFS hosts only; probe /tmp; do not flip `xattr=` |
 | uninstall ≠ wipe | mac_grok(8) | PREINSTALL then optional rollback |
 
 ### This skill
