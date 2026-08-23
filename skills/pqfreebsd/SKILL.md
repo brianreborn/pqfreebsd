@@ -61,7 +61,7 @@ about it. Do not ask them to hand-`kldload`. Do not flip dataset `xattr=` to
 create-skill bits — it stays a separate kernel deliverable.
 
 **Agent / suite duty:** when the `.ko` files are installed on the module path,
-`service pqfreebsd onestart` loads them quietly (`_pqk_compat_load` in
+`service pqfreebsd onestart` loads them quietly (`_pqfreebsd_compat_load` in
 `scripts/pqfreebsd`). If they are missing, start still proceeds; a later
 `setfmac` `EINVAL` on ZFS means install the KLDs (ordinary `make && make
 install` from that repo) and re-`onestart` — still not an operator ritual to

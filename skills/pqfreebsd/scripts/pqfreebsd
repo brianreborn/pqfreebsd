@@ -194,7 +194,7 @@ pqfreebsd_update() {
 # ZFS does not set MNT_MULTILABEL (trivial bug; proper fix is upstream).
 # Load pqfreebsd_kernel compat quietly when the .ko are on the module path.
 # Do not make this an operator ceremony; do not fail start if absent.
-_pqk_compat_load() {
+_pqfreebsd_compat_load() {
 	if [ "$_test" = 1 ]; then
 		echo "WOULD: kldload pqfreebsd pqfreebsd_compat_zfs_multilabel (if present)"
 		return 0
@@ -206,7 +206,7 @@ _pqk_compat_load() {
 }
 
 pqfreebsd_start() {
-	_pqk_compat_load
+	_pqfreebsd_compat_load
 	_child mac_grok start
 	_child pqledger start
 	_child pqdac start
