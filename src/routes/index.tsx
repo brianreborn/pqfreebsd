@@ -1,5 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { SkillGraph } from "@/components/skill-graph";
+import { ShieldBoot } from "@/components/shield-boot";
 import { Button } from "@/components/ui/button";
 import { THESES } from "@/lib/pq/paper";
 
@@ -38,6 +39,16 @@ function Home() {
       </section>
 
       <SkillGraph />
+
+      <section className="grid gap-3">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <h2 className="text-lg font-medium tracking-tight">Loader splash (Forth preview)</h2>
+          <Button variant="ghost" asChild>
+            <Link to="/boot">Boot gate</Link>
+          </Button>
+        </div>
+        <ShieldBoot />
+      </section>
 
       <section className="grid gap-4">
         <h2 className="text-lg font-medium tracking-tight">Theses, some held, none a product</h2>

@@ -80,7 +80,7 @@ export function ShieldBoot({ auto = true }: { auto?: boolean }) {
         ))}
       </pre>
       <figcaption className="px-4 py-3 text-xs text-muted">
-        Cosmetic. Cross default. Not T12. TPM not this pass.
+        Cosmetic Forth preview of logo-pqfreebsd.4th. oneboot is a separate gate.
       </figcaption>
     </figure>
   );
