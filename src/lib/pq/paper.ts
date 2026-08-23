@@ -13,7 +13,7 @@ The work inherits pqac(7). Authorization on a von Neumann FreeBSD defender — D
 
 Redundancy is part of the design, and only as independent reductions: a quantum algorithm that solves one class of problem does not thereby solve the others. Copies of the same reduction do not count; they share layout and cache. Variation of data structure unshares alike facts — inefficient, and for that reason the valuable kind of redundancy. A cryptographic layer that remains RSA or ECC has no post-quantum resistance at that layer, whatever else is composed with it. Claims remain conjuncts, not a product of proofs.
 
-This paper states the additional requirements, the design of the packages that meet those that we implement, and an honest status for those we do not. A 1.0 cut does not require post-quantum signatures on the kernel.`;
+This paper states the additional requirements, the design of the packages that meet those that we implement, and two lemmas we are in a position to defend: heterogeneous stacking does not duplicate namei (so TOCTOU is not inherited by every layer), and the min-cut of an unlike-connected Integrity Evidence federation is extra virtual dimensions of channel security. A 1.0 cut does not require post-quantum signatures on the kernel.`;
 
 export const INTRODUCTION = `Trusted operating system features arrived in FreeBSD through the TrustedBSD Project: the MAC Framework in 5.0, security event auditing / OpenBSM, and Capsicum in 9. Those mechanisms are in GENERIC. They are documented in man pages that name them and in papers that are not in the base install.
 
@@ -21,7 +21,7 @@ pqac(7) asked a narrower question: whether a quantum adversary, whose uniform cl
 
 That answer is incomplete as a trusted-base story. Anderson's third property — verifiability — is not supplied by loading mac_lomac(4). The residual discretionary matrix is an unrestricted HRU system unless it is specified and repaired. Policy that lives in half a dozen files is not itself an auditable object. Low-integrity agents retain the ambient UNIX namespace unless they cap_enter. Code the monitor will run is named by RSA in pkg(8), or is unsigned.
 
-These are different predicates. An adversary who forges a package signature still faces the integrity lattice, capability mode, the repaired matrix, and the evidence chain — if those are on and independent. That is why redundancy is in the design. It does not make the forged package post-quantum. Resistance at a cryptographic layer requires that layer to use post-quantum algorithms. It is also why we still refuse to report the suite as one bit: the defender does not get a product of proofs from a conjunction of mechanisms.
+These are different predicates. An adversary who forges a package signature still faces the integrity lattice, capability mode, the repaired matrix, and the evidence chain — if those are on and independent. Stacking them is not stacking copies of namei. Growing a federation of unlike-connected validators is not mounting the same bits twice. Those two facts are the hard claims this paper tries to prove. They do not make a forged package post-quantum. Resistance at a cryptographic layer requires that layer to use post-quantum algorithms.
 
 pqfreebsd is the systems paper for those gaps. pqac(7) is not rewritten; it remains the statement of T1–T5.`;
 
@@ -152,7 +152,25 @@ export const THESES: Thesis[] = [
     title: "Low-integrity agents enter capability mode",
     body: "Capsicum is in GENERIC. cap_enter confines a process to the descriptors it already holds. mac_lomac(4) prevents a low-integrity process from overwriting high-integrity files; Capsicum prevents it from opening new ones. Those are independent predicates: a quantum algorithm is not a substitute for either. Agents (max-headroom) must enter. The first pass is caph_limit_stdio, caph_enter, and exec (pqcap-enter). Casper is later work, as ipfw uid/gid is later work. Missing Capsicum does not un-prove the lattice. An unwrapped agent is a missing confinement conjunct.",
   },
+  {
+    id: "T20",
+    kind: "pqfreebsd",
+    title: "Unlike layers do not inherit a namei TOCTOU",
+    body: "A TOCTOU race is a change of the binding of a path p between check and use when both call namei(p). Self-similar stacking — two MAC modules, or MAC and DAC, that each re-resolve the name — duplicates that race. Boilerplate copied into every self-similar layer is the same check twice; it is not a second dimension. Capsicum after cap_enter uses the fd; namei is not called on the use (Watson, Anderson, Laurie, Kennaway, USENIX Security 2010). A MAC check on a vnode the caller already holds is a check on vp, not on p; swapping the name does not swap vp. Ledger append is an event on the object, not a second lookup. Lemma: a stacked unlike layer closes this TOCTOU iff its use does not re-resolve p. Copies of namei do not. Where the proof stops: directory rename above a held vnode, *at races, fd passing, Casper confused-deputy. We do not claim every classical race. We claim stacking unlike mechanisms is not stacking copies of lookup.",
+  },
+  {
+    id: "T21",
+    kind: "pqfreebsd",
+    title: "Federation min-cut is extra virtual dimensions of channel security",
+    body: "Let G=(V,E) be hosts that store or validate Integrity Evidence, with an edge only when the transport is an independent reduction (unlike keys, unlike layout — T19; not a bind-mount of the same bits). An undetected rewrite of history requires controlling a cut from the origin to every honest validator. Adding a vertex adjacent to an honest validator, or an independent edge among existing vertices, strictly increases some cut capacities. Call each independent channel a virtual dimension: not spacetime; a degree of freedom the adversary's strategy must succeed in. Size and connectivity of the federation therefore add channel dimension. They do not add bit-security to RSA. Correlated hosts (same pkg key, same admin, one network compromise) are not extra dimensions. Silent (replica not composed) is not a dimension. Stranded (composed, protocol unmet) is a lost edge (T14). Where the proof stops: we catalog the graph; we do not yet prove a numeric min-cut for a named deployment. The lemma is the shape of the bound, not a number on a box.",
+  },
 ];
+
+export const LEMMAS = `Lemma T20 (unlike namei). A TOCTOU on path p is inherited by a layer iff that layer re-resolves p between check and use. Capability mode after cap_enter, and MAC on a held vnode, do not. Self-similar copies of namei do. Therefore stacking unlike security mechanisms is not equivalent to stacking boilerplate in every MAC/DAC layer.
+
+Lemma T21 (federation cut). Integrity Evidence channel security is bounded below by the min-cut of the unlike-connected host graph. Increasing size and unlike connectivity increases that cut — extra virtual dimensions of channel, not extra bits on a classical signature. Correlation collapses dimensions.
+
+Both lemmas inherit T19 (unsharing) and T14 (conjuncts). Neither upgrades an RSA hop (T11, T15).`;
 
 export const IMPLEMENTATION = `freebsd-mac-grok remains the parent: freebsd-mac-lomac (roles as pw(8) groups, official PLM, PREINSTALL), freebsd-mac-base (GENERIC mac(4) modules; formerly freebsd-mac-generic), and freebsd-mac (zfs snapshot -r on filesystems and zvols before and after staging). pqfreebsd interviews, then emits a result directory that composes those packages.
 
@@ -160,7 +178,7 @@ pqledger appends hash-chained events on a high-integrity dataset. pqdac compiles
 
 Recovery is PREINSTALL restoration of prior behavior plus the recursive snapshot. Uninstall is not wipe and not rewind. test variants exist for each apply step.`;
 
-export const STATUS = `Implemented in this cut: T6–T9, T13, T14, T16–T19, and the loader gate (T12) as refusal-until-attestation. Inherited: T1–T5 via pqac(7) and freebsd-mac-lomac.
+export const STATUS = `Implemented in this cut: T6–T9, T13, T14, T16–T21, and the loader gate (T12) as refusal-until-attestation. Inherited: T1–T5 via pqac(7) and freebsd-mac-lomac. T20–T21 are lemmas with stated stopping points, not Coq.
 
 Held, not a 1.0 requirement: T11 / pqcode (open-ended). Held, required of a later cut: T10 / pqconfirm, authenticated zfs send (pqzfs), measured boot. SEBSD: catalog only; last tree 2006. ipfw uid/gid: deferred; first pass would follow the ugidfw shape.
 
@@ -172,7 +190,7 @@ TrustedBSD papers, not in the base install, are indexed at http://www.trustedbsd
 
 SELinux / FLASK on Linux is the cousin of SEBSD; LSM is not the MAC Framework. We do not treat them as interchangeable.`;
 
-export const CONCLUSION = `Authorization on GENERIC FreeBSD does not collapse under Shor. Cryptographic hops that are still RSA or ECC do. Independent reductions are why a quantum algorithm that takes one surface does not take the others; they are not a substitute for upgrading each cryptographic layer to post-quantum algorithms. pqfreebsd packages the TrustedBSD mechanisms that already shipped, adds Integrity Evidence, a restricted and repaired A_D, successive policy as an object, and Capsicum entry for agents, and reports each claim as a conjunct with a bound.`;
+export const CONCLUSION = `Authorization on GENERIC FreeBSD does not collapse under Shor. Cryptographic hops that are still RSA or ECC do. Independent reductions are why a quantum algorithm that takes one surface does not take the others; they are not a substitute for upgrading each cryptographic layer. Stacking unlike mechanisms does not duplicate namei (T20). Growing an unlike-connected federation of Integrity Evidence validators adds virtual dimensions of channel (T21), not bits on pkg RSA. That is the work we are in a position to defend.`;
 
 /** @deprecated use INTRODUCTION / IMPLEMENTATION; kept for any leftover imports */
 export const EXOTERIC = INTRODUCTION;

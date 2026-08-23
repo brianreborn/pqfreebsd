@@ -1,5 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ABSTRACT, DERIVATION, ESOTERIC, EXOTERIC, MOTTO, PRAXIS, THESES } from "@/lib/pq/paper";
+import {
+  ABSTRACT,
+  BACKGROUND,
+  CONCLUSION,
+  IMPLEMENTATION,
+  INTRODUCTION,
+  LEMMAS,
+  MOTTO,
+  PRAXIS,
+  RELATED,
+  STATUS,
+  THESES,
+  THREAT,
+} from "@/lib/pq/paper";
 import {
   TRUSTEDBSD_AUDIT,
   TRUSTEDBSD_BLURB,
@@ -23,14 +36,15 @@ function Paper() {
   return (
     <article className="mx-auto max-w-3xl">
       <div className="rounded-xl bg-paper px-6 py-10 text-ink md:px-12 md:py-14">
-        <p className="text-xs uppercase tracking-[0.2em] text-subtle">pqac(7) basis · pqfreebsd(7) living paper · 22 August 2026</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-subtle">
+          pqac(7) basis · pqfreebsd(7) · 22 August 2026
+        </p>
         <h1 className="mt-4 text-4xl font-medium tracking-[-0.03em]">pqfreebsd</h1>
         <p className="mt-2 text-lg italic text-subtle">{MOTTO}</p>
         <Section title="Abstract">{ABSTRACT}</Section>
-        <Section title="Exoteric: naming and mediation">{EXOTERIC}</Section>
-        <Section title="Esoteric: the observation function">{ESOTERIC}</Section>
-        <Section title="Derivation">{DERIVATION}</Section>
-        <h2 className="mt-10 text-xl font-medium">TrustedBSD</h2>
+        <Section title="1. Introduction">{INTRODUCTION}</Section>
+        <Section title="2. Background">{BACKGROUND}</Section>
+        <h2 className="mt-10 text-xl font-medium">TrustedBSD papers (not in base)</h2>
         <p className="mt-3 text-[0.95rem] leading-relaxed">{TRUSTEDBSD_BLURB}</p>
         <p className="mt-3 text-sm">
           <a className="underline" href={TRUSTEDBSD_HOME}>
@@ -38,7 +52,7 @@ function Paper() {
           </a>
           {" · "}
           <a className="underline" href={TRUSTEDBSD_DOCS}>
-            papers (not in base)
+            docs.html
           </a>
           {" · "}
           <a className="underline" href={TRUSTEDBSD_MAC}>
@@ -65,7 +79,7 @@ function Paper() {
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-sm text-subtle">Handbook (also not a man page):</p>
+        <p className="mt-4 text-sm text-subtle">Handbook:</p>
         <ul className="mt-2 grid gap-1 text-sm">
           {TRUSTEDBSD_HANDBOOK.map((h) => (
             <li key={h.url}>
@@ -75,7 +89,9 @@ function Paper() {
             </li>
           ))}
         </ul>
-        <h2 className="mt-10 text-xl font-medium">Theses</h2>
+        <Section title="3. Threat model">{THREAT}</Section>
+        <Section title="4. Two lemmas">{LEMMAS}</Section>
+        <h2 className="mt-10 text-xl font-medium">5. Theses</h2>
         <ol className="mt-4 grid gap-5">
           {THESES.map((t) => (
             <li key={t.id}>
@@ -87,10 +103,12 @@ function Paper() {
             </li>
           ))}
         </ol>
-        <h2 className="mt-10 text-xl font-medium">Praxis</h2>
+        <Section title="6. Implementation">{IMPLEMENTATION}</Section>
+        <Section title="7. Status">{STATUS}</Section>
+        <Section title="8. Related work">{RELATED}</Section>
+        <h2 className="mt-10 text-xl font-medium">Operational notes</h2>
         <p className="mt-3 text-[0.95rem] leading-relaxed">
-          Residue from packaging A_M on GENERIC, then from stating A_D and the ledger as packages
-          rather than slogans. Deniable separately; walk before oneenforce.
+          Residue from packaging A_M on GENERIC. Deniable separately. Walk before oneenforce.
         </p>
         <ol className="mt-4 grid gap-4">
           {PRAXIS.map((p) => (
@@ -100,11 +118,11 @@ function Paper() {
             </li>
           ))}
         </ol>
+        <Section title="9. Conclusion">{CONCLUSION}</Section>
         <p className="mt-12 text-sm text-subtle">
           Light-ware License. Copyright © 2026 Brian Fundakowski Feldman. This product includes
-          software developed by Brian Fundakowski Feldman. pqac(7) is the basis. pqfreebsd(7) is
-          updated as morphisms land. T1 and T2 are the parent packages, packaging the TrustedBSD
-          MAC Framework. Papers: http://www.trustedbsd.org/docs.html
+          software developed by Brian Fundakowski Feldman. pqac(7) is the basis. Papers:{" "}
+          http://www.trustedbsd.org/docs.html
         </p>
       </div>
     </article>
@@ -116,7 +134,7 @@ function Section({ title, children }: { title: string; children: string }) {
     <section className="mt-10">
       <h2 className="text-xl font-medium">{title}</h2>
       {children.split("\n\n").map((p) => (
-        <p key={p.slice(0, 40)} className="mt-3 text-[0.95rem] leading-relaxed">
+        <p key={p.slice(0, 48)} className="mt-3 text-[0.95rem] leading-relaxed">
           {p}
         </p>
       ))}
