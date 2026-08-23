@@ -9,8 +9,8 @@ expansion that still reads FreeBSD).
 **Derived from [freebsd-mac-grok](https://github.com/brianreborn/freebsd-mac-grok).**
 **Copyright © 2026 Brian Fundakowski Feldman.**
 **License: [Light-ware](LICENSE).** See **[NOTICE.md](NOTICE.md)**.  
-**Release notes:** see **[RELNOTES](RELNOTES)** (FreeBSD-style; half-install
-continuity; master placement vs pqk).  
+**Release notes:** [RELNOTES](RELNOTES.md) (pointer) — canonical FreeBSD-style
+file is [`RELNOTES`](RELNOTES).
 
 **Sprint expenses:** see **[USAGE.md](USAGE.md)**.
 
