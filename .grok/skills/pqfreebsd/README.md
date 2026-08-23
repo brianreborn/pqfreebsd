@@ -29,8 +29,8 @@ and is **not** implemented here.
 **extremely critical** — the clean path to lock down kernels without
 modifying FreeBSD source. Any number of sibling `pqfreebsd_*` KLDs may be
 needed **to enable** a given path; the suite loads them when installed.
-Operators are not asked to hand-`kldload`. This skill does not build that
-tree on demand.
+Operators are not asked to hand-`kldload`. **pqf skills** do not build that
+tree on demand (**pqk** is not LLM-dependent).
 
 **ZFS multilabel** (ZFS hosts only): OpenZFS does not set `MNT_MULTILABEL`.
 Legacy UFS/FFS already does and never had this regression — no compat KLD

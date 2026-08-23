@@ -63,9 +63,10 @@ root `RELEASE_NOTES.md`. Do not assume a green-field re-interview unless
 | **Always required** | `pqfreebsd.ko` — skeletal core today (`security.pqfreebsd.enforcement` / `.audit`; kernel messages on change). Will become **extremely critical**: clean path to lock down kernels **without modifying FreeBSD source**. |
 | **As needed to enable** | Any number of sibling `pqfreebsd_*` KLDs. The suite may need several for a full enablement path; none are required merely to have the core. |
 
-The core **does not** load siblings. Userland does. Do not vendor or build this
-tree on demand inside create-skill bits. Do not treat the core’s current size
-as a sign it is disposable — it is the permanent in-kernel foothold.
+The core **does not** load siblings. Userland does. **pqk** is **not
+LLM-dependent** — do not vendor or build it on demand from **pqf skills** /
+create-skill bits. Do not treat the core’s current size as a sign it is
+disposable — it is the permanent in-kernel foothold.
 
 **ZFS-only enablement sibling (mid-install blocker on ZFS):** ZFS does not set
 `MNT_MULTILABEL`. Legacy **UFS/FFS** already does — it predates ZFS and never

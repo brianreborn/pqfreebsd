@@ -18,7 +18,7 @@ papers not in base: [docs](http://www.trustedbsd.org/docs.html).
 | Layer | What |
 | --- | --- |
 | Parent | **mac_lomac(4)** integrity, orthogonal modules, **zfs snapshot -r**, PREINSTALL. No **bectl(8)**. |
-| **Kernel KLDs** | **[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** — skeletal `pqfreebsd.ko` always required (will be critical: lockdown without modifying FreeBSD source); siblings as needed to enable. Not built by this skill; `start`/boot/install loads quietly. |
+| **Kernel KLDs** | **[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** (**pqk**, not LLM-dependent) — skeletal `pqfreebsd.ko` always required (will be critical: lockdown without modifying FreeBSD source); siblings as needed to enable. Not built by **pqf skills**; `start`/boot/install loads quietly. |
 | **pqledger** | Filesystem Integrity Evidence: hash-chained vnode/policy log on a **high** dataset. |
 | **pqdac** | Restricted A_D spec, established at create, repaired on drift. Optional ugidfw prevent. |
 
@@ -42,11 +42,12 @@ Parent **freebsd-mac-grok** is a **top-level git submodule** (`vendor/freebsd-ma
 Each later FreeBSD MAC skill (pqzfs, pqcode, mac-sebsd, …) gets its own repo and
 is added the same way, after you say so.
 
-**Kernel modules** are **not** a submodule and are **not** built on demand by
-`/pqfreebsd`. [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)
-is a separate deliverable: only skeletal `pqfreebsd.ko` is always required;
-siblings load as needed to enable. `start` (every boot), install, and stage do that without an operator
-ceremony.
+**Kernel modules (pqk)** are **not** a submodule, **not** LLM-dependent, and
+are **not** built on demand by **pqf skills**.
+[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel) is a
+separate deliverable: only skeletal `pqfreebsd.ko` is always required;
+siblings load as needed to enable. `start` (every boot), install, and stage
+do that without an operator ceremony.
 
 ```sh
 git clone --recurse-submodules https://github.com/brianreborn/pqfreebsd.git
