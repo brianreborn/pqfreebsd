@@ -46,6 +46,45 @@ chain is unbroken. Do not implement pqcode as a side quest inside `/pqfreebsd`.
 If the user names pqcode, cut that skill then. `pqzfs` waits until named.
 **mac-sebsd** is cut as a catalog: no `.ko` in GENERIC; do not kldload.
 
+## pqfreebsd_kernel (build and utilize — not built by this skill)
+
+ZFS does not set `MNT_MULTILABEL` the way UFS does. MAC labels on ZFS need
+EAs; that regression is handled by a **separate** KLD tree:
+
+**https://github.com/brianreborn/pqfreebsd_kernel**
+
+| Module | Role |
+| --- | --- |
+| `pqfreebsd.ko` | Core KLD; compat modules depend on it |
+| `pqfreebsd_compat_zfs_multilabel.ko` | On load / new mounts: if effective `xattr` is `on`/`dir` or `sa` (local or inherited), set `mp->mnt_flag \|= MNT_MULTILABEL` |
+
+**This skill does not build those modules on demand.** They are requisite and
+generic. Do not vendor `pqfreebsd_kernel` into this create-skill tree. Do not
+flip dataset `xattr=` to “fix” LOMAC (pqac(7)).
+
+**Build** on the FreeBSD host (ordinary out-of-tree kmod; needs `SYSDIR` /
+`/usr/src/sys`):
+
+```sh
+git clone https://github.com/brianreborn/pqfreebsd_kernel.git
+cd pqfreebsd_kernel && make
+```
+
+**Utilize** after `zfs` is loaded and **before** parent `onelabel` /
+`setfmac` / `setfsmac` on ZFS paths (and before `oneenforce`):
+
+```sh
+kldload ./sys/modules/pqfreebsd/pqfreebsd.ko
+kldload ./sys/modules/pqfreebsd_compat_zfs_multilabel/pqfreebsd_compat_zfs_multilabel.ko
+# or install the .ko files and:
+#   pqfreebsd_load="YES"
+#   pqfreebsd_compat_zfs_multilabel_load="YES"
+# in loader.conf(5)
+```
+
+If `setfmac` on a ZFS path still returns `EINVAL` after both modules are
+loaded, abort with `enabled=0` and probe `/tmp` as in pqac(7).
+
 ## Output
 
 Result `~/pqfreebsd/`:
@@ -67,8 +106,10 @@ Result `~/pqfreebsd/`:
 3. `onestage` — PREINSTALL, parent children, ledger dataset, DAC spec installed
    not yet applied.
 4. **Offer** `onesnapshot_after`.
-5. `onestart` (kldload, `enabled=0`), `pqledger onestage`, `pqdac oneestablish`,
-   parent `onelabel` / `onechecklabels`.
+5. `onestart` (kldload, `enabled=0`). Ensure **pqfreebsd_kernel** is built and
+   loaded (`pqfreebsd.ko` then `pqfreebsd_compat_zfs_multilabel.ko`) before any
+   ZFS labeling — see § pqfreebsd_kernel above. Then `pqledger onestage`,
+   `pqdac oneestablish`, parent `onelabel` / `onechecklabels`.
 6. `oneenforce` only if they ask; walk Gotchas **and** Known issues **and**
    pqac(7) PRAXIS first. Console.
 7. Recover: `oneuninstall` then optional `zfs rollback -r pool@pqfreebsd-pre-…`.
@@ -162,6 +203,8 @@ Root, via **service(8)** `one*` (enable defaults to NO):
    dataset if missing; install specfiles
 4. `onesnapshot_after`
 5. `onestart` — load modules, `enabled=0`
+5b. **pqfreebsd_kernel** already built and loaded (see § above) — required for
+    ZFS multilabel / EA before labels
 6. `pqledger` `onestage` / `oneverify`
 7. `pqdac` `oneestablish` / `testdrift` / `onerepair`
 8. parent `onelabel` / `onechecklabels`
