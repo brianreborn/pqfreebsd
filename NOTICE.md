@@ -2,6 +2,10 @@
 
 **This project is a derived work of [freebsd-mac-grok](https://github.com/brianreborn/freebsd-mac-grok).**
 
+**PQFreeBSD** is the official, non-fancy project name. **Free(ly)B(le)S(se)D**
+(*Freely Blessed*) is the evocative form — a Unix-traditional syllable
+expansion that still reads as FreeBSD.
+
 All files in this distribution — including skills, rc.d scripts, manuals, the
 workbench, **pqac(7)**, **pqfreebsd(7)**, and this notice — are:
 

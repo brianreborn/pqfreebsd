@@ -2,6 +2,10 @@
 
 **pq all the things**
 
+**PQFreeBSD** is the official, non-fancy project name.  
+**Free(ly)B(le)S(se)D** — *Freely Blessed* — is the evocative form (Unix-style
+expansion that still reads FreeBSD).
+
 **Derived from [freebsd-mac-grok](https://github.com/brianreborn/freebsd-mac-grok).**
 **Copyright © 2026 Brian Fundakowski Feldman.**
 **License: [Light-ware](LICENSE).** See **[NOTICE.md](NOTICE.md)**.  

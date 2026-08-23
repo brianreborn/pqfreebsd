@@ -1,5 +1,8 @@
 # Release notes — pqfreebsd
 
+**PQFreeBSD** — official non-fancy name. **Free(ly)B(le)S(se)D** (*Freely
+Blessed*) — evocative FreeBSD expansion (Unix-traditional wordplay).
+
 ## Current cut
 
 ### Test host status (acknowledgement)

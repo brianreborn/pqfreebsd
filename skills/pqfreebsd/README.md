@@ -1,5 +1,7 @@
 # pqfreebsd
 
+**PQFreeBSD** (official). **Free(ly)B(le)S(se)D** — *Freely Blessed* (evocative).
+
 Post-quantum **trusted FreeBSD**: compose **freebsd-mac-grok** and layer
 Integrity Evidence, repaired **DAC**, successive policy audit, and a
 loader gated on attestation. Mediation (**pqac(7)**) is the core, not the whole system.
