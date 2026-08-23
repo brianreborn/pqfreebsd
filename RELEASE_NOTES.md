@@ -27,7 +27,7 @@ When an umbrella / master project **imbibes** PQFreeBSD and its kernel tree:
 | Piece | Put it here | Why |
 | --- | --- | --- |
 | `pqfreebsd` (this repo) | Skill / plugin + userland (`skills/`, port under `ports/sysutils/pqfreebsd`, result dirs). | Operator-facing install and `one*` flow. |
-| `pqfreebsd_kernel` | **Separate kernel deliverable** next to (not inside) the skill tree. Build/install as normal KLDs. | Requisite/generic; not built on demand by create-skill; core is the no-src-mod lockdown foothold. |
+| `pqfreebsd_kernel` (**pqk**) | **Separate kernel deliverable** next to (not inside) the skill tree. Build/install as normal KLDs. Short name **pqk** = Public Quantum Free Berkeley Software Distribution Kernel. | Requisite/generic; not built on demand by create-skill; core is the no-src-mod lockdown foothold. |
 
 Do **not** merge the KLD sources into the skill package. The skill **uses**
 installed `.ko` files; the kernel repo **ships** them.
