@@ -199,8 +199,8 @@ Root, via **service(8)** `one*` (enable defaults to NO):
 3. `onestage` — PREINSTALL once, never overwrite; parent stage; create ledger
    dataset if missing; install specfiles
 4. `onesnapshot_after`
-5. `start` / `onestart` — KLDs on every start/boot and at install/stage;
-   `enabled=0`
+5. `start` / `onestart` — pqk ideally already loader-preloaded; fallback
+   kldload if needed; `enabled=0`
 6. `pqledger` `onestage` / `oneverify`
 7. `pqdac` `oneestablish` / `testdrift` / `onerepair`
 8. parent `onelabel` / `onechecklabels`
