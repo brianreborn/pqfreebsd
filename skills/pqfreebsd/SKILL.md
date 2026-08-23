@@ -75,12 +75,13 @@ had this regression — so a non-ZFS host does **not** need
 bug until a proper fix goes upstream. Do not flip dataset `xattr=` to “fix”
 LOMAC (pqac(7)). Do not interview the operator about hand-`kldload`.
 
-**Agent / suite duty:** load KLDs on **every `start` (boot)**, during
-**install** and **stage**, and via `onestart` (`_pqfreebsd_kld_load` +
-`loader.conf.local`). Required core always; ZFS multilabel compat only when
-ZFS is in play. Missing optional `.ko` does not fail start; `setfmac`
-`EINVAL` on ZFS means install that compat and re-`start`. Abort with
-`enabled=0` if `EINVAL` persists (probe `/tmp` as in pqac(7)).
+**Agent / suite duty:** **pqk is ideally preloaded by loader(8)**
+(`pqfreebsd_load="YES"` in `/boot/loader.conf.local`, plus ZFS compat when
+ZFS is in play). install/stage/start ensure those lines and `kldload` only
+as a same-session fallback until reboot. Missing optional `.ko` does not
+fail start; `setfmac` `EINVAL` on ZFS means install that compat and reboot
+or re-`start`. Abort with `enabled=0` if `EINVAL` persists (probe `/tmp`
+as in pqac(7)).
 
 ## Output
 

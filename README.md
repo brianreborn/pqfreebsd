@@ -46,8 +46,9 @@ is added the same way, after you say so.
 are **not** built on demand by **pqf skills**.
 [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel) is a
 separate deliverable: only skeletal `pqfreebsd.ko` is always required;
-siblings load as needed to enable. `start` (every boot), install, and stage
-do that without an operator ceremony.
+siblings load as needed to enable. **Ideally loader-preloaded** every boot;
+install/stage/start only ensure `loader.conf.local` and fall back to
+`kldload` until reboot.
 
 ```sh
 git clone --recurse-submodules https://github.com/brianreborn/pqfreebsd.git

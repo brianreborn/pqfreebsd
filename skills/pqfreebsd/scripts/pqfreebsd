@@ -193,12 +193,12 @@ pqfreebsd_update() {
 	_child pqdac update
 }
 
-# Only pqfreebsd.ko is always required. Sibling KLDs load only when that
-# enablement path applies (e.g. ZFS multilabel compat is ZFS-only — UFS/FFS
-# already supports MNT_MULTILABEL and does not need it).
+# pqk / pqf kernel modules: ideally preloaded by loader(8) via
+# /boot/loader.conf.local. install/stage/start ensure those lines exist.
+# kldload below is only a same-session fallback until the next reboot.
 #
-# Load on every start (boot), during install, and during stage — not only
-# onestart. Also mark loader.conf.local so modules come up every boot early.
+# Only pqfreebsd.ko is always required. ZFS multilabel compat is ZFS-only
+# (UFS/FFS already has MNT_MULTILABEL).
 _pqfreebsd_root_fstype() {
 	mount -p 2>/dev/null | awk '$2 == "/" { print $3; exit }'
 }
@@ -210,11 +210,11 @@ _pqfreebsd_using_zfs() {
 }
 
 _pqfreebsd_kld_loader_conf() {
-	# Ensure early boot load; idempotent.
+	# Preferred path: loader preload every boot. Idempotent.
 	local conf line
 	conf=/boot/loader.conf.local
 	if [ "$_test" = 1 ]; then
-		echo "WOULD: ensure ${conf} has pqfreebsd_load=\"YES\""
+		echo "WOULD: ensure ${conf} has pqfreebsd_load=\"YES\" (loader preload)"
 		_pqfreebsd_using_zfs && \
 			echo "WOULD: ensure ${conf} has pqfreebsd_compat_zfs_multilabel_load=\"YES\""
 		return 0
@@ -231,16 +231,16 @@ _pqfreebsd_kld_loader_conf() {
 }
 
 _pqfreebsd_kld_load() {
+	# Always mark loader.conf first (ideal path). Then kldload if missing
+	# so install/stage work before reboot.
+	_pqfreebsd_kld_loader_conf
 	if [ "$_test" = 1 ]; then
-		echo "WOULD: kldload pqfreebsd (required)"
+		echo "WOULD: kldload pqfreebsd if not already loader-preloaded"
 		_pqfreebsd_using_zfs && \
-			echo "WOULD: kldload pqfreebsd_compat_zfs_multilabel (ZFS in use)"
-		_pqfreebsd_kld_loader_conf
+			echo "WOULD: kldload pqfreebsd_compat_zfs_multilabel if needed (ZFS)"
 		return 0
 	fi
-	_pqfreebsd_kld_loader_conf
 	kldstat -q -n pqfreebsd 2>/dev/null || kldload pqfreebsd 2>/dev/null || true
-	# ZFS-only enablement sibling — not used on legacy UFS/FFS.
 	if _pqfreebsd_using_zfs; then
 		kldstat -q -n pqfreebsd_compat_zfs_multilabel 2>/dev/null || \
 			kldload pqfreebsd_compat_zfs_multilabel 2>/dev/null || true
