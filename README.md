@@ -41,8 +41,9 @@ is added the same way, after you say so.
 
 **Kernel modules** are **not** a submodule and are **not** built on demand by
 `/pqfreebsd`. [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)
-is a separate deliverable; once `.ko` files are installed, `onestart` loads
-them without an operator ceremony.
+is a separate deliverable: only skeletal `pqfreebsd.ko` is always required;
+siblings load as needed to enable. `onestart` does that without an operator
+ceremony.
 
 ```sh
 git clone --recurse-submodules https://github.com/brianreborn/pqfreebsd.git
