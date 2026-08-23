@@ -493,13 +493,6 @@ _ensure_root_label() {
 		}
 		{ print }
 	' /etc/login.conf > /etc/login.conf.mac_sebsd_grok.tmp
-				print ":label=" lbl ":"
-				done=1
-				next
-			}
-		}
-		{ print }
-	' /etc/login.conf > /etc/login.conf.mac_sebsd_grok.tmp
 	if [ "$_test" = 1 ]; then
 		_diff_u /etc/login.conf /etc/login.conf.mac_sebsd_grok.tmp
 		rm -f /etc/login.conf.mac_sebsd_grok.tmp
