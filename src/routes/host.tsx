@@ -28,8 +28,9 @@ export function Host() {
           <h1 className="mt-2 text-3xl font-medium tracking-tight">Drive the reference monitor.</h1>
           <p className="mt-2 max-w-prose text-muted">
             Login attaches integrity. Turn the lattice on only after files are labeled. A
-            low-integrity process cannot overwrite high-integrity OS files. The owner can still
-            chmod — then discretionary repair, if you asked for it.
+            low-integrity process cannot overwrite high-integrity OS files. Agents that cap_enter
+            cannot open new paths. The owner can still chmod — then discretionary repair, if you asked
+            for it.
           </p>
         </div>
         <Button variant="ghost" onClick={reset}>
@@ -47,6 +48,9 @@ export function Host() {
             login {name}
           </Button>
         ))}
+        <Button variant="ghost" onClick={() => dispatch({ type: "cap_enter" })}>
+          cap_enter
+        </Button>
         <Button variant="ghost" onClick={() => dispatch({ type: "snapshot", when: "pre" })}>
           snapshot
         </Button>

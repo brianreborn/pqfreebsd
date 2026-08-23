@@ -85,12 +85,13 @@ Ask, in order. Record in `POLICY`.
    `lomac/low`). Official policy: OS files high-integrity, home directories
    low-integrity, root exempt (not contained). High-integrity role starts at
    `high(low-high)`; low-integrity role at `lomac/10[2]`.
-2. Base GENERIC modules: **mac_seeotheruids(4)** only by default, exempt GID 0.
+2. Capsicum: low-integrity agents **must** `cap_enter` (default yes). GENERIC,
+   not a kld. First pass `pqcap-enter`, not Casper. Do not wrap sshd/login.
+   Independent of the lattice (T18, T19).
+3. Base GENERIC modules: **mac_seeotheruids(4)** only by default, exempt GID 0.
    Optional **mac_portacl(4)** (bind, not packets). Do not stack Biba/MLS.
    Do not enable **mac_ifoff(4)** blindly. ipfw uid/gid is not this interview
    (saved last; would start ugidfw-shaped).
-2b. Capsicum: low-integrity agents **must** `cap_enter` (default yes). GENERIC,
-   not a kld. First pass `pqcap-enter`, not Casper. Do not wrap sshd/login.
 3. High-integrity group name and members (humans who may start able to write
    OS files). Low-integrity group name and members (agents, builders, guests).
    New users default to the low-integrity role.

@@ -30,15 +30,15 @@ export const INTERVIEW = [
     kind: "bool" as const,
   },
   {
-    key: "withSeeotheruids" as const,
-    title: "Orthogonal module",
-    ask: "Load mac_seeotheruids(4) (hide other UIDs, exempt GID 0 / wheel)? Do not stack Biba or MLS.",
+    key: "withCapsicum" as const,
+    title: "Capability mode (required for agents)",
+    ask: "Low-integrity agents must cap_enter (Capsicum, GENERIC, not MAC)? Default yes — this is a first-class conjunct, not an extra. First pass is pqcap-enter, not Casper. Orthogonal to the lattice.",
     kind: "bool" as const,
   },
   {
-    key: "withCapsicum" as const,
-    title: "Capability mode",
-    ask: "Low-integrity agents must cap_enter (Capsicum, GENERIC, not MAC)? Default yes. First pass is pqcap-enter, not Casper. Orthogonal to the lattice.",
+    key: "withSeeotheruids" as const,
+    title: "Orthogonal module",
+    ask: "Load mac_seeotheruids(4) (hide other UIDs, exempt GID 0 / wheel)? Do not stack Biba or MLS.",
     kind: "bool" as const,
   },
   {
@@ -131,6 +131,7 @@ export function defaultSubjects(policy: Policy): Record<string, Subject> {
       label: policy.rootLabel,
       effective: "equal",
       base: "equal",
+      capabilityMode: false,
     },
     green: {
       name: "green",
@@ -141,6 +142,7 @@ export function defaultSubjects(policy: Policy): Record<string, Subject> {
       label: policy.trustedLabel,
       effective: 100,
       base: 100,
+      capabilityMode: false,
     },
     dev: {
       name: "dev",
@@ -151,6 +153,7 @@ export function defaultSubjects(policy: Policy): Record<string, Subject> {
       label: policy.sandboxLabel,
       effective: 10,
       base: 10,
+      capabilityMode: false,
     },
   };
 }

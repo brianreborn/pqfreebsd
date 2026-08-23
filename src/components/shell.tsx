@@ -11,6 +11,7 @@ const NAV = [
   { to: "/paper", label: "Paper" },
   { to: "/interview", label: "Interview" },
   { to: "/lattice", label: "Lattice" },
+  { to: "/capsicum", label: "Capsicum" },
   { to: "/host", label: "Host" },
   { to: "/ledger", label: "Ledger" },
   { to: "/dac", label: "A_D" },
@@ -46,6 +47,9 @@ export function Shell() {
           </Link>
           <div className="flex flex-wrap items-center gap-2 text-xs font-mono tabular-nums text-muted">
             <Chip label={world.actor} />
+            {world.subjects[world.actor]?.capabilityMode ? (
+              <Chip label="cap_enter" tone="ok" />
+            ) : null}
             <Chip label={world.enforce ? "enforce" : "staged"} tone={world.enforce ? "warn" : "ok"} />
             <Chip label={world.chainOk ? `ie ${hash}` : "chain BROKEN"} tone={world.chainOk ? "ok" : "deny"} />
             <Chip label={drift ? `drift ${drift}` : "A_D clean"} tone={drift ? "warn" : "ok"} />

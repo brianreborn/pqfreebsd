@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as BootRouteImport } from './routes/boot'
 import { Route as BoundsRouteImport } from './routes/bounds'
+import { Route as CapsicumRouteImport } from './routes/capsicum'
 import { Route as ClaimsRouteImport } from './routes/claims'
 import { Route as CodeRouteImport } from './routes/code'
 import { Route as ConfirmRouteImport } from './routes/confirm'
@@ -44,6 +45,11 @@ const BootRoute = BootRouteImport.update({
 const BoundsRoute = BoundsRouteImport.update({
   id: '/bounds',
   path: '/bounds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CapsicumRoute = CapsicumRouteImport.update({
+  id: '/capsicum',
+  path: '/capsicum',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClaimsRoute = ClaimsRouteImport.update({
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/audit': typeof AuditRoute
   '/boot': typeof BootRoute
   '/bounds': typeof BoundsRoute
+  '/capsicum': typeof CapsicumRoute
   '/claims': typeof ClaimsRoute
   '/code': typeof CodeRoute
   '/confirm': typeof ConfirmRoute
@@ -130,6 +137,7 @@ export interface FileRoutesByTo {
   '/audit': typeof AuditRoute
   '/boot': typeof BootRoute
   '/bounds': typeof BoundsRoute
+  '/capsicum': typeof CapsicumRoute
   '/claims': typeof ClaimsRoute
   '/code': typeof CodeRoute
   '/confirm': typeof ConfirmRoute
@@ -149,6 +157,7 @@ export interface FileRoutesById {
   '/audit': typeof AuditRoute
   '/boot': typeof BootRoute
   '/bounds': typeof BoundsRoute
+  '/capsicum': typeof CapsicumRoute
   '/claims': typeof ClaimsRoute
   '/code': typeof CodeRoute
   '/confirm': typeof ConfirmRoute
@@ -169,6 +178,7 @@ export interface FileRouteTypes {
     | '/audit'
     | '/boot'
     | '/bounds'
+    | '/capsicum'
     | '/claims'
     | '/code'
     | '/confirm'
@@ -187,6 +197,7 @@ export interface FileRouteTypes {
     | '/audit'
     | '/boot'
     | '/bounds'
+    | '/capsicum'
     | '/claims'
     | '/code'
     | '/confirm'
@@ -205,6 +216,7 @@ export interface FileRouteTypes {
     | '/audit'
     | '/boot'
     | '/bounds'
+    | '/capsicum'
     | '/claims'
     | '/code'
     | '/confirm'
@@ -224,6 +236,7 @@ export interface RootRouteChildren {
   AuditRoute: typeof AuditRoute
   BootRoute: typeof BootRoute
   BoundsRoute: typeof BoundsRoute
+  CapsicumRoute: typeof CapsicumRoute
   ClaimsRoute: typeof ClaimsRoute
   CodeRoute: typeof CodeRoute
   ConfirmRoute: typeof ConfirmRoute
@@ -266,6 +279,13 @@ declare module '@tanstack/react-router' {
       path: '/bounds'
       fullPath: '/bounds'
       preLoaderRoute: typeof BoundsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/capsicum': {
+      id: '/capsicum'
+      path: '/capsicum'
+      fullPath: '/capsicum'
+      preLoaderRoute: typeof CapsicumRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/claims': {
@@ -360,6 +380,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuditRoute: AuditRoute,
   BootRoute: BootRoute,
   BoundsRoute: BoundsRoute,
+  CapsicumRoute: CapsicumRoute,
   ClaimsRoute: ClaimsRoute,
   CodeRoute: CodeRoute,
   ConfirmRoute: ConfirmRoute,

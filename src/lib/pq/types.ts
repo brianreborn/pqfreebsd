@@ -35,6 +35,7 @@ export type Subject = {
   label: string;
   effective: Grade;
   base: Grade;
+  capabilityMode: boolean;
 };
 
 export type FsNode = {

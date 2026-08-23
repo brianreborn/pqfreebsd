@@ -68,6 +68,13 @@ function dacAllows(subject: Subject, object: FsNode, want: "r" | "w" | "x") {
   return Boolean((object.mode >> shift) & bit);
 }
 
+function capHeld(actor: Subject, path: string) {
+  if (path === "/tmp" || path.startsWith("/tmp/")) return true;
+  const home = `/home/${actor.name}`;
+  if (path === home || path.startsWith(`${home}/`)) return true;
+  return false;
+}
+
 function iso(clock: number) {
   const d = new Date(Date.UTC(2026, 7, 22, 21, 0, 0) + clock * 1000);
   return d.toISOString().replace(".000", "");
@@ -137,6 +144,7 @@ export function createWorld(policy: Policy): World {
 
 export type Action =
   | { type: "login"; name: string }
+  | { type: "cap_enter" }
   | { type: "read"; path: string }
   | { type: "write"; path: string; content?: string }
   | { type: "create"; path: string; kind: "file" | "dir" }
@@ -330,12 +338,31 @@ export function reduce(prev: World, action: Action): Step {
     world.actor = action.name;
     const s = world.subjects[action.name];
     s.effective = s.base;
+    if (world.policy.withCapsicum && s.role === "sandbox") {
+      s.capabilityMode = true;
+    }
     return push(world, {
       op: "login",
       subject: action.name,
       object: "login.conf",
       result: "info",
-      detail: `lambda(s)=${s.label}; labels attach at login, not in the editing shell`,
+      detail: s.capabilityMode
+        ? `lambda(s)=${s.label}; cap_enter at login (pqcap-enter). ambient namespace dropped`
+        : `lambda(s)=${s.label}; labels attach at login, not in the editing shell`,
+    });
+  }
+
+  if (action.type === "cap_enter") {
+    if (!world.policy.withCapsicum) {
+      return deny(world, "login", "cap_enter", "Capsicum conjunct silent (withCapsicum=no). Lattice is not thereby false.");
+    }
+    actor.capabilityMode = true;
+    return push(world, {
+      op: "login",
+      subject: actor.name,
+      object: "cap_enter",
+      result: "info",
+      detail: "caph_limit_stdio + caph_enter. Casper later. Independent of LOMAC.",
     });
   }
 
@@ -461,6 +488,15 @@ export function reduce(prev: World, action: Action): Step {
     action.type === "chown"
       ? action.path
       : "";
+
+  if (actor.capabilityMode && path && !capHeld(actor, path)) {
+    return deny(
+      world,
+      action.type,
+      path,
+      `capability mode: cannot open ${path} (no fd). LOMAC is a different predicate.`,
+    );
+  }
 
   if (action.type === "create") {
     if (world.nodes[path]) return deny(world, "create", path, "EEXIST");
