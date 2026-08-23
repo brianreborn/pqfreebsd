@@ -1,14 +1,28 @@
-.Dd August 22, 2026
+.\" Copyright (c) 2026 Brian Fundakowski Feldman.
+.\" Light-ware License — see LICENSE at the repository root.
+.Dd August 23, 2026
 .Dt PQFREEBSD 4
 .Os
 .Sh NAME
 .Nm pqfreebsd
-.Nd post-quantum access-control suite on
-.Xr mac 4
+.Nd PQFreeBSD suite and skeletal core KLD
 .Sh DESCRIPTION
 .Nm
-is not a kernel module.
-It composes
+names both the PQFreeBSD userland suite
+.Pq pqf skills
+and the always-required skeletal core kernel module shipped by
+.Em pqk
+.Pq
+.Lk https://github.com/brianreborn/pqfreebsd_kernel .
+The kernel module holds
+.Va security.pqfreebsd.enforcement
+and
+.Va security.pqfreebsd.audit ;
+see the
+.Nm pqfreebsd
+manual in the pqk tree for load and sysctl details.
+.Pp
+The suite composes
 .Xr mac_lomac 4
 and optional orthogonal
 .Xr mac 4
@@ -24,12 +38,18 @@ Do not load
 or
 .Xr mac_mls 4
 alongside LOMAC unless a second flow proof is explicitly wanted.
+.Pp
+ZFS hosts may also load
+.Nm pqfreebsd_compat_zfs_multilabel
+from pqk; UFS/FFS does not need it.
 .Sh SEE ALSO
 .Xr mac 4 ,
 .Xr mac_lomac 4 ,
 .Xr mac_seeotheruids 4 ,
 .Xr mac_bsdextended 4 ,
-.Xr pqfreebsd 7
+.Xr loader.conf 5 ,
+.Xr pqfreebsd 7 ,
+.Xr pqfreebsd 8
 .Sh LICENSE
 Light-ware License.
 Copyright (c) 2026 Brian Fundakowski Feldman.
