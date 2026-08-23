@@ -1,0 +1,11 @@
+# Reuse freebsd-mac-lomac groups. Types are TE, not grades.
+REUSE_LOMAC_POLICY=/usr/local/etc/mac_lomac_grok/POLICY
+TRUSTED_CLASS=trusted
+SANDBOX_CLASS=sandbox
+# TRUSTED_GROUP / SANDBOX_GROUP ingested from LOMAC POLICY when present.
+ROOT_LABEL=sebsd/sysadm_t
+TRUSTED_LABEL=sebsd/staff_t
+SANDBOX_LABEL=sebsd/user_t
+SEBSD_KLD=
+SEBSD_DATE=
+SEBSD_BUILT_FOR=

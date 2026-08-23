@@ -1,0 +1,13 @@
+# sebsd-policy.contexts — stub file_contexts in setfsmac(8) syntax.
+# Types, not LOMAC grades. First-match. Empty of a compiled TE policy;
+# onelabel is refused until a kernel-matched sebsd.ko exists.
+#
+# /bin/sh                       sebsd/shell_exec_t
+# /usr/bin/login                sebsd/login_exec_t
+# /home(/.*)?                   sebsd/user_home_t
+# /tmp(/.*)?                    sebsd/tmp_t
+# /etc(/.*)?                    sebsd/etc_t
+
+# Sentinels only — not a reference policy.
+/tmp(/.*)?                      sebsd/tmp_t
+/bin/sh                         sebsd/shell_exec_t

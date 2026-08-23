@@ -5,116 +5,179 @@ export type Thesis = {
   kind: "inherited" | "pqfreebsd" | "held";
 };
 
+export const MOTTO = "pq all the things";
+
+export const ABSTRACT = `We describe pqfreebsd, a composition of the TrustedBSD MAC Framework, Capsicum, OpenBSM, and a small set of userland packages that together record Integrity Evidence, maintain a restricted discretionary access matrix, treat successive policy as an auditable object, and confine low-integrity agents in capability mode.
+
+The work inherits pqac(7). Authorization on a von Neumann FreeBSD defender — DAC, lattice MAC, and MMU translation — is not an instance of a BQP-hard naming problem. Shor and Grover therefore do not collapse the mediation relation. That observation is not a claim that the TCB is post-quantum. The bits the monitor interprets (kernel, modules, packages, policy, send streams) are still authenticated classically, or not at all.
+
+Redundancy is part of the design, and only as independent reductions: a quantum algorithm that solves one class of problem does not thereby solve the others. Copies of the same reduction do not count. A cryptographic layer that remains RSA or ECC has no post-quantum resistance at that layer, whatever else is composed with it. Claims remain conjuncts, not a product of proofs.
+
+This paper states the additional requirements, the design of the packages that meet those that we implement, and an honest status for those we do not. A 1.0 cut does not require post-quantum signatures on the kernel.`;
+
+export const INTRODUCTION = `Trusted operating system features arrived in FreeBSD through the TrustedBSD Project: the MAC Framework in 5.0, security event auditing / OpenBSM, and Capsicum in 9. Those mechanisms are in GENERIC. They are documented in man pages that name them and in papers that are not in the base install.
+
+pqac(7) asked a narrower question: whether a quantum adversary, whose uniform class is BQP rather than BPP, thereby obtains a write the reference monitor would accept. It does not, unless it can induce a classical state the hooks accept. Mediation is an interpreted predicate, not a cryptographic game.
+
+That answer is incomplete as a trusted-base story. Anderson's third property — verifiability — is not supplied by loading mac_lomac(4). The residual discretionary matrix is an unrestricted HRU system unless it is specified and repaired. Policy that lives in half a dozen files is not itself an auditable object. Low-integrity agents retain the ambient UNIX namespace unless they cap_enter. Code the monitor will run is named by RSA in pkg(8), or is unsigned.
+
+These are different predicates. An adversary who forges a package signature still faces the integrity lattice, capability mode, the repaired matrix, and the evidence chain — if those are on and independent. That is why redundancy is in the design. It does not make the forged package post-quantum. Resistance at a cryptographic layer requires that layer to use post-quantum algorithms. It is also why we still refuse to report the suite as one bit: the defender does not get a product of proofs from a conjunction of mechanisms.
+
+pqfreebsd is the systems paper for those gaps. pqac(7) is not rewritten; it remains the statement of T1–T5.`;
+
+export const BACKGROUND = `The access-control kernel is the TrustedBSD MAC Framework (Watson, Morrison, Vance, Feldman, USENIX ATC 2003; Watson, Feldman, Migus, Vance, DISCEX III 2003). Policy modules load against a common hook table. mac_lomac(4) is the integrity policy we compose: floating labels, low-watermark. When speaking to an operator we say high-integrity and low-integrity; the kernel still stores lomac/high and lomac/low.
+
+Capsicum (Watson, Anderson, Laurie, Kennaway, USENIX Security 2010) is capability mode in GENERIC. It is not a MAC module. After cap_enter, a process may operate only on file descriptors it already holds (and a few explicitly excepted calls). Casper later provides named services to sandboxed processes; this cut uses cap_enter alone.
+
+OpenBSM / audit(4) (Watson and Salamon, UKUUG 2006) is the in-band security-event source. The Integrity Evidence ledger is not a replacement for the BSM trail; it is a hash-chained, high-integrity object derived from vnode, label, and policy-morphism events.
+
+SEBSD (Vance and Watson, NAI Labs 2003) is FLASK/Type Enforcement as a MAC module. The Framework changes were largely upstreamed. The policy module and reference policy were not. The last published tree is 7.0-SEBSD, 2006-07-05. There is no mac_sebsd.ko in GENERIC 14/15.`;
+
+export const THREAT = `The defender is a classical stored-program FreeBSD host, GENERIC, options MAC and CAPABILITY_MODE. The adversary has polynomial-time quantum algorithms on the usual public-key names (Shor) and Grover search over unstructured domains, and, as a working hypothesis inherited from pqac(7), an instrument on the electrical plant. The adversary is not assumed to execute a quantum ISA on the defender.
+
+T1–T5 are stated in full in pqac(7). We inherit them. If the observation function on the plant does not factor through a kernel-visible subject, mediation is silent and the property is physical. This paper does not claim Faraday cages.`;
+
 export const THESES: Thesis[] = [
   {
     id: "T1",
     kind: "inherited",
     title: "BQP does not write the vnode",
-    body: "Membership in BQP does not by itself produce a classical write accepted by the reference monitor. A quantum adversary who would act as a subject must still induce a classical state the hooks accept.",
+    body: "Membership in BQP does not by itself produce a classical write accepted by the reference monitor. A quantum adversary who would act as a subject must still induce a classical state the hooks accept. Stated in pqac(7).",
   },
   {
     id: "T2",
     kind: "inherited",
     title: "Mediation is not a cryptographic game",
-    body: "A_D, A_M, and MMU translation are quantum-adversary-stable mediation on a von Neumann defender. They are post-quantum access control in that sense, and not post-quantum cryptography. Shor destroys A_auth when A_auth is RSA/ECC. It does not inhabit chmod or a high-integrity label.",
+    body: "A_D, A_M, and MMU translation are quantum-adversary-stable on a von Neumann defender. They are post-quantum access control in that sense, and not post-quantum cryptography. Shor destroys A_auth when A_auth is RSA or ECC. It does not inhabit chmod or a high-integrity label. Stated in pqac(7).",
   },
   {
     id: "T3",
     kind: "inherited",
     title: "The plant may still distinguish",
-    body: "Working hypothesis: some instrument on the plant, possibly entanglement-enhanced, can distinguish defender computation. This is not a corollary of Shor. Decoherence, placement, and GENERIC noise are the adversary's burden.",
+    body: "Working hypothesis: some instrument on the plant, possibly entanglement-enhanced, can distinguish defender computation. This is not a corollary of Shor. Decoherence, placement, and GENERIC noise remain the adversary's burden. Stated in pqac(7).",
   },
   {
     id: "T4",
     kind: "inherited",
     title: "Factor the observation, or fall silent",
-    body: "If the observation function O factors through a kernel-visible subject, T1 and T2 constrain O. If not, T1 and T2 are silent and the property is physical non-interference — Faraday, constant-power logic, a secrecy lattice. POSIX MAC does not supply that.",
+    body: "If the observation function O factors through a kernel-visible subject, T1 and T2 constrain O. If not, they are silent. POSIX MAC does not supply observational equivalence with respect to O. Stated in pqac(7).",
   },
   {
     id: "T5",
     kind: "inherited",
     title: "Quantum advantage on the plant is not free",
-    body: "Do not take quantum advantage on the plant as a lemma from BQP. T5 keeps T3 from swallowing T1 and T2.",
+    body: "Quantum advantage on the plant is not a lemma from BQP. T5 keeps T3 from swallowing T1 and T2. Stated in pqac(7).",
   },
   {
     id: "T6",
     kind: "pqfreebsd",
-    title: "Unspecified A_D is an unbounded HRU system",
-    body: "Harrison–Ruzzo–Ullman safety for unrestricted discretionary matrices is undecidable. A restricted specification (path-regex → owner, group, mode, inherit) plus a repair morphism is a different relation: intended A_D is restored; residual owner-grants are bounded in duration. This does not make A_D into A_M. The owner can still chmod. Repair answers. Optional prevention is mac_bsdextended — a different module, a different proof.",
+    title: "A restricted discretionary specification is required",
+    body: "Harrison, Ruzzo and Ullman showed that safety for an unrestricted discretionary matrix is undecidable. We do not solve HRU. We specify a restricted language (path regular expressions to owner, group, mode, and inheritance) and a morphism that restores the specification when the live matrix drifts. Residual owner-directed chmod remains; repair bounds its duration. Optional prevention is mac_bsdextended(4) generated from the same specification — a different module, a different proof. This does not turn A_D into A_M.",
   },
   {
     id: "T7",
     kind: "pqfreebsd",
-    title: "Anderson verifiability is a ledger, not a slogan",
-    body: "Complete mediation and isolation are approximated by mac(4) and mac_lomac(4). Verifiability is not. A filesystem-level hash-chained ledger of vnode, label, and policy-morphism events is the monitor's Integrity Evidence. The ledger object is high-integrity; a low-integrity process cannot overwrite it. Tampering with the chain is a hash-collision problem (Grover halves the bits: production uses SHA-512 or SHA-3). That is A_auth of the evidence, not of the subject. The suite still does not kldload Kyber.",
+    title: "Verifiability is recorded as Integrity Evidence",
+    body: "Anderson required complete mediation, isolation, and verifiability. The first two are approximated by the MAC Framework and mac_lomac(4). The third is not a property of loading a module. We record vnode, label, and policy-morphism events in an append-only, hash-chained filesystem object on a high-integrity dataset. Tampering with the chain is a collision problem against the hash (production SHA-512; Grover halves the bits). That is authentication of the evidence, not of the subject. The BSM trail remains the in-band source; the chain is not /var/audit.",
   },
   {
     id: "T8",
     kind: "pqfreebsd",
-    title: "Establish and repair are morphisms, not joins",
-    body: "Dynamic establishment is the create-time morphism: new objects inherit A_D from the spec. Repair is the restore morphism when actual ≠ intended. setfsmac first-match and DAC first-match are combinators, not lattice operations. Conjunction with A_M is still not a product of proofs.",
+    title: "Establishment and repair are morphisms",
+    body: "New objects inherit A_D from the specification at create time. Repair restores intended A_D when actual differs. setfsmac(8) first-match and the DAC specfile use the same combinator; they are not lattice joins. Conjunction with A_M is still not a product of proofs (pqac(7)).",
   },
   {
     id: "T9",
     kind: "pqfreebsd",
-    title: "The ledger daemon is a subject",
-    body: "If O factors through the ledger writer, T4 applies. The ledger is not Faraday, not a naming retrofit, and not a secrecy lattice. LOMAC will not mute emanations of what a trusted subject was allowed to compute. A lockout is a failed interpretation, not successful confinement. Recovery remains inside the isolation claim.",
+    title: "The ledger writer is a subject",
+    body: "If O factors through the process that appends to the chain, T4 applies. The ledger is not a Faraday cage, not a retrofit of A_auth, and not a secrecy lattice. mac_lomac(4) will not mute emanations of what a high-integrity subject was allowed to compute. Recovery (PREINSTALL, recursive ZFS snapshot) remains inside the isolation claim: a lockout is a failed interpretation, not successful confinement.",
   },
   {
     id: "T10",
     kind: "held",
-    title: "The data itself must be confirmable, to a certain extent",
-    body: "A_M constrains who may write. The ledger records that a write occurred. Neither, by itself, lets a later subject confirm that the bits they read are the bits that were written. ZFS checksums detect silent corruption inside the pool; they are not a subject-visible confirmation API. A content digest — a Merkle over the labeled store, or a per-object hash recorded at ledger checkpoint — is confirmable to the extent of the hash. Grover halves the bits. This is not Faraday and not information-theoretic. Required of the system. Not implemented in this pass. Next skill: pqconfirm.",
+    title: "Payload integrity is confirmable only with a bound digest",
+    body: "A_M constrains who may write. The ledger records that a write occurred. Neither, by itself, lets a later subject confirm that the bits they read are the bits that were written. ZFS checksums detect silent corruption inside the pool; they are not a subject-visible confirmation API. A content digest — a Merkle tree over the labeled store, or a per-object hash bound at a ledger checkpoint — is confirmable to the extent of the hash. Required of a later cut (pqconfirm). Not implemented here.",
   },
   {
     id: "T11",
     kind: "held",
-    title: "A PQ-stable monitor interpreting RSA-signed code is a forged policy, correctly enforced",
-    body: "T2 is mediation, not a cryptographic game. The system is not therefore post-quantum secure. Kernel, klds, pkg, freebsd-update, setfsmac policy, zfs send streams, and the rc.d this suite emits are code, or code-shaped. If they are unsigned, or signed with RSA/ECC, Shor forges the input to A_M. Authentication here is of code, not of credentials. Redundancy is two independent reductions — ML-DSA (FIPS 204, lattices) and SLH-DSA (FIPS 205, hashes) — not two disks. Fletcher, RAID-Z, and AES-at-rest are not a second signature. Held and open-ended: pqcode is not a 1.0 requirement. The catalog remains. Do not claim the chain is unbroken.",
+    title: "Code the monitor interprets must be authenticated",
+    body: "A monitor that is stable under BQP and that interprets RSA-signed or unsigned inputs will correctly enforce a forged policy. Kernel, klds, pkg(8), freebsd-update, setfsmac policy, zfs send, and the rc.d this suite emits are code or code-shaped. Authentication here is of code, not of login credentials. Any cryptographic layer that is still RSA or ECC has no post-quantum resistance at that layer. Independent surfaces around it (T19) do not upgrade it. Resistance at a hop requires that hop to use post-quantum algorithms. Redundancy, when implemented, is two independent reductions: ML-DSA (FIPS 204, lattices) and SLH-DSA (FIPS 205, hashes). A break of one family is not a break of the other. Fletcher, RAID-Z, AES-at-rest, and a second RSA key are not a second family. pqcode is held and is not a 1.0 requirement. The catalog of hops remains. We do not claim the chain is unbroken.",
   },
   {
     id: "T12",
     kind: "held",
-    title: "The loader is gated on attestation; TPM is not this pass",
-    body: "oneboot is refused until the operator attests they are sufficiently satisfied that the system is post-quantum hardened to the degree that gives them a sense of security. Default is no. What the gate protects is taking the loader off the unsigned GENERIC path — only as far as this pass can close. TPM and measured boot are not this pass. Changing the splash name and mark is a consequence of that attestation, not a security claim. Branding is not a second signature family. Do not rebrand a box you do not yet trust.",
+    title: "The loader remains GENERIC until the operator attests",
+    body: "oneboot is refused until the operator attests they are satisfied that the system is post-quantum hardened to the degree that gives them a sense of security. Default is no. The claim is the gate: we do not take the loader off the unsigned GENERIC path until that attestation, and only as far as this pass can close. TPM and measured boot are not this pass. Cosmetic loader marks are a consequence of attestation, not a security argument.",
   },
   {
     id: "T13",
     kind: "pqfreebsd",
-    title: "Successive policy is itself an auditable object",
-    body: "After install, the operator must be able to see that POLICY, SUITE, DAC, ugidfw, login labels, MAC overlays, and the loader config agree, to propagate a change through all of them at once, and to read the diff of successive iterations. Consistency is a predicate over that conjunction, not a product of proofs. Each propagation is a named revision whose catalog hash is chained (prevCatalog) and recorded in the ledger. An audit that cannot show what changed is not an audit. oneaudit / onepropagate. test* first.",
+    title: "Successive policy is an auditable object",
+    body: "POLICY, SUITE, the DAC spec, ugidfw, login classes, MAC overlays, and loader configuration must be checkable for consistency, changeable in one propagation, and diffable across revisions. Each propagation is a named revision whose catalog hash is chained (previous catalog) and recorded in the ledger. Consistency is a predicate over that conjunction, not a product of the component proofs. An audit that cannot show what changed is not an audit.",
   },
   {
     id: "T14",
     kind: "pqfreebsd",
-    title: "Claims degrade by conjunct, not as a product",
-    body: "A missing or stranded protocol weakens only the claims that named it. If the box cannot securely transport the Integrity Evidence to another host and have that host validate the store, the off-host IE claim is degraded. High-integrity overwrite protection, local chain, repaired A_D, successive policy, and the loader gate are not thereby false. A deployment that includes and enables that module, and adheres to its protocol, keeps those claims in full. Silent (module not included) is not degraded (module included, protocol unmet). Do not report the suite as a single bit. Inverse of “conjunction is not a product of proofs.”",
+    title: "Claims degrade by conjunct",
+    body: "A missing or stranded protocol weakens only the claims that named it. If Integrity Evidence cannot be transported to a second host and validated there, the off-host IE claim is degraded. High-integrity overwrite protection, the local chain, repaired A_D, successive policy, Capsicum confinement, and the loader gate are not thereby false. Silent (module not included) is distinct from degraded (module included, protocol unmet). Inverse of the pqac(7) observation that conjunction is not a product of proofs. Dual, T19: for the adversary, independent surfaces do not fall together.",
+  },
+  {
+    id: "T19",
+    kind: "pqfreebsd",
+    title: "Independent reductions raise adversary cost; they do not multiply proofs",
+    body: "A quantum algorithm attacks a class of problem. Shor solves period-finding on the groups used by RSA and ECC. Grover gives a square-root speedup on unstructured search. Neither is a write the MAC Framework accepts. Neither opens a path after cap_enter. A cryptanalytic break of module lattices is not a break of hash-based signatures. Redundancy in this suite means independent reductions, not copies of the same one: ML-DSA and SLH-DSA are two families; LOMAC, Capsicum, repaired A_D, and the Integrity Evidence chain are four predicates. Two RSA keys, RAID-Z, and a hybrid where either half suffices are not independent — those collapse together. For the defender, conjunction is not a product of proofs (pqac(7), T14). For the adversary, each independent surface must be attacked; cost approaches a product only then. T19 does not confer post-quantum resistance on a cryptographic hop that has not been upgraded. Resistance at that layer requires PQ algorithms at that layer (T11, T15).",
   },
   {
     id: "T15",
     kind: "held",
-    title: "The cryptographic chain of trust must be unbroken, and every particular post-quantum",
-    body: "A necessary requirement of the trusted base, distinct from T2. Walk firmware db → loader → kernel → kld → pkg → freebsd-update → policy → rc.d → ledger checkpoint → zfs send → replica transport. Each hop that is cryptography must eventually be a post-quantum algorithm: ML-DSA and SLH-DSA for signatures, ML-KEM for transport, SHA-512 or SHA-3 Grover-accounted for hashes. AES-at-rest is secrecy, not origin. Hybrid (classical+PQ) is a transition particular; Shor still forges the classical half. A classical or missing hop breaks the chain from that point down. It does not un-prove high-integrity overwrite protection (T14). This pass catalogs the hops. It does not claim the chain is unbroken. Held: pqcode, pqzfs, replica transport.",
+    title: "An unbroken chain of trust, with post-quantum particulars",
+    body: "Distinct from T2. Walk firmware database, loader, kernel, kld, pkg, freebsd-update, policy, rc.d, ledger checkpoint, zfs send, replica transport. Each hop that is cryptography has no post-quantum resistance until that hop is a post-quantum algorithm: ML-DSA and SLH-DSA for signatures, ML-KEM for transport, SHA-512 or SHA-3 Grover-accounted for hashes. Surrounding independent surfaces (T19) do not upgrade an RSA or ECC hop. Hybrid (classical plus PQ) is a transition particular; Shor still forges the classical half. A classical or missing hop breaks the chain from that point down. It does not un-prove T2 (T14). This paper catalogs hops. It does not claim the chain is unbroken.",
   },
   {
     id: "T16",
     kind: "pqfreebsd",
-    title: "Beta ends at parameterized bounds, not at a slogan",
-    body: "At the end of beta the system is provably secure up to the conjunction of named bounds, and no further. Each claimed measure states what is proven, where the proof stops, and expected resistance against classical PPT, qubit BQP (Grover, Shor, BHT), qudit / non-binary quantum, and continuous-variable machines. Mediation is n/a bits in every model: BQP, qudits, and analog machines still write through the hook. Cryptographic particulars have numbers, already birthday- and Grover-accounted, or an honest 0. A zero on pkg-RSA does not zero high-integrity overwrite protection. Empty bounds are the remainder of the work. Do not ship “provably secure” without this sheet.",
+    title: "Each remaining claim carries parameterized bounds",
+    body: "At the end of beta the system is proven up to the conjunction of named bounds, and no further. Each measure states what is proven, where the proof stops, and expected resistance against classical PPT, qubit BQP, qudit and other non-binary models, and continuous-variable machines. Mediation is not a bit-security number in any of those models: the adversary still writes through the hook. Cryptographic particulars have numbers, birthday- and Grover-accounted, or an honest zero. A zero on pkg RSA does not zero high-integrity overwrite protection.",
   },
   {
     id: "T17",
     kind: "pqfreebsd",
-    title: "The port is not the operator",
-    body: "sysutils/pqfreebsd stages the suite. Intended operation is by a sufficiently advanced LLM that can follow the skills. The port cannot prove a model is advanced. Local GPU/CPU OPTIONS: ollama, llama.cpp (llama-server), LocalAI, llamafile, vLLM, koboldcpp. Native path is CPU and Vulkan; CUDA on FreeBSD is typically Linuxulator. pqfreebsd-llm-check finds a candidate; pqfreebsd_llm_attested=YES is the operator's conjunct. via-port oneenforce is refused without it. That conjunct is the install path, not A_M (T14). Hand install from the skill tree does not set VIA-PORT.",
+    title: "The ports package is not the operator",
+    body: "sysutils/pqfreebsd stages scripts, manuals, skills, and Forth. Intended operation is by a model that can follow those skills (interview, test before apply, known issues, this paper). The port cannot measure that. Local GPU and CPU runtimes are OPTIONS (ollama, llama.cpp, LocalAI, llamafile, vLLM, koboldcpp). Native inference on FreeBSD is CPU and Vulkan; CUDA is typically Linuxulator. Attestation (pqfreebsd_llm_attested) is a conjunct of the via-port oneenforce path, not of A_M.",
   },
   {
     id: "T18",
     kind: "pqfreebsd",
-    title: "Agents drop the ambient namespace (Capsicum)",
-    body: "Capsicum is in GENERIC (options CAPABILITY_MODE). It is not MAC. cap_enter confines a process to the fds it already holds. LOMAC stops a low-integrity process overwriting high-integrity files; Capsicum stops it opening new ones. Low-integrity agents (max-headroom) must enter. First pass is caph_limit_stdio + caph_enter + exec (pqcap-enter), not Casper. Missing Capsicum does not un-prove the lattice (T14). Running agents without it is a missing confinement conjunct. Paper: Watson, Anderson, Laurie, Kennaway, USENIX Security 2010 — not in the base man set as a design document.",
+    title: "Low-integrity agents enter capability mode",
+    body: "Capsicum is in GENERIC. cap_enter confines a process to the descriptors it already holds. mac_lomac(4) prevents a low-integrity process from overwriting high-integrity files; Capsicum prevents it from opening new ones. Those are independent predicates: a quantum algorithm is not a substitute for either. Agents (max-headroom) must enter. The first pass is caph_limit_stdio, caph_enter, and exec (pqcap-enter). Casper is later work, as ipfw uid/gid is later work. Missing Capsicum does not un-prove the lattice. An unwrapped agent is a missing confinement conjunct.",
   },
 ];
+
+export const IMPLEMENTATION = `freebsd-mac-grok remains the parent: freebsd-mac-lomac (roles as pw(8) groups, official PLM, PREINSTALL), freebsd-mac-base (GENERIC mac(4) modules; formerly freebsd-mac-generic), and freebsd-mac (zfs snapshot -r on filesystems and zvols before and after staging). pqfreebsd interviews, then emits a result directory that composes those packages.
+
+pqledger appends hash-chained events on a high-integrity dataset. pqdac compiles the restricted A_D spec and establish/repair (or prevent via ugidfw). pqaudit implements consistency, propagation, and chained catalog hashes. freebsd-capsicum compiles pqcap-enter on the host and requires agents to be invoked through it. mac-sebsd installs a catalog and refuses kldload unless a kernel-matched, dated module is named. It reuses the LOMAC rc.d texture (PREINSTALL, login classes, pw groups, test*/one*) and the LOMAC groups; labels are TE types composed into the same login.conf slot, not a second lattice. sysutils/pqfreebsd stages the suite; it does not kldload.
+
+Recovery is PREINSTALL restoration of prior behavior plus the recursive snapshot. Uninstall is not wipe and not rewind. test variants exist for each apply step.`;
+
+export const STATUS = `Implemented in this cut: T6–T9, T13, T14, T16–T19, and the loader gate (T12) as refusal-until-attestation. Inherited: T1–T5 via pqac(7) and freebsd-mac-lomac.
+
+Held, not a 1.0 requirement: T11 / pqcode (open-ended). Held, required of a later cut: T10 / pqconfirm, authenticated zfs send (pqzfs), measured boot. SEBSD: catalog only; last tree 2006. ipfw uid/gid: deferred; first pass would follow the ugidfw shape.
+
+The workbench in this repository is a simulation for design and interview. It is not a proof on GENERIC.`;
+
+export const RELATED = `Anderson, Computer Security Technology Planning Study, ESD-TR-73-51, 1972. Harrison, Ruzzo, Ullman, Protection in Operating Systems, CACM 19(8), 1976. Biba, MTR-3153, 1977. Fraser, LOMAC, USENIX FREENIX 2001.
+
+TrustedBSD papers, not in the base install, are indexed at http://www.trustedbsd.org/docs.html. We rely in particular on the MAC Framework papers (DISCEX III 2003, USENIX ATC 2003), the Capsicum paper (USENIX Security 2010), the SEBSD report (NAI Labs 2003), and Watson, UCAM-CL-TR-818, 2012.
+
+SELinux / FLASK on Linux is the cousin of SEBSD; LSM is not the MAC Framework. We do not treat them as interchangeable.`;
+
+export const CONCLUSION = `Authorization on GENERIC FreeBSD does not collapse under Shor. Cryptographic hops that are still RSA or ECC do. Independent reductions are why a quantum algorithm that takes one surface does not take the others; they are not a substitute for upgrading each cryptographic layer to post-quantum algorithms. pqfreebsd packages the TrustedBSD mechanisms that already shipped, adds Integrity Evidence, a restricted and repaired A_D, successive policy as an object, and Capsicum entry for agents, and reports each claim as a conjunct with a bound.`;
+
+/** @deprecated use INTRODUCTION / IMPLEMENTATION; kept for any leftover imports */
+export const EXOTERIC = INTRODUCTION;
+export const ESOTERIC = THREAT;
+export const DERIVATION = IMPLEMENTATION;
 
 export const PRAXIS = [
   {
@@ -124,8 +187,8 @@ export const PRAXIS = [
   },
   {
     id: "combinators",
-    title: "Combinators are not joins",
-    body: "setfsmac(8) first-match is not least upper bound in L. DAC specfiles use the same combinator. Overlays precede the official PLM. A proof that quotes the PLM without quoting the combinator is a proof of a different policy.",
+    title: "First-match is not least upper bound",
+    body: "setfsmac(8) first-match is not LUB in the integrity lattice. DAC specfiles use the same combinator. Overlays precede the official PLM. A proof that quotes the PLM without quoting the combinator is a proof of a different policy.",
   },
   {
     id: "alphabet",
@@ -140,7 +203,7 @@ export const PRAXIS = [
   {
     id: "ifnet",
     title: "Network objects are in the lattice",
-    body: "Untrusted ifnets default low. trust_all_interfaces is RDTUN (loader.conf), not a live sysctl. Remote-only enforce demotes or kills the authentication path. This is T1 applied to the administrator's own subject.",
+    body: "Untrusted ifnets default low-integrity. trust_all_interfaces is RDTUN (loader.conf), not a live sysctl. Remote-only enforce demotes or kills the authentication path.",
   },
   {
     id: "zfs",
@@ -149,78 +212,47 @@ export const PRAXIS = [
   },
   {
     id: "integrity-bug",
-    title: "Integrity is experienced as a bug",
-    body: "_secure_path: unable to stat .login_conf when a high subject su's into a low home is LOMAC/Biba as specified. Root equal(equal-equal) is exemption, not containment (mac(9)).",
+    title: "Integrity is experienced as EPERM",
+    body: "_secure_path: unable to stat .login_conf when a high-integrity subject su's into a low-integrity home is LOMAC as specified. Root equal(equal-equal) is exemption, not containment (mac(9)).",
   },
   {
     id: "conjunction",
-    title: "Conjunction is not a product of proofs",
-    body: "seeotheruids is orthogonal and a short proof. ifoff other_enabled=0 denies the ifnet. ugidfw empty is allow-all; new users miss rules until reload. Biba stacked on LOMAC is a product of incompatible axioms.",
+    title: "Orthogonal modules are separate proofs",
+    body: "seeotheruids is orthogonal. ifoff other_enabled=0 denies the ifnet. ugidfw empty is allow-all; new users miss rules until reload. Biba stacked on LOMAC is a product of incompatible axioms.",
   },
   {
     id: "recovery",
-    title: "Recovery is inside the isolation claim",
-    body: "A lockout is a failed interpretation, not successful confinement. PREINSTALL restores behavior. zfs snapshot -r is the dataset morphism. uninstall is not wipe and not rewind. test* before one*.",
+    title: "Recovery is inside isolation",
+    body: "A lockout is a failed interpretation, not successful confinement. PREINSTALL restores behavior. zfs snapshot -r is the dataset morphism. uninstall is not wipe and not rewind.",
   },
   {
     id: "auth",
     title: "Authentication still sits in front",
-    body: "None of the above places A_auth in a BQP-hard problem. T2 is mediation after a name. Replacing the naming path with ML-KEM / ML-DSA is necessary and insufficient. Signing the code the monitor runs is T11, a different row.",
+    body: "None of the above places A_auth in a BQP-hard problem. T2 is mediation after a name. Signing the code the monitor runs is T11, a different row.",
   },
   {
     id: "genesis",
     title: "Genesis is a named record",
-    body: "An empty ledger is not an empty interpretation of A_M, but it is not evidence either. The first record is a named genesis (policy hash, dataset, hash name). Rotation appends a checkpoint record. Rewrite is a bug. /var/audit BSM files are the in-band source, not the chain.",
+    body: "An empty ledger is not evidence. The first record names the policy hash, the dataset, and the hash. Rotation appends a checkpoint record. Rewrite is a bug.",
   },
   {
     id: "repair-window",
     title: "Repair bounds duration, not the syscall",
-    body: "chmod still succeeds in repair mode; the window is the event duration. prevent mode is mac_bsdextended generated from the same spec. Do not rest a proof on aux covering xattrs (PR 178667).",
+    body: "chmod still succeeds in repair mode; the window is the event duration. prevent mode is mac_bsdextended generated from the same spec.",
   },
   {
     id: "payload",
     title: "Event integrity is not payload integrity",
-    body: "The ledger confirms that an op happened, in order, under a hash. It does not confirm the bytes of /home/green/notes. That confirmation is T10 / pqconfirm: digest the object (or a Merkle of the dataset) and bind the digest to a checkpoint record. Held. Do not pretend ZFS scrubs are that API.",
+    body: "The ledger confirms that an operation happened, in order, under a hash. It does not confirm the bytes of a home-directory file. That is T10.",
   },
   {
     id: "code-auth",
-    title: "Sign the bits that run, not only the name that logs in",
-    body: "pkg RSA, unsigned kldload, unsigned zfs send, unsigned policy files: each is an A_auth of code that T2 set aside. Hybrid ML-DSA + SLH-DSA is the redundancy. One family is not enough; RAID-Z is not a family. Do not wrap ZFS keys in RSA. Do not call the system post-quantum secure while these rows are classical or empty.",
-  },
-  {
-    id: "living-paper",
-    title: "pqfreebsd(7) is updated as morphisms land",
-    body: "pqac(7) is the basis and is not rewritten for each morphism. This paper records T6–T17 as they exist. Held rows stay held until you name the skill.",
+    title: "Sign the bits that run",
+    body: "pkg RSA, unsigned kldload, unsigned zfs send, unsigned policy: each is A_auth of code that T2 set aside. Held for a later cut.",
   },
   {
     id: "skill-cut",
-    title: "One skill per proof, not per .ko",
-    body: "Do not put LOMAC and SEBSD under an “RBAC” skill. LOMAC is high-integrity / low-integrity. SEBSD is Type Enforcement. Groups-as-roles is the binding, already in freebsd-mac-lomac, not a third axiom. GENERIC modules are freebsd-mac-base (old name: generic). mac-sebsd is a catalog: no .ko in 14/15 GENERIC; last tree 2006. ipfw uid is last, ugidfw-shaped first.",
+    title: "One skill per proof",
+    body: "LOMAC is the integrity lattice. GENERIC modules are freebsd-mac-base. SEBSD is Type Enforcement, catalogued, not loaded on GENERIC. It reuses LOMAC's rc.d texture and groups; types are not grades. Capsicum is capability mode. Groups-as-roles is the binding, not a third axiom. ipfw uid/gid is last.",
   },
 ];
-
-export const MOTTO = "pq all the things";
-
-export const ABSTRACT = `pqac(7) is the basis: A_D, A_M, and MMU translation are quantum-adversary-stable mediation on a von Neumann FreeBSD defender — not post-quantum cryptography, not a quantum ISA. T1 and T2 are freebsd-mac-grok, which packages the TrustedBSD MAC Framework (mac_lomac(4) integrity, orthogonal modules, ZFS snapshot -r). T3–T5 remain the plant and the observation function.
-
-pqfreebsd(7) is the living paper. It builds onward: Integrity Evidence, restricted A_D, successive policy, claims that degrade by conjunct, a catalog of the cryptographic chain of trust, parameterized bounds, a loader gated on attestation, and a port that will not pretend a pkg is the operator. Mediation does not collapse under Shor; the bits the monitor interprets still may. This page records what holds, what is held, and where each proof stops.`;
-
-export const EXOTERIC = `Authentication binds an identity to a process. Authorization relates that process to objects and to regions of the store. The first, on contemporary FreeBSD, is cryptographic or a local console. The second is an access matrix (DAC: owner-directed chmod and chown, uid/gid) composed with a lattice policy (MAC) composed with translation rights (MMU).
-
-Shor destroys A_auth when A_auth is RSA/ECC. It does not inhabit A_D or A_M. There is no reduction from period-finding to a high-integrity label or to the allocation of a PTE. That is quantum-adversary-stable mediation: the decision procedure's complexity class is not the source of its security, because the decision is not a cryptographic game. It is an interpreted predicate in the kernel.
-
-The predicate is interpreted over bits that arrived somehow: a kernel, a kld, a pkg, a policy file, a zfs send stream. If those bits are authenticated by RSA, the game T2 set aside is back, sitting in front of the monitor.`;
-
-export const ESOTERIC = `Those predicates are themselves electrical events. A page-table walk is current on a rail; a label in a system extended attribute is a pattern of stored charge. The in-band/out-of-band cut is an alphabet cut (syscalls versus analog traces), not a cut in the physics.
-
-Imperviousness is a non-interference statement: traces that agree on low inputs yield indistinguishable observations. Resistance is a quantitative bound on leakage. These are not interchangeable. LOMAC supplies integrity (a low-integrity process cannot overwrite high-integrity files after reading low-integrity data), not emanation secrecy. POSIX MAC does not supply observational equivalence with respect to O.`;
-
-export const DERIVATION = `The access-control kernel this suite composes is the TrustedBSD MAC Framework (Watson et al., USENIX ATC 2003; DISCEX III 2003), upstreamed into FreeBSD 5.0 as mac(4)/mac(9). The papers are at http://www.trustedbsd.org/docs.html — they are not in the base install. SEBSD is FLASK/TE as a MAC module (Vance & Watson, NAI Labs 2003); that project is idle; we do not cut a skill until named.
-
-freebsd-mac-grok ships three skills. freebsd-mac-lomac writes roles as pw(8) groups, the official PLM, Xorg and /dev overlays, PREINSTALL uninstall. freebsd-mac-base is the GENERIC mac(4) set (old name: freebsd-mac-generic): seeotheruids, portacl, ugidfw, ifoff, ipacl, … — what options MAC already ships. Not SEBSD. Not ipfw. freebsd-mac is the umbrella: zfs snapshot -r (filesystems and zvols) and optional zpool-checkpoint(8) before and after staging. No bectl(8). Sibling max-headroom-grok installs the agent wrapper; sandbox subjects are where agents live.
-
-pqfreebsd does not replace those packages. It interviews, then emits a result directory that composes them and adds morphisms as they land. pqledger: append-only, hash-chained, labeled high-integrity. pqdac: restricted spec, first-match, establish/repair/prevent. pqaudit: oneaudit / onepropagate, chained catalog hashes. freebsd-capsicum: agents cap_enter (GENERIC; not MAC; first pass not Casper). pqboot: loader gated on attestation (TPM not this pass; splash art is not the claim). sysutils/pqfreebsd: in-tree port; skill-capable LLM attested before via-port oneenforce. test* before one*. Recovery remains PREINSTALL plus the recursive snap.
-
-pqfreebsd(7) is updated as those morphisms land. pqac(7) remains the basis and is not rewritten for each one.
-
-Held, not 1.0: pqcode (open-ended). Held, required of a later cut: pqconfirm, pqzfs, measured boot. mac-sebsd is cut: TE catalog; kldload refused — no .ko in GENERIC 14/15; last tree 7.0-SEBSD 2006-07-05. ipfw uid/gid is saved last; first pass would be ugidfw-shaped, not a packet-filter suite.`;
