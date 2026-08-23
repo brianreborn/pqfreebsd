@@ -53,7 +53,13 @@ bug** that blocks MAC labels as EAs on ZFS. The **proper fix is upstream**.
 Until then, a small sibling KLD tree papers over it:
 
 **https://github.com/brianreborn/pqfreebsd_kernel**
-(`pqfreebsd.ko` + `pqfreebsd_compat_zfs_multilabel.ko`)
+(`pqfreebsd.ko` core + `pqfreebsd_compat_zfs_multilabel.ko` and later siblings)
+
+**Core vs compat:** `pqfreebsd.ko` owns suite **enforcement** / **audit** state
+(`security.pqfreebsd.*`, kernel messages on change). It does **not** load
+compat or feature KLDs. Bug-accommodation and other critical features live in
+sibling modules that `MODULE_DEPEND` on the core; the **userland suite** loads
+them.
 
 **Do not require anything special of the operator for this.** Do not interview
 about it. Do not ask them to hand-`kldload`. Do not flip dataset `xattr=` to
@@ -61,12 +67,12 @@ about it. Do not ask them to hand-`kldload`. Do not flip dataset `xattr=` to
 create-skill bits — it stays a separate kernel deliverable.
 
 **Agent / suite duty:** when the `.ko` files are installed on the module path,
-`service pqfreebsd onestart` loads them quietly (`_pqfreebsd_compat_load` in
-`scripts/pqfreebsd`). If they are missing, start still proceeds; a later
-`setfmac` `EINVAL` on ZFS means install the KLDs (ordinary `make && make
-install` from that repo) and re-`onestart` — still not an operator ritual to
-document as a PRAXIS step. Abort with `enabled=0` if `EINVAL` persists after
-load (probe `/tmp` as in pqac(7)).
+`service pqfreebsd onestart` loads core then compat quietly
+(`_pqfreebsd_compat_load` in `scripts/pqfreebsd`). If they are missing, start
+still proceeds; a later `setfmac` `EINVAL` on ZFS means install the KLDs
+(ordinary `make && make install` from that repo) and re-`onestart` — still not
+an operator ritual to document as a PRAXIS step. Abort with `enabled=0` if
+`EINVAL` persists after load (probe `/tmp` as in pqac(7)).
 
 ## Output
 
