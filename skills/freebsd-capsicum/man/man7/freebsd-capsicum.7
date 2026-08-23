@@ -1,0 +1,20 @@
+.Dd August 22, 2026
+.Dt FREEBSD-CAPSICUM 7
+.Os
+.Sh NAME
+.Nm freebsd-capsicum
+.Nd capability mode for agents, not MAC
+.Sh DESCRIPTION
+Capsicum is in GENERIC.
+This skill wraps low-integrity agents with
+.Nm pqcap-enter
+.Pq first pass: stdio limit + Fn cap_enter + exec .
+Casper is a later pass.
+.Pp
+Paper:
+.Lk http://www.trustedbsd.org/2010usenix-security-capsicum-website.pdf
+Watson, Anderson, Laurie, Kennaway, USENIX Security 2010.
+.Sh SEE ALSO
+.Xr pqcap-enter 1 ,
+.Xr cap_enter 2 ,
+.Xr pqfreebsd 7

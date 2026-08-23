@@ -78,6 +78,15 @@ export const TRUSTEDBSD_PAPERS: TbsdPaper[] = [
     why: "OpenBSM / audit(4) implementation paper. Index on the docs page; not audit(4).",
   },
   {
+    id: "capsicum-2010",
+    title: "Capsicum: practical capabilities for UNIX",
+    authors: "Robert N. M. Watson, Jonathan Anderson, Ben Laurie, Kris Kennaway",
+    venue: "USENIX Security, Washington DC",
+    year: "2010",
+    url: "http://www.trustedbsd.org/2010usenix-security-capsicum-website.pdf",
+    why: "Capability mode in GENERIC. Not MAC. Not in a design man page.",
+  },
+  {
     id: "tr-818",
     title: "New Approaches to Operating System Security Extensibility",
     authors: "Robert N. M. Watson",

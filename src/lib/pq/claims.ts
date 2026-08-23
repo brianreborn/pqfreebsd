@@ -170,6 +170,19 @@ export function evaluateClaims(world: World): Claim[] {
       degradesWhen: "missing kld is silent, not a product failure of LOMAC",
     },
     {
+      id: "capsicum",
+      module: "freebsd-capsicum",
+      thesis: "T18",
+      title: "Low-integrity agents enter capability mode",
+      status: p.withCapsicum === false ? "silent" : "holds",
+      detail:
+        p.withCapsicum === false
+          ? "Capsicum not composed. Agents may still have the ambient namespace. Lattice is not thereby false."
+          : "First pass: pqcap-enter (caph_enter). Casper later. Agents must be invoked through the wrapper.",
+      holdsWhen: "GENERIC Capsicum; listed agents invoked via pqcap-enter",
+      degradesWhen: "unwrapped agent — confinement conjunct only, not A_M",
+    },
+    {
       id: "tpm",
       module: "pqboot",
       thesis: "T12",

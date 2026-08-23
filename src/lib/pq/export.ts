@@ -19,6 +19,7 @@ DAC_MODE=${policy.dacMode}
 HASH=${policy.hashName}
 WITH_LOMAC=${policy.withLomac ? "YES" : "NO"}
 WITH_SEEOTHERUIDS=${policy.withSeeotheruids ? "YES" : "NO"}
+WITH_CAPSICUM=${policy.withCapsicum ? "YES" : "NO"}
 HOMES_MATCH_CLASS=${policy.homesMatchClass ? "YES" : "NO"}
 BOOT_SATISFIED=${policy.bootSatisfied ? "YES" : "NO"}
 SPLASH_EMBLEM=${policy.splashEmblem ?? "cross"}
@@ -47,6 +48,7 @@ export function dacContexts(world: World) {
 export function suiteFile(policy: Policy) {
   return `WITH_LOMAC=${policy.withLomac ? "YES" : "NO"}
 WITH_GENERIC=${policy.withSeeotheruids ? "YES" : "NO"}
+WITH_CAPSICUM=${policy.withCapsicum ? "YES" : "NO"}
 WITH_LEDGER=YES
 WITH_DAC=YES
 PARENT=freebsd-mac-grok

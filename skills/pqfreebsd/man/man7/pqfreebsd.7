@@ -211,6 +211,12 @@ establish / repair / prevent
 .Cm onepropagate ,
 chained catalog hashes
 .It
+.Nm freebsd-capsicum
+— agents
+.Fn cap_enter ;
+GENERIC; not MAC; first pass not Casper
+.Pq T18
+.It
 .Nm pqboot
 — loader gated on attestation; TPM not this pass; splash art is not the claim
 .It
@@ -514,6 +520,21 @@ That conjunct is the install path, not
 .Pq T14 .
 Hand install from the skill tree does not set
 .Pa VIA-PORT .
+.It T18
+Capsicum is in GENERIC.
+It is not
+.Xr mac 4 .
+.Fn cap_enter
+confines a process to the fds it already holds.
+Low-integrity agents must enter.
+First pass is
+.Nm pqcap-enter
+.Pq Fn caph_limit_stdio + Fn caph_enter + exec ,
+not Casper.
+Missing Capsicum does not un-prove the lattice
+.Pq T14 .
+Paper: Watson, Anderson, Laurie, Kennaway, USENIX Security 2010
+.Lk http://www.trustedbsd.org/2010usenix-security-capsicum-website.pdf
 .El
 .Sh LEDGER
 An empty chain is not evidence.

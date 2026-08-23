@@ -17,6 +17,7 @@ Read `README.md` and `man/man7/pqac.7` first, then `man/man7/pqfreebsd.7`.
 This skill **derives from** freebsd-mac-grok. Also load **freebsd-mac**,
 **freebsd-mac-lomac**, and **freebsd-mac-base** (GENERIC `options MAC` modules;
 old name freebsd-mac-generic) when those pieces run.
+**freebsd-capsicum** (GENERIC `cap_enter`; agents must enter; not MAC).
 Do not vendor their rc.d; compose them.
 
 The kernel access-control this suite composes is the **TrustedBSD MAC
@@ -88,6 +89,8 @@ Ask, in order. Record in `POLICY`.
    Optional **mac_portacl(4)** (bind, not packets). Do not stack Biba/MLS.
    Do not enable **mac_ifoff(4)** blindly. ipfw uid/gid is not this interview
    (saved last; would start ugidfw-shaped).
+2b. Capsicum: low-integrity agents **must** `cap_enter` (default yes). GENERIC,
+   not a kld. First pass `pqcap-enter`, not Casper. Do not wrap sshd/login.
 3. High-integrity group name and members (humans who may start able to write
    OS files). Low-integrity group name and members (agents, builders, guests).
    New users default to the low-integrity role.

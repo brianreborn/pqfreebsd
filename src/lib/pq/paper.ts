@@ -108,6 +108,12 @@ export const THESES: Thesis[] = [
     title: "The port is not the operator",
     body: "sysutils/pqfreebsd stages the suite. Intended operation is by a sufficiently advanced LLM that can follow the skills. The port cannot prove a model is advanced. Local GPU/CPU OPTIONS: ollama, llama.cpp (llama-server), LocalAI, llamafile, vLLM, koboldcpp. Native path is CPU and Vulkan; CUDA on FreeBSD is typically Linuxulator. pqfreebsd-llm-check finds a candidate; pqfreebsd_llm_attested=YES is the operator's conjunct. via-port oneenforce is refused without it. That conjunct is the install path, not A_M (T14). Hand install from the skill tree does not set VIA-PORT.",
   },
+  {
+    id: "T18",
+    kind: "pqfreebsd",
+    title: "Agents drop the ambient namespace (Capsicum)",
+    body: "Capsicum is in GENERIC (options CAPABILITY_MODE). It is not MAC. cap_enter confines a process to the fds it already holds. LOMAC stops a low-integrity process overwriting high-integrity files; Capsicum stops it opening new ones. Low-integrity agents (max-headroom) must enter. First pass is caph_limit_stdio + caph_enter + exec (pqcap-enter), not Casper. Missing Capsicum does not un-prove the lattice (T14). Running agents without it is a missing confinement conjunct. Paper: Watson, Anderson, Laurie, Kennaway, USENIX Security 2010 — not in the base man set as a design document.",
+  },
 ];
 
 export const PRAXIS = [
@@ -211,7 +217,7 @@ export const DERIVATION = `The access-control kernel this suite composes is the 
 
 freebsd-mac-grok ships three skills. freebsd-mac-lomac writes roles as pw(8) groups, the official PLM, Xorg and /dev overlays, PREINSTALL uninstall. freebsd-mac-base is the GENERIC mac(4) set (old name: freebsd-mac-generic): seeotheruids, portacl, ugidfw, ifoff, ipacl, … — what options MAC already ships. Not SEBSD. Not ipfw. freebsd-mac is the umbrella: zfs snapshot -r (filesystems and zvols) and optional zpool-checkpoint(8) before and after staging. No bectl(8). Sibling max-headroom-grok installs the agent wrapper; sandbox subjects are where agents live.
 
-pqfreebsd does not replace those packages. It interviews, then emits a result directory that composes them and adds morphisms as they land. pqledger: append-only, hash-chained, labeled high-integrity. pqdac: restricted spec, first-match, establish/repair/prevent. pqaudit: oneaudit / onepropagate, chained catalog hashes. pqboot: loader gated on attestation (TPM not this pass; splash art is not the claim). sysutils/pqfreebsd: in-tree port; skill-capable LLM attested before via-port oneenforce. test* before one*. Recovery remains PREINSTALL plus the recursive snap.
+pqfreebsd does not replace those packages. It interviews, then emits a result directory that composes them and adds morphisms as they land. pqledger: append-only, hash-chained, labeled high-integrity. pqdac: restricted spec, first-match, establish/repair/prevent. pqaudit: oneaudit / onepropagate, chained catalog hashes. freebsd-capsicum: agents cap_enter (GENERIC; not MAC; first pass not Casper). pqboot: loader gated on attestation (TPM not this pass; splash art is not the claim). sysutils/pqfreebsd: in-tree port; skill-capable LLM attested before via-port oneenforce. test* before one*. Recovery remains PREINSTALL plus the recursive snap.
 
 pqfreebsd(7) is updated as those morphisms land. pqac(7) remains the basis and is not rewritten for each one.
 

@@ -1,0 +1,117 @@
+#!/bin/sh
+# Light-ware License. Copyright (c) 2026 Brian Fundakowski Feldman.
+#
+# PROVIDE: capsicum_grok
+# REQUIRE: FILESYSTEMS
+# KEYWORD: shutdown
+#
+# Capsicum is GENERIC. This service compiles pqcap-enter and records POLICY.
+# There is no kldload.
+
+# shellcheck disable=SC1091
+. /etc/rc.subr
+
+name="capsicum_grok"
+rcvar="${name}_enable"
+desc="Capsicum wrapper (pqcap-enter); not MAC, not a kld"
+
+extra_commands="install stage uninstall teststage testenter"
+load_rc_config $name
+
+: "${capsicum_grok_enable:=NO}"
+: "${capsicum_grok_dir:=/usr/local/etc/capsicum_grok}"
+: "${capsicum_grok_src:=}"
+: "${capsicum_grok_bin:=/usr/local/bin/pqcap-enter}"
+
+start_cmd="${name}_start"
+stop_cmd=":"
+install_cmd="${name}_install"
+stage_cmd="${name}_stage"
+uninstall_cmd="${name}_uninstall"
+teststage_cmd="${name}_teststage"
+testenter_cmd="${name}_testenter"
+
+_err() { echo "${name}: $*" >&2; }
+_info() { echo "${name}: $*"; }
+
+_policy() {
+	p="${capsicum_grok_dir}/POLICY"
+	[ -f "$p" ] && . "$p"
+	: "${AGENTS_MUST:=YES}"
+	: "${CASPER:=NO}"
+	: "${WRAP:=}"
+}
+
+capsicum_grok_install() {
+	src=${capsicum_grok_src:-$(dirname "$0")/..}
+	[ -d "$src/bin" ] || src=$(dirname "$0")
+	install -d /usr/local/etc/rc.d "${capsicum_grok_dir}" /usr/local/bin
+	install -m 755 "$0" /usr/local/etc/rc.d/capsicum_grok
+	if [ -f "${src}/POLICY" ]; then
+		install -m 644 "${src}/POLICY" "${capsicum_grok_dir}/POLICY"
+	elif [ -f "$(dirname "$0")/POLICY" ]; then
+		install -m 644 "$(dirname "$0")/POLICY" "${capsicum_grok_dir}/POLICY"
+	fi
+	c_src="${src}/bin/pqcap-enter.c"
+	[ -f "$c_src" ] || c_src="$(dirname "$0")/../bin/pqcap-enter.c"
+	[ -f "$c_src" ] && install -m 644 "$c_src" "${capsicum_grok_dir}/pqcap-enter.c"
+	_info "installed source and POLICY; run onestage to compile"
+}
+
+capsicum_grok_stage() {
+	_policy
+	c="${capsicum_grok_dir}/pqcap-enter.c"
+	if [ ! -f "$c" ]; then
+		_err "no pqcap-enter.c — oneinstall first"
+		return 1
+	fi
+	if [ "$(uname -s)" != "FreeBSD" ]; then
+		_err "not FreeBSD; Capsicum helper not compiled. Skill is still the policy."
+		return 0
+	fi
+	if ! command -v cc >/dev/null 2>&1; then
+		_err "cc missing; cannot compile pqcap-enter"
+		return 1
+	fi
+	cc -O2 -o "${capsicum_grok_bin}" "$c" || return 1
+	_info "compiled ${capsicum_grok_bin} (CASPER=${CASPER}, AGENTS_MUST=${AGENTS_MUST})"
+	return 0
+}
+
+capsicum_grok_teststage() {
+	capsicum_grok_stage
+}
+
+capsicum_grok_testenter() {
+	if [ "$(uname -s)" != "FreeBSD" ]; then
+		_err "FAIL: not FreeBSD (expected on the workbench). On a host: pqcap-enter /usr/bin/true"
+		return 1
+	fi
+	if [ ! -x "${capsicum_grok_bin}" ]; then
+		_err "FAIL: pqcap-enter not compiled — onestage first"
+		return 1
+	fi
+	"${capsicum_grok_bin}" /usr/bin/true
+	_info "testenter: pqcap-enter /usr/bin/true -> $?"
+}
+
+capsicum_grok_start() {
+	_policy
+	if [ "$AGENTS_MUST" != "YES" ]; then
+		_info "AGENTS_MUST=NO. Capsicum conjunct silent. LOMAC is not thereby false."
+		return 0
+	fi
+	if [ ! -x "${capsicum_grok_bin}" ]; then
+		_err "AGENTS_MUST=YES but pqcap-enter missing. Confinement conjunct unmet."
+		return 1
+	fi
+	_info "agents must be invoked as: ${capsicum_grok_bin} <cmd>. Casper=${CASPER} (first pass is enter-only)."
+	return 0
+}
+
+capsicum_grok_uninstall() {
+	rm -f /usr/local/etc/rc.d/capsicum_grok "${capsicum_grok_bin}"
+	_info "removed helper; POLICY kept in ${capsicum_grok_dir}"
+}
+
+run_rc_command "$1"

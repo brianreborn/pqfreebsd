@@ -90,6 +90,7 @@ export type Policy = {
   hashName: "SHA-256" | "SHA-512";
   withLomac: boolean;
   withSeeotheruids: boolean;
+  withCapsicum: boolean;
   homesMatchClass: boolean;
   bootSatisfied: boolean;
   splashEmblem: SplashEmblem;

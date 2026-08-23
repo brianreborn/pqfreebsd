@@ -1,0 +1,33 @@
+.Dd August 22, 2026
+.Dt PQCAP-ENTER 1
+.Os
+.Sh NAME
+.Nm pqcap-enter
+.Nd first-pass Capsicum wrapper
+.Sh SYNOPSIS
+.Nm
+.Ar command
+.Op Ar args ...
+.Sh DESCRIPTION
+Limits stdio with
+.Fn caph_limit_stdio ,
+enters capability mode with
+.Fn caph_enter ,
+then
+.Fn execvp
+the command.
+Not Casper.
+Not
+.Xr mac 4 .
+.Pp
+FreeBSD only. GENERIC already has Capsicum; this is not a
+.Xr kldload 8 .
+.Sh SEE ALSO
+.Xr cap_enter 2 ,
+.Xr caph_enter 3 ,
+.Xr capsicum 4 ,
+.Xr libcasper 3 ,
+.Xr freebsd-capsicum 7
+.Sh AUTHORS
+Brian Fundakowski Feldman.
+Capsicum is Watson, Anderson, Laurie, Kennaway, USENIX Security 2010.

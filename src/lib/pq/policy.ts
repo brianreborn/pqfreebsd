@@ -14,6 +14,7 @@ export const DEFAULT_POLICY: Policy = {
   hashName: "SHA-256",
   withLomac: true,
   withSeeotheruids: true,
+  withCapsicum: true,
   homesMatchClass: false,
   bootSatisfied: false,
   splashEmblem: "cross",
@@ -32,6 +33,12 @@ export const INTERVIEW = [
     key: "withSeeotheruids" as const,
     title: "Orthogonal module",
     ask: "Load mac_seeotheruids(4) (hide other UIDs, exempt GID 0 / wheel)? Do not stack Biba or MLS.",
+    kind: "bool" as const,
+  },
+  {
+    key: "withCapsicum" as const,
+    title: "Capability mode",
+    ask: "Low-integrity agents must cap_enter (Capsicum, GENERIC, not MAC)? Default yes. First pass is pqcap-enter, not Casper. Orthogonal to the lattice.",
     kind: "bool" as const,
   },
   {
