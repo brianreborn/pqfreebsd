@@ -15,7 +15,7 @@ papers not in base: [docs](http://www.trustedbsd.org/docs.html).
 | Layer | What |
 | --- | --- |
 | Parent | **mac_lomac(4)** integrity, orthogonal modules, **zfs snapshot -r**, PREINSTALL. No **bectl(8)**. |
-| **Kernel KLDs** | **[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** — build and `kldload` separately (`pqfreebsd.ko`, `pqfreebsd_compat_zfs_multilabel.ko`). Not built by this skill. Required before ZFS MAC labels. |
+| **Kernel KLDs** | **[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** — compat for a trivial ZFS `MNT_MULTILABEL` bug (proper fix upstream). Not built by this skill; `onestart` loads installed `.ko` quietly so operators need no special step. |
 | **pqledger** | Filesystem Integrity Evidence: hash-chained vnode/policy log on a **high** dataset. |
 | **pqdac** | Restricted A_D spec, established at create, repaired on drift. Optional ugidfw prevent. |
 
@@ -39,10 +39,10 @@ Parent **freebsd-mac-grok** is a **top-level git submodule** (`vendor/freebsd-ma
 Each later FreeBSD MAC skill (pqzfs, pqcode, mac-sebsd, …) gets its own repo and
 is added the same way, after you say so.
 
-**Kernel modules** are **not** a submodule of this repo and are **not** built
-on demand by `/pqfreebsd`. Build and load
-[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel) on the
-FreeBSD host before parent `onelabel` on ZFS.
+**Kernel modules** are **not** a submodule and are **not** built on demand by
+`/pqfreebsd`. [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)
+is a separate deliverable; once `.ko` files are installed, `onestart` loads
+them without an operator ceremony.
 
 ```sh
 git clone --recurse-submodules https://github.com/brianreborn/pqfreebsd.git
@@ -80,9 +80,7 @@ sudo ./pqfreebsd oneinstall
 sudo service pqfreebsd onesnapshot
 sudo service pqfreebsd onestage
 sudo service pqfreebsd onesnapshot_after
-sudo service pqfreebsd onestart
-# before ZFS labels — separate repo, not built by this skill:
-#   make -C pqfreebsd_kernel && kldload pqfreebsd && kldload pqfreebsd_compat_zfs_multilabel
+sudo service pqfreebsd onestart   # also quiet-loads ZFS multilabel compat if present
 sudo service pqledger onestage
 sudo service pqdac oneestablish
 # parent labels:

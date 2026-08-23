@@ -22,24 +22,13 @@ Not PQC in the kernel. Not Faraday. Not root containment.
 **Held:** payload confirmation (T10 / `pqconfirm`) is required of the system
 and is **not** implemented here.
 
-## pqfreebsd_kernel (separate — build and load; this skill does not build it)
+## ZFS multilabel (trivial bug — suite absorbs it)
 
-ZFS MAC labels need `MNT_MULTILABEL`. That lives in a **sibling** repo, not
-in this create-skill tree:
-
-**https://github.com/brianreborn/pqfreebsd_kernel**
-
-```sh
-git clone https://github.com/brianreborn/pqfreebsd_kernel.git
-cd pqfreebsd_kernel && make
-kldload zfs    # if needed
-kldload ./sys/modules/pqfreebsd/pqfreebsd.ko
-kldload ./sys/modules/pqfreebsd_compat_zfs_multilabel/pqfreebsd_compat_zfs_multilabel.ko
-```
-
-Load **before** `onelabel` / `setfsmac` on ZFS (and before `oneenforce`).
-Do **not** flip dataset `xattr=` to “fix” LOMAC. Skills may *use* these
-`.ko` files; they must not build them on demand.
+OpenZFS does not set `MNT_MULTILABEL` like UFS. Proper fix is upstream.
+Until then [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)
+provides a tiny compat KLD. **Operators are not asked to do anything special:**
+`onestart` loads it quietly when the `.ko` are installed. This skill does not
+build that tree on demand. Do not flip dataset `xattr=` to “fix” LOMAC.
 
 ## Invoke
 
@@ -53,9 +42,7 @@ sudo ~/pqfreebsd/pqfreebsd oneinstall
 sudo service pqfreebsd onesnapshot          # BEFORE — zfs snapshot -r (fs + zvol)
 sudo service pqfreebsd onestage
 sudo service pqfreebsd onesnapshot_after
-sudo service pqfreebsd onestart             # kldload; enabled=0
-# REQUIRED before ZFS labels — build/load pqfreebsd_kernel (not this skill):
-#   kldload pqfreebsd && kldload pqfreebsd_compat_zfs_multilabel
+sudo service pqfreebsd onestart             # kldload; quiet ZFS multilabel compat; enabled=0
 sudo service pqledger onestage
 sudo service pqdac oneestablish
 sudo service pqdac testdrift
@@ -117,7 +104,7 @@ Known issues; do not duplicate every row here.
 | ifoff drops the wire | mac_ifoff(4) | seeotheruids-only default |
 | ugidfw empty = allow-all | mac_bsdextended(4) | do not claim prevent is on until testdrift clean |
 | Aux/extattr | PR 178667 | ledger is a high dataset, not aux |
-| ZFS not UFS multilabel | freebsd-security; pqac(7) | **Build/load [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** (`pqfreebsd.ko` + `pqfreebsd_compat_zfs_multilabel.ko`) before `onelabel`; probe /tmp; do not flip `xattr=` |
+| ZFS not UFS multilabel | freebsd-security; pqac(7) | Trivial bug; proper fix upstream. Suite loads [pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel) compat from `onestart` when `.ko` installed — no operator ritual; probe /tmp; do not flip `xattr=` |
 | uninstall ≠ wipe | mac_grok(8) | PREINSTALL then optional rollback |
 
 ### This skill

@@ -619,28 +619,31 @@ is a different API; do not flip it to
 .Dq fix
 LOMAC.
 .Pp
-The remediation KLD is
-.Em not
-built by the
-.Nm pqfreebsd
-skill.
-Build and load
+This is a
+.Em trivial
+host bug; the proper fix is upstream.
 .Lk https://github.com/brianreborn/pqfreebsd_kernel pqfreebsd_kernel
-.Po
-.Pa pqfreebsd.ko
-then
-.Pa pqfreebsd_compat_zfs_multilabel.ko
-.Pc
-on the host before labeling ZFS.
-That compat module sets
+ships a tiny compat KLD that sets
 .Dv MNT_MULTILABEL
-when the effective
+when effective
 .Cm xattr
-property is
+is
 .Cm on Ns / Ns Cm dir
 or
-.Cm sa
-.Pq local or inherited .
+.Cm sa .
+The
+.Nm pqfreebsd
+skill does
+.Em not
+build that tree on demand, and the operator is
+.Em not
+asked to perform a special
+.Xr kldload 8
+ritual:
+.Cm onestart
+loads the modules quietly when they are installed.
+Do not compromise suite functionality to avoid the bug, and do not make the
+user paper over it by hand.
 Probe
 .Xr setfmac 8
 on
@@ -649,8 +652,7 @@ abort with
 .Va enabled Ns =0
 if
 .Er EINVAL
-persists after
-.Xr kldload 8 .
+persists after the compat modules are present.
 UFS
 .Ql multilabel
 on
