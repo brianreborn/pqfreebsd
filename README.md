@@ -4,7 +4,10 @@
 
 **Derived from [freebsd-mac-grok](https://github.com/brianreborn/freebsd-mac-grok).**
 **Copyright © 2026 Brian Fundakowski Feldman.**
-**License: [Light-ware](LICENSE).** See **[NOTICE.md](NOTICE.md)**.
+**License: [Light-ware](LICENSE).** See **[NOTICE.md](NOTICE.md)**.  
+**Release / install continuity:** see **[RELEASE_NOTES.md](RELEASE_NOTES.md)**
+(test host is half-installed; resume after the ZFS multilabel blocker;
+where a master project should place this repo vs `pqfreebsd_kernel`).
 
 Grok **plugin** plus a workbench for a **post-quantum trusted FreeBSD**:
 quantum-adversary-stable mediation (**pqac(7)**), Integrity Evidence, repaired
