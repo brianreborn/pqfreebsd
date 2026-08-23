@@ -11,7 +11,7 @@ export const ABSTRACT = `We describe pqfreebsd, a composition of the TrustedBSD 
 
 The work inherits pqac(7). Authorization on a von Neumann FreeBSD defender — DAC, lattice MAC, and MMU translation — is not an instance of a BQP-hard naming problem. Shor and Grover therefore do not collapse the mediation relation. That observation is not a claim that the TCB is post-quantum. The bits the monitor interprets (kernel, modules, packages, policy, send streams) are still authenticated classically, or not at all.
 
-Redundancy is part of the design, and only as independent reductions: a quantum algorithm that solves one class of problem does not thereby solve the others. Copies of the same reduction do not count. A cryptographic layer that remains RSA or ECC has no post-quantum resistance at that layer, whatever else is composed with it. Claims remain conjuncts, not a product of proofs.
+Redundancy is part of the design, and only as independent reductions: a quantum algorithm that solves one class of problem does not thereby solve the others. Copies of the same reduction do not count; they share layout and cache. Variation of data structure unshares alike facts — inefficient, and for that reason the valuable kind of redundancy. A cryptographic layer that remains RSA or ECC has no post-quantum resistance at that layer, whatever else is composed with it. Claims remain conjuncts, not a product of proofs.
 
 This paper states the additional requirements, the design of the packages that meet those that we implement, and an honest status for those we do not. A 1.0 cut does not require post-quantum signatures on the kernel.`;
 
@@ -126,7 +126,7 @@ export const THESES: Thesis[] = [
     id: "T19",
     kind: "pqfreebsd",
     title: "Independent reductions raise adversary cost; they do not multiply proofs",
-    body: "A quantum algorithm attacks a class of problem. Shor solves period-finding on the groups used by RSA and ECC. Grover gives a square-root speedup on unstructured search. Neither is a write the MAC Framework accepts. Neither opens a path after cap_enter. A cryptanalytic break of module lattices is not a break of hash-based signatures. Redundancy in this suite means independent reductions, not copies of the same one: ML-DSA and SLH-DSA are two families; LOMAC, Capsicum, repaired A_D, and the Integrity Evidence chain are four predicates. Two RSA keys, RAID-Z, and a hybrid where either half suffices are not independent — those collapse together. For the defender, conjunction is not a product of proofs (pqac(7), T14). For the adversary, each independent surface must be attacked; cost approaches a product only then. T19 does not confer post-quantum resistance on a cryptographic hop that has not been upgraded. Resistance at that layer requires PQ algorithms at that layer (T11, T15).",
+    body: "A quantum algorithm attacks a class of problem. Shor solves period-finding on the groups used by RSA and ECC. Grover gives a square-root speedup on unstructured search. Neither is a write the MAC Framework accepts. Neither opens a path after cap_enter. A cryptanalytic break of module lattices is not a break of hash-based signatures. Redundancy in this suite means independent reductions, not copies of the same one: ML-DSA and SLH-DSA are two families; LOMAC, Capsicum, repaired A_D, and the Integrity Evidence chain are four predicates. Two RSA keys, RAID-Z, and a hybrid where either half suffices are not independent — those collapse together. Homogeneous copies share a layout: they hit the same cache lines, the same vnode cache, the same reduction. Variation of data structure unshares alike semantic data (a lattice label is not a capability bitmap is not a hash-chain record is not a hash-based signature). That is an inefficiency — larger working set, no shared fill, no common-subexpression for the attacker. It is why this redundancy is the valuable kind: an exploit or an algorithm that has learned one representation does not find the others already in cache. For the defender, conjunction is not a product of proofs (pqac(7), T14). For the adversary, each independent surface must be attacked; cost approaches a product only then. T19 does not confer post-quantum resistance on a cryptographic hop that has not been upgraded. Resistance at that layer requires PQ algorithms at that layer (T11, T15).",
   },
   {
     id: "T15",
@@ -249,6 +249,11 @@ export const PRAXIS = [
     id: "code-auth",
     title: "Sign the bits that run",
     body: "pkg RSA, unsigned kldload, unsigned zfs send, unsigned policy: each is A_auth of code that T2 set aside. Held for a later cut.",
+  },
+  {
+    id: "unsharing",
+    title: "Unlike layouts unshare alike data",
+    body: "Two RSA signatures of the same bits share structure: cache lines, vnode pages, a single reduction. A lattice label, a capability rights mask, a hash-chain record, and an SLH-DSA signature of related facts do not. Unsharing is inefficient (working set, miss rate). That cost is why heterogeneous redundancy is worth more than another copy of the same structure: the attacker does not find the second fact already in cache. Still not a product of proofs. Still not a PQ upgrade of an RSA hop.",
   },
   {
     id: "skill-cut",
