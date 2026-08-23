@@ -63,8 +63,8 @@ as a sign it is disposable — it is the permanent in-kernel foothold.
 `MNT_MULTILABEL`. Legacy **UFS/FFS** already does — it predates ZFS and never
 had this regression — so a non-ZFS host does **not** need
 `pqfreebsd_compat_zfs_multilabel`. On ZFS, that KLD papers over the trivial
-bug until upstream fixes it. Do not flip dataset `xattr=` to “fix” LOMAC
-(pqac(7)). Do not interview the operator about hand-`kldload`.
+bug until a proper fix goes upstream. Do not flip dataset `xattr=` to “fix”
+LOMAC (pqac(7)). Do not interview the operator about hand-`kldload`.
 
 **Agent / suite duty:** `onestart` quietly loads the required core; loads the
 ZFS multilabel compat only when ZFS is in play (`_pqfreebsd_kld_load`). Missing

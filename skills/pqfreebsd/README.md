@@ -34,8 +34,8 @@ tree on demand.
 
 **ZFS multilabel** (ZFS hosts only): OpenZFS does not set `MNT_MULTILABEL`.
 Legacy UFS/FFS already does and never had this regression — no compat KLD
-there. On ZFS, `pqfreebsd_compat_zfs_multilabel` papers over it until upstream
-fixes it. Do not flip dataset `xattr=` to “fix” LOMAC.
+there. On ZFS, `pqfreebsd_compat_zfs_multilabel` papers over it until a proper
+fix goes upstream. Do not flip dataset `xattr=` to “fix” LOMAC.
 
 ## Invoke
 
