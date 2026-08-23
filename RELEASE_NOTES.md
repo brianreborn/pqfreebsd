@@ -26,11 +26,11 @@ When an umbrella / master project **imbibes** PQFreeBSD and its kernel tree:
 
 | Piece | Put it here | Why |
 | --- | --- | --- |
-| `pqfreebsd` (this repo) | Skill / plugin + userland (`skills/`, port under `ports/sysutils/pqfreebsd`, result dirs). | Operator-facing install and `one*` flow. |
-| `pqfreebsd_kernel` (**pqk**) | **Separate kernel deliverable** next to (not inside) the skill tree. Build/install as normal KLDs. Short name **pqk** = Public Quantum Free Berkeley Software Distribution Kernel. | Requisite/generic; not built on demand by create-skill; core is the no-src-mod lockdown foothold. |
+| `pqfreebsd` (**pqf skills**, this repo) | Skill suite + userland (`skills/`, port under `ports/sysutils/pqfreebsd`, result dirs). | Operator-facing install and `one*` flow; uses installed `.ko`, does not compile them. |
+| `pqfreebsd_kernel` (**pqk**) | **Separate kernel deliverable** next to (not inside) **pqf skills**. Not LLM-dependent. Build/install as normal KLDs. | Requisite/generic; not built on demand by pqf skills; core is the no-src-mod lockdown foothold. |
 
-Do **not** merge the KLD sources into the skill package. The skill **uses**
-installed `.ko` files; the kernel repo **ships** them.
+Do **not** merge the KLD sources into the pqf skills package. **pqf skills**
+**use** installed `.ko` files; the kernel repo (**pqk**) **ships** them.
 
 **Required vs optional KLDs** (master must not invert this):
 
