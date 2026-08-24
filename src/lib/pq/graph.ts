@@ -169,6 +169,16 @@ export const SKILL_NODES: SkillNode[] = [
     delay: 2400,
   },
   {
+    id: "swarm",
+    label: "swarm-conductor",
+    subtitle: "dispatch · not implement",
+    kind: "here",
+    href: "/swarm",
+    x: 850,
+    y: 416,
+    delay: 2500,
+  },
+  {
     id: "pqboot",
     label: "pqboot",
     subtitle: "gated loader",
@@ -199,6 +209,8 @@ export const SKILL_EDGES: SkillEdge[] = [
   { from: "pqfreebsd", to: "pqcode" },
   { from: "pqfreebsd", to: "sebsd" },
   { from: "pqfreebsd", to: "pqboot" },
+  { from: "pqfreebsd", to: "swarm" },
+  { from: "capsicum", to: "swarm" },
 ];
 
 export const CREATION_ORDER = SKILL_NODES.filter((n) => n.kind !== "pending");

@@ -12,6 +12,7 @@ const NAV = [
   { to: "/interview", label: "Interview" },
   { to: "/lattice", label: "Lattice" },
   { to: "/capsicum", label: "Capsicum" },
+  { to: "/swarm", label: "Swarm" },
   { to: "/host", label: "Host" },
   { to: "/ledger", label: "Ledger" },
   { to: "/dac", label: "A_D" },

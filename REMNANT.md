@@ -31,6 +31,10 @@ Opens `dir` **before** `cap_enter`, `cap_rights_limit` (lookup/read/write/create
 
 Paper page is a real paper now (intro, background, lemmas, theses, status) — not slogans.
 
+## Swarm conductor (T22, requirements only)
+
+Japanglify `docs/swarm-conductor/` overlaid — no linguistics. Conductor dispatches; workers `pqcap-enter --root`. `ledger.append` on every role. GitHub mailbox ≠ TCB. Matrix: `docs/swarm-conductor.md`, `docs/swarm-roles.json`, workbench `/swarm`. Do not implement Actions in this cut. Lesser AI may wire automations from that matrix.
+
 ## Close guess (user: “you're close”)
 
 Integrating **max-headroom** was close. Do **not** cut that skill until named. Capsicum **is** the agent-side requirement Headroom will wrap through. Continue Capsicum (Casper later, like ipfw last).

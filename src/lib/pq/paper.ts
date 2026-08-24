@@ -162,6 +162,12 @@ export const THESES: Thesis[] = [
     title: "Federation min-cut is extra virtual dimensions of channel security",
     body: "Let G=(V,E) be hosts that store or validate Integrity Evidence, with an edge only when the transport is an independent reduction (unlike keys, unlike layout — T19; not a bind-mount of the same bits). An undetected rewrite of history requires controlling a cut from the origin to every honest validator. Adding a vertex adjacent to an honest validator, or an independent edge among existing vertices, strictly increases some cut capacities. Call each independent channel a virtual dimension: not spacetime; a degree of freedom the adversary's strategy must succeed in. Size and connectivity of the federation therefore add channel dimension. They do not add bit-security to RSA. Correlated hosts (same pkg key, same admin, one network compromise) are not extra dimensions. Silent (replica not composed) is not a dimension. Stranded (composed, protocol unmet) is a lost edge (T14). Where the proof stops: we catalog the graph; we do not yet prove a numeric min-cut for a named deployment. The lemma is the shape of the bound, not a number on a box.",
   },
+  {
+    id: "T22",
+    kind: "pqfreebsd",
+    title: "The conductor dispatches; workers enter",
+    body: "From japanglify swarm-conductor (generic CI coordinator; no product domain): a role is only a starting set of capabilities. The conductor does not implement, build, or sign. Overlay: may is DAC-shaped (starting set); must_not is MAC-shaped (cannot elect away); ledger.append is a conjunct of every role. Workers (bench, synthesizer, reproducer, analyzer, verifier) are low-integrity agents: pqcap-enter --root, openat on PQCAP_ROOTFD. The conductor and watchdog do not cap_enter for them and do not merge main. GitHub is the mailbox, not the TCB and not Integrity Evidence (T21: unlike channel). Do not stack conductor and bench in one process (T20). Fleet effort caps are not a security bound (T14). Requirements: docs/swarm-conductor.md. Status: matrix only.",
+  },
 ];
 
 export const LEMMAS = `Lemma T20 (unlike namei). A TOCTOU on path p is inherited by a layer iff that layer re-resolves p between check and use. Capability mode after cap_enter, and MAC on a held vnode, do not. Self-similar copies of namei do. Therefore stacking unlike security mechanisms is not equivalent to stacking boilerplate in every MAC/DAC layer.
@@ -176,7 +182,7 @@ pqledger appends hash-chained events on a high-integrity dataset. pqdac compiles
 
 Recovery is PREINSTALL restoration of prior behavior plus the recursive snapshot. Uninstall is not wipe and not rewind. test variants exist for each apply step.`;
 
-export const STATUS = `Implemented in this cut: T6–T9, T13, T14, T16–T21, and the loader gate (T12) as refusal-until-attestation. Inherited: T1–T5 via pqac(7) and freebsd-mac-lomac. T20–T21 are lemmas with stated stopping points, not Coq.
+export const STATUS = `Implemented in this cut: T6–T9, T13, T14, T16–T22, and the loader gate (T12) as refusal-until-attestation. Inherited: T1–T5 via pqac(7) and freebsd-mac-lomac. T20–T21 are lemmas with stated stopping points, not Coq. T22 is a requirements overlay of japanglify swarm-conductor; Actions are not in this tree yet.
 
 Held, not a 1.0 requirement: T11 / pqcode (open-ended). Held, required of a later cut: T10 / pqconfirm, authenticated zfs send (pqzfs), measured boot. SEBSD: catalog only; last tree 2006. ipfw uid/gid: deferred; first pass would follow the ugidfw shape.
 
@@ -186,7 +192,9 @@ export const RELATED = `Anderson, Computer Security Technology Planning Study, E
 
 TrustedBSD papers, not in the base install, are indexed at http://www.trustedbsd.org/docs.html. We rely in particular on the MAC Framework papers (DISCEX III 2003, USENIX ATC 2003), the Capsicum paper (USENIX Security 2010), the SEBSD report (NAI Labs 2003), and Watson, UCAM-CL-TR-818, 2012.
 
-SELinux / FLASK on Linux is the cousin of SEBSD; LSM is not the MAC Framework. We do not treat them as interchangeable.`;
+SELinux / FLASK on Linux is the cousin of SEBSD; LSM is not the MAC Framework. We do not treat them as interchangeable.
+
+Japanglify swarm-conductor (github.com/brianreborn/japanglify, docs/swarm-conductor/) is the generic coordinator this suite overlays: roles as starting capability sets, GitHub as mailbox, ledger.append on every role. Product linguistics stay in that repo.`;
 
 export const CONCLUSION = `Authorization on GENERIC FreeBSD does not collapse under Shor. Cryptographic hops that are still RSA or ECC do. Several policies here are mandatory; only some of them are Framework modules. Unlike layers do not share a namei race. An unlike-connected federation of evidence validators adds channel dimension. That is the work we are in a position to defend.`;
 

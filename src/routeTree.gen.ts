@@ -26,6 +26,7 @@ import { Route as LatticeRouteImport } from './routes/lattice'
 import { Route as LedgerRouteImport } from './routes/ledger'
 import { Route as PaperRouteImport } from './routes/paper'
 import { Route as PortRouteImport } from './routes/port'
+import { Route as SwarmRouteImport } from './routes/swarm'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -112,6 +113,11 @@ const PortRoute = PortRouteImport.update({
   path: '/port',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SwarmRoute = SwarmRouteImport.update({
+  id: '/swarm',
+  path: '/swarm',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -131,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/ledger': typeof LedgerRoute
   '/paper': typeof PaperRoute
   '/port': typeof PortRoute
+  '/swarm': typeof SwarmRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/ledger': typeof LedgerRoute
   '/paper': typeof PaperRoute
   '/port': typeof PortRoute
+  '/swarm': typeof SwarmRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   '/ledger': typeof LedgerRoute
   '/paper': typeof PaperRoute
   '/port': typeof PortRoute
+  '/swarm': typeof SwarmRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -191,6 +200,7 @@ export interface FileRouteTypes {
     | '/ledger'
     | '/paper'
     | '/port'
+    | '/swarm'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -210,6 +220,7 @@ export interface FileRouteTypes {
     | '/ledger'
     | '/paper'
     | '/port'
+    | '/swarm'
   id:
     | '__root__'
     | '/'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/ledger'
     | '/paper'
     | '/port'
+    | '/swarm'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -249,6 +261,7 @@ export interface RootRouteChildren {
   LedgerRoute: typeof LedgerRoute
   PaperRoute: typeof PaperRoute
   PortRoute: typeof PortRoute
+  SwarmRoute: typeof SwarmRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/swarm': {
+      id: '/swarm'
+      path: '/swarm'
+      fullPath: '/swarm'
+      preLoaderRoute: typeof SwarmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -393,6 +413,7 @@ const rootRouteChildren: RootRouteChildren = {
   LedgerRoute: LedgerRoute,
   PaperRoute: PaperRoute,
   PortRoute: PortRoute,
+  SwarmRoute: SwarmRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

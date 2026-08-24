@@ -26,6 +26,7 @@ they are not the only MAC in the suite.
 | Parent | **mac_lomac(4)** integrity, orthogonal modules, **zfs snapshot -r**, PREINSTALL. No **bectl(8)**. |
 | **Kernel KLDs** | **[pqfreebsd_kernel](https://github.com/brianreborn/pqfreebsd_kernel)** (**pqk**, not LLM-dependent) — skeletal `pqfreebsd.ko` always required (will be critical: lockdown without modifying FreeBSD source); siblings as needed to enable. Not built by **pqf skills**; **ideally loader-preloaded**, later with **full TPM e2e** (not this cut). |
 | **pqledger** | Filesystem Integrity Evidence: hash-chained vnode/policy log on a **high** dataset. |
+| **swarm** | Requirements overlay of japanglify **swarm-conductor**: dispatch ≠ implement; workers enter Capsicum. [`docs/swarm-conductor.md`](docs/swarm-conductor.md). |
 | **pqdac** | Restricted A_D spec, established at create, repaired on drift. Optional ugidfw prevent. |
 
 Installing the Grok plugin only loads skills. Host scripts change a FreeBSD box

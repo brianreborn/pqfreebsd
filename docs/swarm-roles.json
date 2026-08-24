@@ -1,0 +1,98 @@
+{
+  "source": "https://github.com/brianreborn/japanglify/blob/main/docs/swarm-conductor/roles.json",
+  "overlay": "pqfreebsd",
+  "note": "may = starting capabilities (DAC-shaped). must_not = cannot elect away (MAC-shaped). ledger.append is conjunct of every role. Workers cap_enter; conductor does not implement.",
+  "roles": {
+    "swarm-conductor": {
+      "integrity": "high",
+      "cap_enter": false,
+      "may": [
+        "task.create",
+        "assignment.propose",
+        "assignment.cancel",
+        "github.ingest",
+        "github.issue-comment",
+        "github.status-edit",
+        "ledger.append"
+      ],
+      "must_not": [
+        "git.push-agent-branch",
+        "github.pr-create",
+        "test.domain",
+        "secret.*",
+        "device.*",
+        "kldload",
+        "merge.main",
+        "cap_enter.for-worker"
+      ]
+    },
+    "watchdog": {
+      "integrity": "high",
+      "cap_enter": false,
+      "may": [
+        "assignment.cancel",
+        "github.status-edit",
+        "actions.cancel-run",
+        "ledger.append",
+        "alert.human"
+      ],
+      "must_not": [
+        "assignment.propose",
+        "git.push-agent-branch",
+        "github.pr-create",
+        "kldload"
+      ]
+    },
+    "swarm-bench": {
+      "integrity": "low",
+      "cap_enter": true,
+      "pqcap": "pqcap-enter --root $WORK",
+      "may": [
+        "git.push-agent-branch",
+        "github.pr-create",
+        "github.issue-comment",
+        "test.domain",
+        "ledger.append",
+        "patch.propose",
+        "hypothesis.propose"
+      ],
+      "must_not": [
+        "assignment.propose",
+        "secret.keystore-release",
+        "ci.remote-assemble",
+        "kldload",
+        "merge.main"
+      ]
+    },
+    "reproducer": {
+      "integrity": "low",
+      "cap_enter": true,
+      "may": ["git.push-agent-branch", "test.domain", "ledger.append", "hypothesis.propose"],
+      "must_not": ["assignment.propose", "secret.*", "merge.main"]
+    },
+    "analyzer": {
+      "integrity": "low",
+      "cap_enter": true,
+      "may": ["ledger.append", "hypothesis.propose", "hypothesis.contradict"],
+      "must_not": ["git.push-agent-branch", "github.pr-create", "secret.*"]
+    },
+    "synthesizer": {
+      "integrity": "low",
+      "cap_enter": true,
+      "may": [
+        "git.push-agent-branch",
+        "github.pr-create",
+        "test.domain",
+        "ledger.append",
+        "patch.propose"
+      ],
+      "must_not": ["assignment.propose", "secret.*", "merge.main"]
+    },
+    "verifier": {
+      "integrity": "low",
+      "cap_enter": true,
+      "may": ["github.issue-comment", "review.record", "ledger.append"],
+      "must_not": ["git.push-agent-branch", "secret.*", "merge.main"]
+    }
+  }
+}
