@@ -1,11 +1,12 @@
-.Dd August 22, 2026
+.Dd August 23, 2026
 .Dt PQCAP-ENTER 1
 .Os
 .Sh NAME
 .Nm pqcap-enter
-.Nd first-pass Capsicum wrapper
+.Nd enter capability mode, then exec (T18, T20)
 .Sh SYNOPSIS
 .Nm
+.Op Fl -root Ar dir
 .Ar command
 .Op Ar args ...
 .Sh DESCRIPTION
@@ -16,17 +17,47 @@ enters capability mode with
 then
 .Fn execvp
 the command.
-Not Casper.
-Not
-.Xr mac 4 .
+.Pp
+If
+.Fl -root
+is given, that directory is opened
+.Em before
+enter, rights-limited
+.Pq lookup, read, write, create, fchdir, … ,
+duplicated onto fd 3, and exported as
+.Ev PQCAP_ROOTFD .
+The child must use
+.Fn openat
+on that fd.
+.Fn namei
+of a new path is the TOCTOU this wrapper closes.
 .Pp
 FreeBSD only. GENERIC already has Capsicum; this is not a
 .Xr kldload 8 .
+Not Casper.
+Not
+.Xr mac 4 .
+Do not wrap
+.Nm sshd
+or
+.Nm login .
+.Sh ENVIRONMENT
+.Bl -tag -width PQCAP_ROOTFD
+.It Ev PQCAP_ROOTFD
+Set to
+.Ql 3
+when
+.Fl -root
+is used.
+.El
+.Sh EXIT STATUS
+.Ex -std
 .Sh SEE ALSO
 .Xr cap_enter 2 ,
+.Xr cap_rights_limit 2 ,
+.Xr openat 2 ,
 .Xr caph_enter 3 ,
 .Xr capsicum 4 ,
-.Xr libcasper 3 ,
 .Xr freebsd-capsicum 7
 .Sh AUTHORS
 Brian Fundakowski Feldman.

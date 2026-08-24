@@ -150,7 +150,7 @@ export const THESES: Thesis[] = [
     id: "T18",
     kind: "pqfreebsd",
     title: "Low-integrity agents enter capability mode",
-    body: "Capsicum is in GENERIC. cap_enter confines a process to the descriptors it already holds. mac_lomac(4) prevents a low-integrity process from overwriting high-integrity files; Capsicum prevents it from opening new ones. Those are independent predicates: a quantum algorithm is not a substitute for either. Agents (max-headroom) must enter. The first pass is caph_limit_stdio, caph_enter, and exec (pqcap-enter). Casper is later work, as ipfw uid/gid is later work. Missing Capsicum does not un-prove the lattice. An unwrapped agent is a missing confinement conjunct.",
+    body: "Capsicum is in GENERIC. cap_enter confines a process to the descriptors it already holds. mac_lomac(4) prevents a low-integrity process from overwriting high-integrity files; Capsicum prevents it from opening new ones. Those are independent predicates: a quantum algorithm is not a substitute for either. Agents must enter. First pass: pqcap-enter --root dir (directory fd 3, PQCAP_ROOTFD, rights-limited; child openat only). That is the namei TOCTOU close (T20). Casper is later. Missing Capsicum does not un-prove the lattice. An unwrapped agent is a missing confinement conjunct.",
   },
   {
     id: "T20",

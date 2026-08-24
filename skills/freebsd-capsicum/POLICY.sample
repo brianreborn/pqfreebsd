@@ -1,0 +1,7 @@
+# Agents must cap_enter. Not sshd, not login.
+AGENTS_MUST=YES
+CASPER=NO
+# Space-separated binaries invoked as: pqcap-enter --root $ROOT $cmd
+WRAP=
+# Directory fd 3 (PQCAP_ROOTFD) after enter. Agent workspace, not /.
+ROOT=/tmp

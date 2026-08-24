@@ -40,6 +40,7 @@ _policy() {
 	: "${AGENTS_MUST:=YES}"
 	: "${CASPER:=NO}"
 	: "${WRAP:=}"
+	: "${ROOT:=/tmp}"
 }
 
 capsicum_grok_install() {
@@ -55,6 +56,12 @@ capsicum_grok_install() {
 	c_src="${src}/bin/pqcap-enter.c"
 	[ -f "$c_src" ] || c_src="$(dirname "$0")/../bin/pqcap-enter.c"
 	[ -f "$c_src" ] && install -m 644 "$c_src" "${capsicum_grok_dir}/pqcap-enter.c"
+	mf="${src}/bin/Makefile"
+	[ -f "$mf" ] || mf="$(dirname "$0")/../bin/Makefile"
+	[ -f "$mf" ] && install -m 644 "$mf" "${capsicum_grok_dir}/Makefile"
+	if [ -f "${src}/POLICY.sample" ] && [ ! -f "${capsicum_grok_dir}/POLICY" ]; then
+		install -m 644 "${src}/POLICY.sample" "${capsicum_grok_dir}/POLICY"
+	fi
 	_info "installed source and POLICY; run onestage to compile"
 }
 
@@ -74,7 +81,7 @@ capsicum_grok_stage() {
 		return 1
 	fi
 	cc -O2 -o "${capsicum_grok_bin}" "$c" || return 1
-	_info "compiled ${capsicum_grok_bin} (CASPER=${CASPER}, AGENTS_MUST=${AGENTS_MUST})"
+	_info "compiled ${capsicum_grok_bin} (CASPER=${CASPER}, AGENTS_MUST=${AGENTS_MUST}, ROOT=${ROOT})"
 	return 0
 }
 
@@ -83,16 +90,17 @@ capsicum_grok_teststage() {
 }
 
 capsicum_grok_testenter() {
-	if [ "$(uname -s)" != "FreeBSD" ]; then
-		_err "FAIL: not FreeBSD (expected on the workbench). On a host: pqcap-enter /usr/bin/true"
-		return 1
-	fi
+	_policy
 	if [ ! -x "${capsicum_grok_bin}" ]; then
 		_err "FAIL: pqcap-enter not compiled — onestage first"
 		return 1
 	fi
-	"${capsicum_grok_bin}" /usr/bin/true
-	_info "testenter: pqcap-enter /usr/bin/true -> $?"
+	if [ "$(uname -s)" != "FreeBSD" ]; then
+		_err "FAIL: not FreeBSD (expected on the workbench). On a host: pqcap-enter --root /tmp /usr/bin/true"
+		return 1
+	fi
+	"${capsicum_grok_bin}" --root "${ROOT}" /usr/bin/true
+	_info "testenter: pqcap-enter --root ${ROOT} /usr/bin/true -> $?"
 }
 
 capsicum_grok_start() {
@@ -105,7 +113,7 @@ capsicum_grok_start() {
 		_err "AGENTS_MUST=YES but pqcap-enter missing. Confinement conjunct unmet."
 		return 1
 	fi
-	_info "agents must be invoked as: ${capsicum_grok_bin} <cmd>. Casper=${CASPER} (first pass is enter-only)."
+	_info "agents must be invoked as: ${capsicum_grok_bin} --root \$ROOT <cmd>. PQCAP_ROOTFD=3. Casper=${CASPER}."
 	return 0
 }
 

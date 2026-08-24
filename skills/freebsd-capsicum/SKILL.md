@@ -34,10 +34,10 @@ Result `~/freebsd-capsicum/`:
    `WRAP=` space-separated binaries (default: the agent wrapper if Headroom
    is in play).
 
-`onestage` compiles `pqcap-enter` on FreeBSD (`cc`, `caph_enter`).
-`testenter` runs `pqcap-enter /usr/bin/true`. `oneenforce` is not a kldload
-— Capsicum is already in the kernel. It means listed agent commands are
-invoked *through* `pqcap-enter`.
+`onestage` compiles `pqcap-enter` on FreeBSD (`cc`).
+`testenter` runs `pqcap-enter --root $ROOT /usr/bin/true`.
+Agent contract: `PQCAP_ROOTFD=3`; child uses `openat`. That is T20.
+`oneenforce` is not a kldload. It means listed WRAP commands go through `pqcap-enter --root`.
 
 ## Interview
 

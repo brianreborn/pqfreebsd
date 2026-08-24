@@ -10,9 +10,10 @@ No `.ko`. `kldload` is a category error.
 | Piece | First pass | Later |
 | --- | --- | --- |
 | `cap_enter(2)` / `caph_enter(3)` | **yes** — `pqcap-enter` | — |
-| `caph_limit_stdio` | **yes** | finer fd rights (`cap_rights_limit`) |
-| libcasper (`system.dns`, `system.pwd`, `system.fileargs`, `system.syslog`, …) | no | Casper pass |
-| `cap_rights_limit(2)` on individual fds | no | with Casper |
+| `caph_limit_stdio` | **yes** | finer fd rights |
+| `--root` / `PQCAP_ROOTFD=3` | **yes** — agent workspace fd; `openat` only | — |
+| `cap_rights_limit(2)` on that dir | **yes** (lookup/read/write/create/fchdir) | extra rights |
+| libcasper | no | Casper pass |
 | CloudABI / Wasmer | no | not this suite |
 
 **Subjects:** low-integrity agents (max-headroom). Not `root` login, not `sshd`.
