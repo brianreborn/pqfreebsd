@@ -12,7 +12,8 @@ expansion that still reads FreeBSD).
 **Release notes:** [RELNOTES](RELNOTES.md) (pointer) — canonical FreeBSD-style
 file is [`RELNOTES`](RELNOTES).
 
-**Sprint expenses:** see **[USAGE.md](USAGE.md)**.
+**Sprint expenses:** see **[USAGE.md](USAGE.md)**.  
+**Resume / remnant:** **[REMNANT.md](REMNANT.md)** (read first if context was truncated).
 
 Grok **plugin** plus a workbench for a **post-quantum trusted FreeBSD**:
 quantum-adversary-stable mediation (**pqac(7)**), Integrity Evidence, repaired

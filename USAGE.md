@@ -20,4 +20,12 @@ nanodollar scale `USD = ticks / 1e9`) unless noted. Confirm with **`/usage`**.
 | Detail | See [`pqfreebsd_kernel/USAGE.md`](https://github.com/brianreborn/pqfreebsd_kernel/blob/main/USAGE.md) |
 
 Half-install on the try-out host remains paused on the ZFS multilabel blocker;
-continue after pqk compat is installed (see `RELNOTES`).
+---
+
+## 2026-08-23 — Capsicum T18–T21 / paper lemmas (this remnant)
+
+| Field | Value |
+| --- | --- |
+| Focus | freebsd-capsicum `--root` / `PQCAP_ROOTFD`; T20 namei; T21 federation cut; persist at 99% context |
+| Tip | Session asked to commit immediately; remnant in `REMNANT.md` |
+| Est. cost | Confirm with `/usage` (not telemetered in this file) |
