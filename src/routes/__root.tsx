@@ -15,7 +15,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "pq all the things. Post-quantum trusted FreeBSD: mediation, Integrity Evidence, repaired A_D, Capsicum, successive policy. Derived from freebsd-mac-grok and pqac(7). Not Kyber in the kernel.",
+          "PQFreeBSD — pq all the things. Mandatory and discretionary controls, Integrity Evidence, Capsicum agents, successive policy. Derived from freebsd-mac-grok and pqac(7).",
       },
       { name: "theme-color", content: "#0c0d0c" },
     ],

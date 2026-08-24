@@ -11,19 +11,18 @@ function Home() {
     <div className="grid gap-12">
       <section className="grid gap-4">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted">
-          derived from freebsd-mac-grok · TrustedBSD MAC Framework · pqac(7)
+          PQFreeBSD · Freely Blessed · pqac(7)
         </p>
         <h1 className="max-w-3xl text-4xl font-medium tracking-[-0.03em] text-fg md:text-5xl">
           pq all the things
         </h1>
         <p className="max-w-prose text-muted">
-          Mediation does not collapse under Shor. That is not the whole system. pqfreebsd is the
-          trusted base around it: Integrity Evidence, repaired A_D, successive policy audit,
-          a loader gated on attestation. The MAC is the TrustedBSD Framework
-          (papers: trustedbsd.org/docs.html, not in base). Claims degrade by conjunct: a stranded replica weakens off-host IE,
-          not high-integrity overwrite protection. Code signatures, ZFS send authentication, payload confirmation, and SEBSD
-          remain held. The beta ends when each remaining claim has a parameterized bound
-          (classical, qubit, qudit, CVQC) — not when a slogan says “provably secure.”
+          A composition of mandatory policies — integrity labels, file-firewall rules, capability
+          mode, repaired access matrix, evidence chain — some of which load through the MAC
+          Framework and some of which do not. Mediation does not collapse under Shor; RSA hops
+          still might. Agents enter capability mode with a workspace fd opened first. Claims
+          degrade by conjunct. Unlike layers do not share a namei race. A federation of unlike
+          validators adds channel, not bits on a package signature.
         </p>
         <div className="flex flex-wrap gap-3">
           <Button asChild>
@@ -50,26 +49,18 @@ function Home() {
         <ShieldBoot />
       </section>
 
-      <section className="grid gap-4">
-        <h2 className="text-lg font-medium tracking-tight">Theses, some held, none a product</h2>
-        <div className="grid gap-3 md:grid-cols-2">
-          {THESES.map((t) => (
-            <article
-              key={t.id}
-              className={
-                t.kind === "held"
-                  ? "rounded-lg border border-dashed border-border bg-bg p-4"
-                  : "rounded-lg border border-border bg-surface p-4"
-              }
-            >
-              <p className="text-xs uppercase tracking-[0.16em] text-muted">
-                {t.id} · {t.kind === "inherited" ? "pqac(7)" : t.kind === "held" ? "held" : "pqfreebsd(7)"}
-              </p>
-              <h3 className="mt-2 font-medium text-fg">{t.title}</h3>
-              <p className="mt-2 text-sm text-muted">{t.body}</p>
-            </article>
-          ))}
+      <section className="grid gap-3">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <h2 className="text-lg font-medium tracking-tight">Theses</h2>
+          <Button variant="ghost" asChild>
+            <Link to="/paper">Paper</Link>
+          </Button>
         </div>
+        <p className="text-sm text-muted">
+          {THESES.filter((t) => t.kind === "pqfreebsd").length} of this suite,{" "}
+          {THESES.filter((t) => t.kind === "inherited").length} inherited from pqac(7),{" "}
+          {THESES.filter((t) => t.kind === "held").length} held. Lemmas T20–T21 are in the paper.
+        </p>
       </section>
     </div>
   );

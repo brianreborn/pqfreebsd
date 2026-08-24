@@ -10,7 +10,7 @@ export const TRUSTEDBSD_MAC = "http://www.trustedbsd.org/mac.html";
 export const TRUSTEDBSD_SEBSD = "http://www.trustedbsd.org/sebsd.html";
 export const TRUSTEDBSD_AUDIT = "http://www.trustedbsd.org/audit.html";
 
-export const TRUSTEDBSD_BLURB = `The TrustedBSD Project (April 2000–) added trusted-operating-system features to FreeBSD: the MAC Framework, security event auditing / OpenBSM, ACLs, UFS2, OpenPAM, and the kernel pieces SEBSD later plugged into. mac(4) and audit(4) in GENERIC are that work, upstreamed. The papers are not in the base install. This suite is a consumer of that framework, not a replacement for it.`;
+export const TRUSTEDBSD_BLURB = `The TrustedBSD Project (April 2000–) added trusted-OS features to FreeBSD: a loadable MAC Framework, OpenBSM, ACLs, UFS2, OpenPAM, and the kernel pieces SEBSD later used. Several policies in this suite load there. Several others are also mandatory and do not: Capsicum, repaired A_D in prevent mode, the ledger’s high-integrity dataset, pqk. This suite consumes that work. It is not a claim that TrustedBSD is the only MAC, or that MAC is only that Framework. Papers: trustedbsd.org/docs.html — not in the base install.`;
 
 export type TbsdPaper = {
   id: string;

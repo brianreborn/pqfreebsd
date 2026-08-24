@@ -31,7 +31,7 @@ export const SKILL_NODES: SkillNode[] = [
   {
     id: "mac",
     label: "freebsd-mac",
-    subtitle: "TrustedBSD MAC",
+    subtitle: "mac(4) hooks",
     kind: "parent",
     href: "/issues",
     x: 382,

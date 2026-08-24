@@ -53,4 +53,4 @@ Casper, ipfw uid/gid (ugidfw-shaped first), pqconfirm, pqcode (not 1.0), pqzfs, 
 
 ## Operator
 
-brianreborn. `gh` device flow already done in an earlier turn. Push from **`/workspace`**. Light-ware License. TrustedBSD papers: http://www.trustedbsd.org/docs.html
+brianreborn. `gh` device flow already done in an earlier turn. Push from **`/workspace`**. Preview site: TrustedBSD is a source and a Framework, not the only MAC. Capsicum, repaired A_D (prevent), ugidfw, pqk are also mandatory-shaped.

@@ -15,11 +15,11 @@ file is [`RELNOTES`](RELNOTES).
 **Sprint expenses:** see **[USAGE.md](USAGE.md)**.  
 **Resume / remnant:** **[REMNANT.md](REMNANT.md)** (read first if context was truncated).
 
-Grok **plugin** plus a workbench for a **post-quantum trusted FreeBSD**:
-quantum-adversary-stable mediation (**pqac(7)**), Integrity Evidence, repaired
-A_D, successive policy audit, a loader gated on attestation. Not Kyber in the kernel.
-The access-control kernel is the **[TrustedBSD MAC Framework](http://www.trustedbsd.org/mac.html)**;
-papers not in base: [docs](http://www.trustedbsd.org/docs.html).
+Grok **plugin** plus a workbench for PQFreeBSD: quantum-adversary-stable
+mediation (**pqac(7)**), several mandatory policies (not only the MAC Framework),
+Integrity Evidence, repaired A_D, Capsicum agents, successive policy.
+Papers from the TrustedBSD Project remain cited where they are the source;
+they are not the only MAC in the suite.
 
 | Layer | What |
 | --- | --- |

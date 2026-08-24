@@ -44,7 +44,7 @@ function Paper() {
         <Section title="Abstract">{ABSTRACT}</Section>
         <Section title="1. Introduction">{INTRODUCTION}</Section>
         <Section title="2. Background">{BACKGROUND}</Section>
-        <h2 className="mt-10 text-xl font-medium">TrustedBSD papers (not in base)</h2>
+        <h2 className="mt-10 text-xl font-medium">Sources (TrustedBSD and others)</h2>
         <p className="mt-3 text-[0.95rem] leading-relaxed">{TRUSTEDBSD_BLURB}</p>
         <p className="mt-3 text-sm">
           <a className="underline" href={TRUSTEDBSD_HOME}>

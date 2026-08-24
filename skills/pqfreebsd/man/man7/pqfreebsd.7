@@ -17,30 +17,29 @@ mandoc -T pdf pqfreebsd.7 > pqfreebsd.pdf
 mandoc -T lint pqfreebsd.7
 .Ed
 .Sh ABSTRACT
+.Nm PQFreeBSD
+composes several policies that are mandatory in the ordinary sense
+.Pq the subject cannot elect them away :
+integrity labels, file-firewall rules, capability mode, a restricted and
+repaired access matrix, Integrity Evidence, successive policy.
+Some load as modules of the TrustedBSD MAC Framework.
+Some do not
+.Pq Capsicum, repaired
+.Em A_D
+in prevent mode, pqk .
+The Framework is not the only MAC in the suite, and MAC is not only the
+Framework.
+.Pp
 .Xr pqac 7
-argued that
-.Em A_D ,
-.Em A_M ,
-and MMU translation are quantum-adversary-stable mediation on a von Neumann
+is the basis: authorization on a von Neumann
 .Fx
-defender: not post-quantum cryptography, not a quantum ISA.
-T1 and T2 are implemented by
-.Nm freebsd-mac-grok .
-T3–T5 remain the plant and the observation function
-.Em O .
-.Pp
-.Nm
-is the trusted base around that mediation.
-It is not Kyber in the kernel.
-It packages Anderson's third property, the residual access matrix,
-successive policy as an auditable object, claims that degrade by conjunct,
-a catalog of the cryptographic chain of trust, parameterized bounds, a
-a loader gated on attestation, and a port that will not pretend a pkg is the operator.
-.Pp
-The system is not therefore post-quantum secure.
-Mediation does not collapse under Shor; the bits the monitor interprets
-still may.
-This paper records what holds, what is held, and where each proof stops.
+defender is not an instance of a BQP-hard naming problem.
+Cryptographic hops that remain RSA or ECC have no post-quantum resistance
+at those hops.
+Lemmas: unlike layers do not inherit a namei TOCTOU
+.Pq T20 ;
+federation min-cut is extra virtual dimensions of channel
+.Pq T21 .
 .Sh BASIS
 Read
 .Xr pqac 7
@@ -60,26 +59,22 @@ does not factor through a kernel-visible subject, T1 and T2 are silent.
 This page does not re-prove T1–T5.
 It inherits them and names the morphisms the slogans omitted.
 .Sh TRUSTEDBSD
-.Nm
-composes the
-.Em TrustedBSD MAC Framework ,
-not a private access-control kernel.
-That framework
-.Pq loadable
-.Xr mac 4
-policy modules, labels, hooks
-shipped in
-.Fx
-5.0.
-.Xr mac 4
-and
-.Xr mac 9
-in the base system name it; they do not reprint the papers.
+The TrustedBSD Project supplied a loadable MAC Framework, OpenBSM, and
+related kernel pieces.
+This suite consumes that work.
+It does not treat the Framework as the only mandatory policy.
+Bibliography
+.Pq papers not in the base install :
+.Lk http://www.trustedbsd.org/docs.html "trustedbsd.org/docs.html"
 .Pp
 Project:
 .Lk http://www.trustedbsd.org/ "TrustedBSD Project"
 .Pp
-Papers not in the base install
+.Xr mac 4
+and
+.Xr mac 9
+name the Framework; they do not reprint the papers.
+Papers
 .Pq index :
 .Lk http://www.trustedbsd.org/docs.html "trustedbsd.org/docs.html"
 .Bl -bullet

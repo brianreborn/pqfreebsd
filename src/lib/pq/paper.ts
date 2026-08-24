@@ -7,31 +7,29 @@ export type Thesis = {
 
 export const MOTTO = "pq all the things";
 
-export const ABSTRACT = `We describe pqfreebsd, a composition of the TrustedBSD MAC Framework, Capsicum, OpenBSM, and a small set of userland packages that together record Integrity Evidence, maintain a restricted discretionary access matrix, treat successive policy as an auditable object, and confine low-integrity agents in capability mode.
+export const ABSTRACT = `We describe PQFreeBSD, a composition of mandatory and discretionary controls on FreeBSD: integrity labels, Type Enforcement when a module exists, capability mode, a restricted and repaired access matrix, Integrity Evidence, successive policy as an object, and confinement of low-integrity agents. Several of these are mandatory in the ordinary sense — the subject cannot elect them away. Some load as modules of the TrustedBSD MAC Framework; some do not (Capsicum is GENERIC capability mode; repaired A_D is userland plus optional ugidfw). The Framework is not the only MAC in the suite, and MAC is not only the Framework.
 
-The work inherits pqac(7). Authorization on a von Neumann FreeBSD defender — DAC, lattice MAC, and MMU translation — is not an instance of a BQP-hard naming problem. Shor and Grover therefore do not collapse the mediation relation. That observation is not a claim that the TCB is post-quantum. The bits the monitor interprets (kernel, modules, packages, policy, send streams) are still authenticated classically, or not at all.
+The work inherits pqac(7): authorization on a von Neumann FreeBSD defender is not an instance of a BQP-hard naming problem. That is not a claim that the TCB is post-quantum. Cryptographic hops that remain RSA or ECC have no post-quantum resistance at those hops.
 
-Redundancy is part of the design, and only as independent reductions: a quantum algorithm that solves one class of problem does not thereby solve the others. Copies of the same reduction do not count; they share layout and cache. Variation of data structure unshares alike facts — inefficient, and for that reason the valuable kind of redundancy. A cryptographic layer that remains RSA or ECC has no post-quantum resistance at that layer, whatever else is composed with it. Claims remain conjuncts, not a product of proofs.
+Two lemmas we defend: unlike layers do not inherit a namei TOCTOU, and the min-cut of an unlike-connected Integrity Evidence federation is extra virtual dimensions of channel security. Independent reductions unshare alike data. Copies of the same reduction do not count.`;
 
-This paper states the additional requirements, the design of the packages that meet those that we implement, and two lemmas we are in a position to defend: heterogeneous stacking does not duplicate namei (so TOCTOU is not inherited by every layer), and the min-cut of an unlike-connected Integrity Evidence federation is extra virtual dimensions of channel security. A 1.0 cut does not require post-quantum signatures on the kernel.`;
+export const INTRODUCTION = `FreeBSD already ships several trusted-OS mechanisms, many of them from the TrustedBSD Project (MAC Framework in 5.0, OpenBSM, Capsicum in 9). They are in GENERIC. Man pages name them; the design papers are not in the base install.
 
-export const INTRODUCTION = `Trusted operating system features arrived in FreeBSD through the TrustedBSD Project: the MAC Framework in 5.0, security event auditing / OpenBSM, and Capsicum in 9. Those mechanisms are in GENERIC. They are documented in man pages that name them and in papers that are not in the base install.
+pqac(7) asked whether a BQP adversary thereby obtains a write the reference monitor would accept. It does not, unless it can induce a classical state the hooks accept. Mediation is an interpreted predicate, not a cryptographic game.
 
-pqac(7) asked a narrower question: whether a quantum adversary, whose uniform class is BQP rather than BPP, thereby obtains a write the reference monitor would accept. It does not, unless it can induce a classical state the hooks accept. Mediation is an interpreted predicate, not a cryptographic game.
+That answer is incomplete as a trusted-base story. Verifiability is not supplied by loading one module. The residual matrix is unrestricted unless specified and repaired. Agents retain the ambient namespace unless they cap_enter. Code the monitor will run is often named by RSA, or not named. Stacking self-similar checks duplicates namei; stacking unlike checks does not.
 
-That answer is incomplete as a trusted-base story. Anderson's third property — verifiability — is not supplied by loading mac_lomac(4). The residual discretionary matrix is an unrestricted HRU system unless it is specified and repaired. Policy that lives in half a dozen files is not itself an auditable object. Low-integrity agents retain the ambient UNIX namespace unless they cap_enter. Code the monitor will run is named by RSA in pkg(8), or is unsigned.
+PQFreeBSD packages those gaps. pqac(7) remains T1–T5. This paper is the systems account, including two lemmas (T20, T21) and a Capsicum agent contract (directory fd before enter).`;
 
-These are different predicates. An adversary who forges a package signature still faces the integrity lattice, capability mode, the repaired matrix, and the evidence chain — if those are on and independent. Stacking them is not stacking copies of namei. Growing a federation of unlike-connected validators is not mounting the same bits twice. Those two facts are the hard claims this paper tries to prove. They do not make a forged package post-quantum. Resistance at a cryptographic layer requires that layer to use post-quantum algorithms.
+export const BACKGROUND = `Mandatory policy in this suite is not a single module. Integrity labels (mac_lomac(4)), file-firewall rules (mac_bsdextended / ugidfw), port and IP ACLs, seeotheruids, and Type Enforcement (SEBSD, when a kernel-matched kld exists) all load through the TrustedBSD MAC Framework — a common hook table, not one axiom. Capsicum is mandatory once entered and is not a MAC module. A repaired A_D spec is mandatory in prevent mode. pqk (skeletal pqfreebsd.ko, loader-preloaded when possible) is a separate, non-LLM kernel tree.
 
-pqfreebsd is the systems paper for those gaps. pqac(7) is not rewritten; it remains the statement of T1–T5.`;
+mac_lomac(4) is the integrity policy we compose by default: floating labels, low-watermark. We say high-integrity and low-integrity; the kernel still stores lomac/high and lomac/low.
 
-export const BACKGROUND = `The access-control kernel is the TrustedBSD MAC Framework (Watson, Morrison, Vance, Feldman, USENIX ATC 2003; Watson, Feldman, Migus, Vance, DISCEX III 2003). Policy modules load against a common hook table. mac_lomac(4) is the integrity policy we compose: floating labels, low-watermark. When speaking to an operator we say high-integrity and low-integrity; the kernel still stores lomac/high and lomac/low.
+Capsicum (Watson, Anderson, Laurie, Kennaway, USENIX Security 2010) is capability mode in GENERIC. After cap_enter, a process operates on descriptors it already holds. This cut’s agent contract is pqcap-enter --root: a rights-limited directory fd (PQCAP_ROOTFD=3) opened before enter; the child uses openat.
 
-Capsicum (Watson, Anderson, Laurie, Kennaway, USENIX Security 2010) is capability mode in GENERIC. It is not a MAC module. After cap_enter, a process may operate only on file descriptors it already holds (and a few explicitly excepted calls). Casper later provides named services to sandboxed processes; this cut uses cap_enter alone.
+OpenBSM / audit(4) is the in-band event source. The Integrity Evidence ledger is a hash-chained high-integrity object derived from those events, not a replacement for /var/audit.
 
-OpenBSM / audit(4) (Watson and Salamon, UKUUG 2006) is the in-band security-event source. The Integrity Evidence ledger is not a replacement for the BSM trail; it is a hash-chained, high-integrity object derived from vnode, label, and policy-morphism events.
-
-SEBSD (Vance and Watson, NAI Labs 2003) is FLASK/Type Enforcement as a MAC module. The Framework changes were largely upstreamed. The policy module and reference policy were not. The last published tree is 7.0-SEBSD, 2006-07-05. There is no mac_sebsd.ko in GENERIC 14/15.`;
+SEBSD (Vance and Watson, NAI Labs 2003) is FLASK/TE as a Framework module. The last published tree is 7.0-SEBSD, 2006-07-05. There is no mac_sebsd.ko in GENERIC 14/15. The skill reuses LOMAC’s rc.d texture and groups; types compose into the same login class, not a second lattice.`;
 
 export const THREAT = `The defender is a classical stored-program FreeBSD host, GENERIC, options MAC and CAPABILITY_MODE. The adversary has polynomial-time quantum algorithms on the usual public-key names (Shor) and Grover search over unstructured domains, and, as a working hypothesis inherited from pqac(7), an instrument on the electrical plant. The adversary is not assumed to execute a quantum ISA on the defender.
 
@@ -190,7 +188,7 @@ TrustedBSD papers, not in the base install, are indexed at http://www.trustedbsd
 
 SELinux / FLASK on Linux is the cousin of SEBSD; LSM is not the MAC Framework. We do not treat them as interchangeable.`;
 
-export const CONCLUSION = `Authorization on GENERIC FreeBSD does not collapse under Shor. Cryptographic hops that are still RSA or ECC do. Independent reductions are why a quantum algorithm that takes one surface does not take the others; they are not a substitute for upgrading each cryptographic layer. Stacking unlike mechanisms does not duplicate namei (T20). Growing an unlike-connected federation of Integrity Evidence validators adds virtual dimensions of channel (T21), not bits on pkg RSA. That is the work we are in a position to defend.`;
+export const CONCLUSION = `Authorization on GENERIC FreeBSD does not collapse under Shor. Cryptographic hops that are still RSA or ECC do. Several policies here are mandatory; only some of them are Framework modules. Unlike layers do not share a namei race. An unlike-connected federation of evidence validators adds channel dimension. That is the work we are in a position to defend.`;
 
 /** @deprecated use INTRODUCTION / IMPLEMENTATION; kept for any leftover imports */
 export const EXOTERIC = INTRODUCTION;
