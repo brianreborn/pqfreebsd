@@ -176,17 +176,27 @@ Lemma T21 (federation cut). Integrity Evidence channel security is bounded below
 
 Both lemmas inherit T19 (unsharing) and T14 (conjuncts). Neither upgrades an RSA hop (T11, T15).`;
 
-export const IMPLEMENTATION = `freebsd-mac-grok remains the parent: freebsd-mac-lomac (roles as pw(8) groups, official PLM, PREINSTALL), freebsd-mac-base (GENERIC mac(4) modules; formerly freebsd-mac-generic), and freebsd-mac (zfs snapshot -r on filesystems and zvols before and after staging). pqfreebsd interviews, then emits a result directory that composes those packages.
+export const IMPLEMENTATION = `What is in this tree, by kind.
 
-pqledger appends hash-chained events on a high-integrity dataset. pqdac compiles the restricted A_D spec and establish/repair (or prevent via ugidfw). pqaudit implements consistency, propagation, and chained catalog hashes. freebsd-capsicum compiles pqcap-enter on the host and requires agents to be invoked through it. mac-sebsd installs a catalog and refuses kldload unless a kernel-matched, dated module is named. It reuses the LOMAC rc.d texture (PREINSTALL, login classes, pw groups, test*/one*) and the LOMAC groups; labels are TE types composed into the same login.conf slot, not a second lattice. sysutils/pqfreebsd stages the suite; it does not kldload.
+Inherited, host-runnable (parent freebsd-mac-grok, submodule): freebsd-mac-lomac — roles as pw(8) groups, official PLM, login.conf labels, PREINSTALL, onelabel / onechecklabels / oneenforce. freebsd-mac — zfs snapshot -r on filesystems and zvols before and after staging; no bectl. pqac(7) T1–T5.
 
-Recovery is PREINSTALL restoration of prior behavior plus the recursive snapshot. Uninstall is not wipe and not rewind. test variants exist for each apply step.`;
+This suite, host-runnable rc.d and source: pqfreebsd (interview, compose, onesnapshot, onestage, oneenforce gated on attestation and, via-port, LLM attest). pqledger (hash-chained Integrity Evidence on a high dataset; rotate; verify). pqdac (restricted A_D specfile, oneestablish, testdrift, onerepair; optional ugidfw prevent). pqaudit commands on the pqfreebsd service (consistency, propagate, successive catalog hashes). freebsd-mac-base (GENERIC mac(4) modules; seeotheruids default; portacl optional; not Biba/MLS). freebsd-capsicum: pqcap-enter.c compiles on FreeBSD; --root opens a rights-limited directory fd 3 (PQCAP_ROOTFD) before cap_enter; testenter. mac-sebsd: LOMAC rc.d texture and groups; TE types compose into login.conf; kldload refused without a dated kernel-matched SEBSD_KLD (no ko in GENERIC 14/15). Forth loader mark (logo-pqfreebsd.4th, emblem options); oneboot refused until BOOT_SATISFIED. sysutils/pqfreebsd port stages the suite; OPTIONS for local LLM runtimes; oneenforce via-port refused until pqfreebsd_llm_attested. pqk is not built here: loader.conf.local points at skeletal pqfreebsd.ko from the separate pqfreebsd_kernel tree.
 
-export const STATUS = `Implemented in this cut: T6–T9, T13, T14, T16–T22, and the loader gate (T12) as refusal-until-attestation. Inherited: T1–T5 via pqac(7) and freebsd-mac-lomac. T20–T21 are lemmas with stated stopping points, not Coq. T22 is a requirements overlay of japanglify swarm-conductor; Actions are not in this tree yet.
+Workbench (this repository’s preview): interview, lattice, simulated host, ledger, A_D drift/repair, claims that degrade by conjunct, Capsicum cap_enter, boot splash and gate, swarm role matrix, paper, emit. It is a design instrument. It is not a proof on GENERIC.
 
-Held, not a 1.0 requirement: T11 / pqcode (open-ended). Held, required of a later cut: T10 / pqconfirm, authenticated zfs send (pqzfs), measured boot. SEBSD: catalog only; last tree 2006. ipfw uid/gid: deferred; first pass would follow the ugidfw shape.
+Requirements only: T22 swarm-conductor overlay (docs/swarm-conductor.md, docs/swarm-roles.json). No Actions in this repo. Japanglify remains the reference instance.
 
-The workbench in this repository is a simulation for design and interview. It is not a proof on GENERIC.`;
+Lemmas, not Coq: T20 unlike namei; T21 federation min-cut.
+
+Held: pqcode / T11 (not 1.0), pqconfirm / T10, pqzfs authenticated send, Casper, ipfw uid/gid, measured boot / TPM, max-headroom skill cut.`;
+
+export const STATUS = `Implemented as host scripts and source in this cut: T6–T9, T13, T14, T16–T19, T12 as refusal-until-attestation, T18 as pqcap-enter --root. Inherited: T1–T5 via pqac(7) and freebsd-mac-lomac. T20–T21 are lemmas with stopping points, not Coq. T22 is a requirements overlay; Actions are not in this tree.
+
+The workbench simulates the same claims for interview and design. It does not execute GENERIC.
+
+Recovery is PREINSTALL restoration of prior behavior plus the recursive snapshot. Uninstall is not wipe and not rewind. test* exists beside each one* apply step.
+
+Held, not a 1.0 requirement: T11 / pqcode. Held, later cut: T10 / pqconfirm, authenticated zfs send (pqzfs), measured boot. SEBSD: catalog and refuse unless dated kld. ipfw uid/gid: deferred; first pass would follow ugidfw.`;
 
 export const RELATED = `Anderson, Computer Security Technology Planning Study, ESD-TR-73-51, 1972. Harrison, Ruzzo, Ullman, Protection in Operating Systems, CACM 19(8), 1976. Biba, MTR-3153, 1977. Fraser, LOMAC, USENIX FREENIX 2001.
 

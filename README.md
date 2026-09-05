@@ -103,6 +103,16 @@ sudo service mac_lomac_grok onelabel && onechecklabels
 sudo service pqfreebsd oneenforce
 ```
 
-`oneuninstall` restores PREINSTALL *behavior*. Snaps kept. uninstall ≠ wipe ≠ rewind.
+## What is implemented
 
-Unsigned, as the parent. Pin a commit.
+| Kind | What |
+| --- | --- |
+| Inherited (parent plugin) | **mac_lomac(4)** roles/groups/PLM/PREINSTALL; **zfs snapshot -r**; **pqac(7)** T1–T5 |
+| This suite, host scripts | **pqfreebsd** interview/compose/snapshots/enforce gate; **pqledger** hash chain; **pqdac** establish/repair (ugidfw optional); **pqaudit** consistency/propagate; **freebsd-mac-base** GENERIC mac(4); **freebsd-capsicum** `pqcap-enter --root` / `PQCAP_ROOTFD=3`; **mac-sebsd** catalog + refuse kld without dated module; Forth splash (gated); **sysutils/pqfreebsd** port + local LLM OPTIONS |
+| Kernel (separate repo) | **pqk** `pqfreebsd.ko` — not built by these skills; loader preload preferred |
+| Workbench | Interview, lattice, simulated host, ledger, A_D, claims, Capsicum, boot splash, swarm matrix, paper, emit — design only, not GENERIC |
+| Requirements only | Swarm conductor overlay (T22) — no Actions here |
+| Lemmas | T20 unlike namei; T21 federation min-cut |
+| Held | pqcode, pqconfirm, pqzfs, Casper, ipfw uid/gid, TPM/measured boot, max-headroom skill |
+
+`oneuninstall` restores PREINSTALL *behavior*. Snaps kept. uninstall ≠ wipe ≠ rewind.
